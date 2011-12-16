@@ -2,7 +2,7 @@
 {php}
 	$blocks = new jzBlocks();
 	$node = new jzMediaNode($_GET['jz_path']);
-	
+
 	$blocks->blockLogo();
 	$blocks->blockUser();
 	$blocks->blockNowStreaming();

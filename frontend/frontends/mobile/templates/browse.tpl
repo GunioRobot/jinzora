@@ -5,7 +5,7 @@
   padding-left: 0;
   display: inline;
   border: none;
-} 
+}
 
 #crumbs ul li {
   margin-left: 0;
@@ -47,9 +47,9 @@
      {section name=crumb loop=$breadcrumbs start=-1 step=-1}
      <li><span style="white-space:nowrap;">
      {if not $smarty.section.crumb.first}
-     &#187; 
+     &#187;
      {/if}
-       <a href="{$breadcrumbs[crumb].link}"> 
+       <a href="{$breadcrumbs[crumb].link}">
          {$breadcrumbs[crumb].name|truncate:15}
        </a>
      </span></li>
@@ -98,7 +98,7 @@
       {$tracks[track].openPlayTag}>{$Play}</a>
     </td>
   </tr>
-  </table>  
+  </table>
   {/section}
 
 </div>

@@ -1,6 +1,6 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 /**
-* - JINZORA | Web-based Media Streamer - 
+* - JINZORA | Web-based Media Streamer -
 *
 * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
 * (but can be used for any media file that can stream from HTTP).
@@ -10,7 +10,7 @@
 * - Resources -
 * - Jinzora Author: Ross Carlson <ross@jasbone.com>
 * - Web: http://www.jinzora.org
-* - Documentation: http://www.jinzora.org/docs   
+* - Documentation: http://www.jinzora.org/docs
 * - Support: http://www.jinzora.org/forum
 * - Downloads: http://www.jinzora.org/downloads
 * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
@@ -43,12 +43,12 @@ define('SERVICE_LYRICS_lyricwiki','true');
 
 function SERVICE_GETLYRICS_lyricwiki($track) {
    global $include_path;
-      
+
    include_once($include_path. "lib/snoopy.class.php");
    $meta = $track->getMeta();
    $artist = $meta['artist'];
    $name = $meta['title'];
-		     
+
    // Let's up the max execution time here
    ini_set('max_execution_time','60000');
 
@@ -69,7 +69,7 @@ function SERVICE_GETLYRICS_lyricwiki($track) {
    }
    if ($lyrics == "") {
        return false;
-   } 
+   }
    $lyrics2=iconv("ISO-8859-1","UTF-8",$lyrics);
    return $lyrics2;
 }

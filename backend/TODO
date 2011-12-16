@@ -2,7 +2,7 @@ This returns the location in the filesystem where
 files pertaining to the element should be stored. Leaves return the parent
 folder, nodes return their own path. Note that this can be different than
 getPath(), especially if the id3 is used to describe the layout.
-Also note that the user should be able to specify that all files (art etc.) 
+Also note that the user should be able to specify that all files (art etc.)
 should NOT be stored in the filesystem, but in the data directory.
 
 *add track->setMeta($array,$mode)

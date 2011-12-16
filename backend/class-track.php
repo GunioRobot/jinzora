@@ -1,43 +1,43 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* These are the classes extended by the backend adaptors.
 	*
 	* @since 05.10.04
 	* @author Ben Dodson <bdodson@seas.upenn.edu>
 	*/
-	
+
 	class jzMediaTrackClass extends jzMediaElement {
-		
+
 		var $playpath;
 		var $meta;
 		var $startTime;
-		
+
 		/**
 		* Constructor for a jzMediaTrackClass
-		* 
-		* @author 
-		* @version 
-		* @since 
-		*/	
+		*
+		* @author
+		* @version
+		* @since
+		*/
 		function jzMediaTrackClass($par = array(),$mode = "path") {
 			$this->playpath = false;
 			$this->meta = array();
@@ -47,11 +47,11 @@
 
 		/**
 		* Returns the track's name (from ID3)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function getName() {
 			$cache = $this->readCache();
 			return ($cache[7] == "-") ? parent::getName() : $cache[7];
@@ -59,7 +59,7 @@
 
 		/**
 		* Returns the type of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
@@ -70,25 +70,25 @@
 
 		/**
 		* Returns the track's complete file path (with $media_dir)
-		* 
+		*
 		* The paramater is one of: user|host|general
 		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function getFileName($target = "user") {
 			global $media_dirs, $web_dirs, $web_root, $root_dir, $protocols,
-			   	   $jzUSER, $allow_resample, $force_resample, 
+			   	   $jzUSER, $allow_resample, $force_resample,
 			   	   $no_resample_subnets, $always_resample;
-			
+
 			if (checkPermission($jzUSER,'play',$this->getPath("String")) === false) {
 			  return false;
 			}
 
 			if ($this->playpath === false || $this->playpath == "") {
 				$cache = $this->readCache();
-				
+
 				if ($cache[0] == "-") { // return error?
 					$this->playpath = $this->getPath("String");
 				}
@@ -96,7 +96,7 @@
 					$this->playpath = $cache[0];
 				}
 			}
-			
+
 			if (isset($protocols) && isset($this->playpath)) {
 				$parr = explode("|",$protocols);
 				foreach ($parr as $p) {
@@ -127,7 +127,7 @@
 			  		($allow_resample == "true" || $force_resample == "true")
 			  	&& !(preg_match("/^${no_resample_subnets}$/", $_SERVER['REMOTE_ADDR']))
 			  	 ) {
-			  	
+
 			  	if ($jzUSER->getSetting('resample_lock')) {
 			  		$arr["resample"] = $jzUSER->getSetting('resample_rate');
 			  	}
@@ -145,8 +145,8 @@
 			  $arr['sid'] = $_SESSION['sid']; // unique session id
 			  if (getGlobal("CLIP_MODE")) {
 			    $arr['cl'] = 't';
-			  } 
-			  
+			  }
+
 			  // Now, if they are resampling we MUST end with an MP3
 			  $arr['ext'] = $meta['type'];
 			  if (isset($_SESSION['jz_resample_rate'])){
@@ -154,7 +154,7 @@
 				  	  $arr['ext'] = "mp3";
 				  }
 			  }
-			  
+
 			  // Now we need to see if this track is a type that always gets resampled
 			  if ($allow_resample == "true"){
 			  	// Now do we have a type that is going to get resampled
@@ -163,7 +163,7 @@
 						$arr['ext'] = "mp3";
 					}
 			  }
-				
+
 				// Now should we send a path or ID?
 				if ($web_dirs <> ""){
 					return jzCreateLink($this->getFileName("host"),"track",$arr);
@@ -194,13 +194,13 @@
 		* album
 		* lyrics
 		* type [extension]
-		* 
+		*
 		* These are taken mostly from the ID3.
 		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function getMeta($mode = "cache", $installer = false) {
 			global $track_num_seperator,$root_dir,$web_root, $include_path, $jzSERVICES;
 
@@ -224,14 +224,14 @@
 				$meta['album'] = $cache[17];
 				$meta['lyrics'] = ($cache[19] == "" || $cache[19] == "-") ? "" : $cache[19];
 				$meta['type'] = $cache[18];
-				
+
 				if (isNothing($meta['type'])) {
 				  $meta = $this->getMeta("file");
 				  $this->setMeta($meta,"cache");
 				}
 			}
-			
-			
+
+
 			else { // Get it from the file.
 				// other backend functions use this to get the id3 before the file is cached.
 				if ($mode == "direct") {
@@ -239,15 +239,15 @@
 				} else {
 					$fname = $this->getFileName("host");
 				}
-				
+
 				// Do our services exist?
 				if (!$jzSERVICES){
 					include_once($include_path. 'services/class.php');
 					$jzSERVICES = new jzServices();
 					$jzSERVICES->loadStandardServices();
 				}
-				// Let's setup our tagdata service and return the tag data			
-				$meta = $jzSERVICES->getTagData($fname, $installer); 
+				// Let's setup our tagdata service and return the tag data
+				$meta = $jzSERVICES->getTagData($fname, $installer);
 			}
 			return $meta;
 		}
@@ -258,14 +258,14 @@
 		* $meta is an array of meta fields to set.
 		* $mode specifies where to update the meta,
 		* false means do it in the cache and in the id3.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/13/04
 		* @since 10/13/04
-		*/		
+		*/
 		function setMeta($meta, $mode = false, $displayOutput = false) {
 		  global $jzSERVICES, $allow_id3_modify,$backend,$hierarchy;
-			
+
 		  if (is_array($hierarchy)) {
 		    $hstring = implode("/",$hierarchy);
 		  } else {
@@ -279,7 +279,7 @@
 		  }
 		  if ($mode == "cache") {
 		    $filecache = $this->readCache();
-		    
+
 		    if (isset($meta['title']))
 		      $filecache[7] = $meta['title'];
 		    if (isset($meta['frequency']))
@@ -306,7 +306,7 @@
 		      $filecache[20] = $meta['bitrate'];
 		    if (isset($meta['number']))
 		      $filecache[21] = $meta['number'];
-		    
+
 		    $this->writeCache($filecache);
 		    return true;
 		  }
@@ -359,26 +359,26 @@
 		    return $status;
 		  }
 		}
-	  
+
 		/**
 		* Returns the track's lyrics.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function getLyrics() {
 			$cache = $this->readCache();
 			return $cache[19];
 		}
-		
+
 		/**
 		* Returns true, since this element is a leaf.
-		* 
-		* @author Laurent Perrin 
+		*
+		* @author Laurent Perrin
 		* @version 5/10/04
 		* @since 5/10/04
-		*/			
+		*/
 		function isLeaf() { return true; }
 
 		function setStartTime($time) {
@@ -388,6 +388,6 @@
 			return $this->startTime;
 		}
 
-	}	
-	
+	}
+
 ?>

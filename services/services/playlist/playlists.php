@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - Creates an M3U compliant playlist
 	*
@@ -25,7 +25,7 @@
 	* @author Ben Dodson <ben@jinzora.org>
 	* @author Ross Carlson <ross@jinzora.org>
 	*/
-	
+
 	$jzSERVICE_INFO = array();
 	$jzSERVICE_INFO['name'] = "Playlist Generator";
 	$jzSERVICE_INFO['url'] = "http://www.jinzora.org";
@@ -33,10 +33,10 @@
 	define('SERVICE_PLAYLIST_playlists','true');
 
 
-	
+
 	/**
 	* Returns the mime type for this playlist
-	* 
+	*
 	* @author Ben Dodson
 	* @version 2/24/05
 	* @since 2/24/05
@@ -51,10 +51,10 @@
 	  $FUNC_NAME = "SERVICE_RETURN_MIME_" . strtoupper($type);
 	  return $FUNC_NAME();
 	}
-	
+
 	/**
 	* Router for the playlist generation.
-	* 
+	*
 	* @author Ben Dodson
 	* @version 2/24/05
 	* @since 2/24/05
@@ -76,11 +76,11 @@
 	  // Just hard code them for now:
 	  $playlist_types = array();
 	  $playlist_types['m3u'] = "M3U (Standard)";
-		$playlist_types['pls'] = "PLS (Winamp - Linux Players)"; 
+		$playlist_types['pls'] = "PLS (Winamp - Linux Players)";
 	  $playlist_types['asx'] = "ASX (Windows Media Player)";
 	  $playlist_types['ram'] = "RAM (Real Player)";
 	  $playlist_types['xspf'] = "XSPF (Spiff)";
-	  
+
 	  return $playlist_types;
 	}
 

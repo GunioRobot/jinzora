@@ -151,7 +151,7 @@ if (getListType($_SESSION['jz_playlist']) == "dynamic") {
 		    <table class="jz_track_table" width="100%" cellpadding="1">
 			<tr class="<?php echo $row_colors[$i]; $i = 1 - $i;?>">
 				<td width="3%" valign="top">&nbsp;
-		       
+
 				</td>
 				<td width="12%">
 					<nobr>
@@ -386,10 +386,10 @@ $i = 1;
 		<table class="jz_track_table" width="100%" cellpadding="1">
 			<tr class="<?php echo $row_colors[$i]; $i = 1 - $i;?>">
 				<td width="1%" valign="top">
-					
+
 				</td>
 				<td width="1%">
-					
+
 				</td>
 				<td width="1%">
 					<nobr>

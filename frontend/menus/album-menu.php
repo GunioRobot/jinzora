@@ -2,39 +2,39 @@
 	// Let's set the image directory
 global $node,$jzUSER,$img_play,$img_random_play,$img_download;
 	// Let's clean up the variables
-	$albumDispName = str_replace("'","",getInformation($node,"album")); 
-	$genreDispName = str_replace("'","",getInformation($node,"genre")); 
-	$artistDispName = str_replace("'","",getInformation($node,"artist")); 
-	
+	$albumDispName = str_replace("'","",getInformation($node,"album"));
+	$genreDispName = str_replace("'","",getInformation($node,"genre"));
+	$artistDispName = str_replace("'","",getInformation($node,"artist"));
+
 	// Now we need to include the menu library
 	include_once($include_path. "frontend/menus/menu.lib.php");
-	
+
 	// Now we need to do a fix on all the words to remove the ' from them (if they had them)
-	$word_play_all_albums_from = str_replace("'","",word("Play all albums from")); 
-	$word_randomize_all_albums_from = str_replace("'","",word("Randomize all albums from")); 
-	$word_play = str_replace("'","",word("Play")); 
-	$word_selected = str_replace("'","",word("Selected")); 
-	$word_session_playlist = str_replace("'","",word("Session Playlist")); 
-	$word_new_playlist = str_replace("'","",word("New Playlist")); 
-	$word_new = str_replace("'","",word("New")); 
-	$word_media_management = str_replace("'","",word("Media Management")); 
-	$word_actions = str_replace("'","",word("Actions")); 
-	$word_search = str_replace("'","",word("Search")); 
-	$word_rewrite_tags = str_replace("'","",word("Rewrite ID3 Tags")); 
-	$word_download_album = str_replace("'","",word("Download Album")); 
-	$word_group_features = str_replace("'","",word("Group Features")); 
-	$word_play_album = str_replace("'","",word("Play Album")); 
-	$word_play_random = str_replace("'","",word("Play Random")); 
-	$word_item_information = str_replace("'","",word("Item Information")); 
-	$word_change_art = str_replace("'","",word("Change Art")); 
-	$word_browse_album = str_replace("'","",word("Browse Album")); 
-	$word_edit_album_info = str_replace("'","",word("Edit album information")); 
-	$word_information = str_replace("'","",word("Information")); 
-	$word_echocloud = str_replace("'","",word("Echocloud similar artists")); 
-	$word_add_fake_track = str_replace("'","",word("Add fake track"));	
-	$word_size = str_replace("'","",word("Size"));	
-	$word_bit_rate = str_replace("'","",word("Bitrate"));	
-	$word_sample_rate = str_replace("'","",word("Sample Rate"));	
+	$word_play_all_albums_from = str_replace("'","",word("Play all albums from"));
+	$word_randomize_all_albums_from = str_replace("'","",word("Randomize all albums from"));
+	$word_play = str_replace("'","",word("Play"));
+	$word_selected = str_replace("'","",word("Selected"));
+	$word_session_playlist = str_replace("'","",word("Session Playlist"));
+	$word_new_playlist = str_replace("'","",word("New Playlist"));
+	$word_new = str_replace("'","",word("New"));
+	$word_media_management = str_replace("'","",word("Media Management"));
+	$word_actions = str_replace("'","",word("Actions"));
+	$word_search = str_replace("'","",word("Search"));
+	$word_rewrite_tags = str_replace("'","",word("Rewrite ID3 Tags"));
+	$word_download_album = str_replace("'","",word("Download Album"));
+	$word_group_features = str_replace("'","",word("Group Features"));
+	$word_play_album = str_replace("'","",word("Play Album"));
+	$word_play_random = str_replace("'","",word("Play Random"));
+	$word_item_information = str_replace("'","",word("Item Information"));
+	$word_change_art = str_replace("'","",word("Change Art"));
+	$word_browse_album = str_replace("'","",word("Browse Album"));
+	$word_edit_album_info = str_replace("'","",word("Edit album information"));
+	$word_information = str_replace("'","",word("Information"));
+	$word_echocloud = str_replace("'","",word("Echocloud similar artists"));
+	$word_add_fake_track = str_replace("'","",word("Add fake track"));
+	$word_size = str_replace("'","",word("Size"));
+	$word_bit_rate = str_replace("'","",word("Bitrate"));
+	$word_sample_rate = str_replace("'","",word("Sample Rate"));
 	$word_date = str_replace("'","",word("Date"));
 	$word_length = str_replace("'","",word("Length"));
 	$word_track_number = str_replace("'","",word("Track Number"));
@@ -94,16 +94,16 @@ var jzMenu =
 				}
 				$album_size = $album_size . " MB";
 				$dnl_url = $display->downloadButton($node, true);
-				
+
 				?>
 				['<?php echo $img_download; ?>','<?php echo $word_download_album. ' <em>'. $albumDispName. ' ('. $album_size. ')</em>'; ?>','<?php echo $dnl_url; ?>',null,''],
-				
+
 				<?php
 			}
-		?>		
+		?>
 		<?php
 			$share_url = "";
-			
+
 			// Now let's see if they wanted to enable email sending
 			if ($allow_send_email == "true"){
 
@@ -116,7 +116,7 @@ var jzMenu =
 			}
 		?>
 	],
-	
+
 ];
 
 </script>

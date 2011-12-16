@@ -1,10 +1,10 @@
 /* Though the cursor is invisible until you move the mouse, extensibility pages get a mouseover event
 when they load. If your invisible cursor is over a focusable item, this mouseover event can cause the
 focus to land on the wrong item when the page loads. The bFirstMouseover variable (originally set in the
-MoveFocus.js file) is used to identify that initial mouseover event and nullify it. 
-The first mouseover event fires when the page loads. Then there is a statement in the 
+MoveFocus.js file) is used to identify that initial mouseover event and nullify it.
+The first mouseover event fires when the page loads. Then there is a statement in the
 StartFocus function, in the MoveFocus.JS file, which uses the setTimeout method to wait until
-after that first mouseover event fires and then resets bFirstMouseover to false, so the subsequent 
+after that first mouseover event fires and then resets bFirstMouseover to false, so the subsequent
 mouseovers will be handled normally */
 
 function mouseOver(item)

@@ -5,13 +5,13 @@
 				<td height="1" width="100%"></td>
 			</tr>
 		</table>
-		{php}	
+		{php}
 			global $jz_path, $disable_leftbar;
 			$blocks = new jzBlocks();
 			$node = new jzMediaNode($jz_path);
-			
+
 			if ($disable_leftbar != "true") {
-				$blocks->slickLeftNavigation($node);			
+				$blocks->slickLeftNavigation($node);
 				$blocks->slickFillerBlock();
 			}
 		{/php}

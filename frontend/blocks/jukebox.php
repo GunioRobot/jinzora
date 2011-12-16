@@ -1,7 +1,7 @@
 <?php
 
 /* Displays the Jukebox Block
-* 
+*
 * @author Ben Dodson
 * @version 12/22/04
 * @since 12/22/04
@@ -264,7 +264,7 @@ if ($func['nowplaying']) {
 						<?php echo word("Now Playing:"). ' <a href="javascript:;" title="'. $fullname. '">'. $curTrack. "</a><br>"; ?>
 						<!--
 						<span ID="CurTicker" STYLE="overflow:hidden; width:275px;"  onmouseover="CurTicker_PAUSED=true" onmouseout="CurTicker_PAUSED=false">
-							
+
 						</span>
 						-->
 						<?php
@@ -285,7 +285,7 @@ if ($func['nowplaying']) {
 								<?php echo word("Next Track:"). ' <a href="javascript:;" title="'. $fullname. '">'. $nextTrack. "</a><br>"; ?>
 								<!--
 								<DIV ID="NextTicker" STYLE="overflow:hidden; width:275px;"  onmouseover="NextTicker_PAUSED=true" onmouseout="NextTicker_PAUSED=false">
-									
+
 								</DIV>
 								-->
 								<?php
@@ -302,7 +302,7 @@ if ($func['fullplaylist']) {
 		$fullList = $jb->getCurrentPlaylist();
 	}
 ?>
-					
+
 						Complete Playlist
 						<?php
 
@@ -357,11 +357,11 @@ if ($func['fullplaylist']) {
 
 	if ($func['move']) {
 ?>
-								<a href="#" 
+								<a href="#"
                             	   onclick="setJbFormCommand('moveup'); sendJukeboxForm(); return false;">
                             		<?php echo $img_arrow_up; ?>
                                 </a>
-                                <a href="#" 
+                                <a href="#"
                             	   onclick="setJbFormCommand('movedown'); sendJukeboxForm(); return false;">
                             		<?php echo $img_arrow_down; ?>
                                 </a>
@@ -370,7 +370,7 @@ if ($func['fullplaylist']) {
 	}
 	if ($func['delonebutton']) {
 ?>
-								<a href="#" 
+								<a href="#"
                             	   onclick="setJbFormCommand('delone'); sendJukeboxForm(); return false;">
                             		<?php echo $img_jb_clear; ?>
                                 </a>
@@ -385,19 +385,19 @@ if ($func['fullplaylist']) {
 }
 ?>
 				</td>
-				<td width="90%" valign="top">					
+				<td width="90%" valign="top">
 					<?php
 
 if ($jz_jbstatus == 'playing') {
 	$curTrackLength = $jb->getCurrentTrackLength();
 	$curTrackLoc = $jb->getCurrentTrackLocation();
 ?>
-							<script> 
-								<!--// 
+							<script>
+								<!--//
 								var seconds = '<?php echo $curTrackLoc; ?>';
 								var time = '';
-								t = document.getElementById("timer");	
-								
+								t = document.getElementById("timer");
+
 								function converTime(sec){
 									ctr=0;
 									while (sec >= 60){
@@ -406,15 +406,15 @@ if ($jz_jbstatus == 'playing') {
 									}
 									if (ctr<0){ctr=0}
 									if (sec<0){sec=0}
-									if (sec < 10){sec = "0" + sec;}							
+									if (sec < 10){sec = "0" + sec;}
 									return ctr + ":" + sec;
 								}
-								
-								function displayCountdown(){ 
+
+								function displayCountdown(){
 								  return;
 									// Update the counter
-									seconds++	
-										
+									seconds++
+
 									// Now let's not go over
 									if (seconds < <?php echo $curTrackLength; ?>){
 										t.innerHTML = converTime(seconds) + "/<?php echo convertSecMins($curTrackLength); ?>";
@@ -425,10 +425,10 @@ if ($jz_jbstatus == 'playing') {
 										updateJukebox(true);
 									}
 									setTimeout("displayCountdown()",1000);
-								} 
+								}
 								displayCountdown();
-								--> 
-							</script> 
+								-->
+							</script>
 							<?php
 
 }
@@ -477,7 +477,7 @@ if (false !== $track && $track->getPath() != "") {
 				</td>
 			</tr>
 		</table>
-		<SCRIPT><!--			
+		<SCRIPT><!--
 			NextTicker_start();
 			CurTicker_start();
 		//-->

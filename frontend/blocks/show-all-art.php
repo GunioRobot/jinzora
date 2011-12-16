@@ -1,13 +1,13 @@
 <?php
 	global $this_page;
-		
+
 	$artArray = $node->getSubNodes("nodes",distanceTo("album",$node),false,-1,true);
 	if (count($artArray) == 0){ return; }
-	
+
 	$display = new jzDisplay();
 	$smarty = smartySetup();
-	
-	// Let's setup our page links	
+
+	// Let's setup our page links
 	$link = "Page: ";
 	$link .= '<form action="'. $this_page. '" method="POST">'. "\n";
 	$link .= '<input type="hidden" name="'. jz_encode("action"). '" value="'. jz_encode("viewallart"). '">';
@@ -35,15 +35,15 @@
 		}
 		$i++;$e++;
 	}
-	$link .= '</select></form>';		
+	$link .= '</select></form>';
 	$link .= "&nbsp; &nbsp;";
-	
+
 	$smarty->assign('title',word("All Album Art"));
 	$smarty->assign('title_right',$link);
 
 	//$this->blockHeader(word("All Album Art"), $link);
 	//$this->blockBodyOpen();
-	
+
 	// Now let's slice this up into pages
 	if (isset($_POST['page'])){
 		if ($_POST['page'] == "RANDOM"){
@@ -59,7 +59,7 @@
 	} else {
 		$artArray = array_slice($artArray,0,24);
 	}
-	
+
 	jzTemplate($smarty, "block-open");
 	flushdisplay();
 
@@ -75,7 +75,7 @@
 		$i++;$c++;
 	}
 	$smarty->assign('items',$array);
-	
+
 	jzTemplate($smarty, "show-all-art");
 	jzTemplate($smarty, "block-close");
 ?>

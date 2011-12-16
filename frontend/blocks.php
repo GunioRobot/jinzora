@@ -1,20 +1,20 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *        
- * JINZORA | Web-based Media Streamer   
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * JINZORA | Web-based Media Streamer
  *
- * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
- * (but can be used for any media file that can stream from HTTP). 
- * Jinzora can be integrated into a CMS site, run as a standalone application, 
+ * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+ * (but can be used for any media file that can stream from HTTP).
+ * Jinzora can be integrated into a CMS site, run as a standalone application,
  * or integrated into any PHP website.  It is released under the GNU GPL.
- * 
+ *
  * Jinzora Author:
- * Ross Carlson: ross@jasbone.com 
+ * Ross Carlson: ross@jasbone.com
  * http://www.jinzora.org
- * Documentation: http://www.jinzora.org/docs	
+ * Documentation: http://www.jinzora.org/docs
  * Support: http://www.jinzora.org/forum
  * Downloads: http://www.jinzora.org/downloads
  * License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
- * 
+ *
  * Contributors:
  * Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
  *
@@ -24,16 +24,16 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class jzBlockClass {
-  
+
 	/**
 	* Constructor for the class.
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/22/04
 	* @since 12/22/04
 	*/
 	function jzBlocks() {
-	
+
 	}
 
 
@@ -57,7 +57,7 @@ class jzBlockClass {
     }
     echo '</select>';
   }
-	
+
 	/**
 	 * Shows the description for a node.
 	 *
@@ -68,10 +68,10 @@ class jzBlockClass {
 	function description($node, $desc_truncate = false) {
 		include(dirname(__FILE__). "/blocks/description.php");
 	}
-	
+
 	/**
 	 * Handles all browsing elements for a page (grid + alphabetical listing(s?))
-	 * 
+	 *
 	 * @author Ross Carlson
 	 * @since 4/5/05
 	 * @version 4/5/05
@@ -84,7 +84,7 @@ class jzBlockClass {
 
 	/**
 	 * Handles all browsing elements for a page (grid + alphabetical listing(s?))
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @since 3/22/05
 	 * @version 3/22/05
@@ -117,7 +117,7 @@ class jzBlockClass {
 		if ($node->getLevel() > 0 || $showMainGrid  || isset($_GET['jz_letter'])) {
 			$this->nodeGrid($node);
 		}
-	  
+
 	}
 
 
@@ -127,11 +127,11 @@ class jzBlockClass {
 	 * @author Ben Dodson, Ross Carlson
 	 * @version 3/22/05
 	 * @since 3/22/05
-	 **/	
-	function nodeGrid($node,$distance=false) {	 
-		global $hierarchy; 
+	 **/
+	function nodeGrid($node,$distance=false) {
+		global $hierarchy;
 		$smarty = smartySetup();
-		
+
 		$display = new jzDisplay();
 		$lvl = isset($_GET['jz_letter']) ? ($_GET['jz_level'] + $node->getLevel() - 1): $node->getLevel();
 		switch ($hierarchy[$lvl]){
@@ -167,26 +167,26 @@ class jzBlockClass {
 		} else {
 			if (count($retArray) <> 0){
 				$pg_title .= " (". count($retArray). ")";
-			}		
+			}
 		}
 
 		if ($display->startCache("nodeGrid",$node->getName(), $letter)){
 			return;
 		}
-		
+
 		$_SESSION['jz_node_distance'] = $distance;
 		$smarty->assign('jz_bg_color', jz_bg_color);
 		$smarty->assign('title', $pg_title);
-		
+
 		$smarty->display(SMARTY_ROOT. 'templates/slick/nodegrid.tpl');
-		
+
 		// Now lets finish out the cache
 		$display->endCache();
-		
+
 		flushdisplay();
 	}
 
-		  
+
 
 	/**
 	* Displays the block that shows the A-Z Listing
@@ -198,9 +198,9 @@ class jzBlockClass {
 	**/
 	function alphabeticalList($node, $type, $padding = 3) {
 		global $fe;
-		
+
 		$smarty = smartySetup();
-		
+
 		$urla = array();
 		switch($type){
 			case "artist":
@@ -235,10 +235,10 @@ class jzBlockClass {
 		$smarty->assign('title', $title);
 		$smarty->assign('alpha_list', $alpha_list);
 		$smarty->assign('jz_bg_color', jz_bg_color);
-		
+
 		$smarty->display(SMARTY_ROOT. 'templates/'. $fe->name . '/alphalist.tpl');
-	}	
-	
+	}
+
 	/**
 	 * Draws the block header, if the particular class wants one.
 	 *
@@ -250,7 +250,7 @@ class jzBlockClass {
 	function blockHeader($title = "", $right = "") {
 	  return true;
 	}
-	
+
 	/**
 	 * Opens the block body.
 	 *
@@ -289,7 +289,7 @@ class jzBlockClass {
 
 	/**
 	* Check to see if the install directory exsists, and if so returns code to display the error
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/25/05
 	* @since 2/25/05
@@ -297,7 +297,7 @@ class jzBlockClass {
 	*/
 	function checkForSecure(){
 		global $include_path;
-		
+
 		// Let's see if the install dir is there
 		if (is_dir($include_path. "install")){
 			// Now let's give developers a break,
@@ -311,15 +311,15 @@ class jzBlockClass {
 			return false;
 		}
 	}
-	
+
 	/**
 	* Displays the now breadcrumb block
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/25/05
 	* @since 2/25/05
 	*/
-	function breadCrumbs(){		
+	function breadCrumbs(){
 	  if (!defined('NO_AJAX_LINKS')) {
 			$val  = '<div id="breadcrumbs"></div>';
 			$val .= '<script>';
@@ -331,7 +331,7 @@ class jzBlockClass {
 			$val .= '}';
 			$val .= 'callBreadcrumbs();';
 			$val .= '</script>';
-			
+
 			return $val;
 	  } else {
 	    $blocks = new jzBlocks();
@@ -348,29 +348,29 @@ class jzBlockClass {
 	   **/
 	  function drawBreadcrumbs($return = false) {
 			global $img_up_arrow, $this_page;
-										
+
 			// Now let's create the breadcrumbs
 			$bcArray = explode("/",$_SESSION['jz_path']);
 			$node = new jzMediaNode($_SESSION['jz_path']);
 			$display = new jzDisplay();
-	
+
 			$bcrumbs="";
 			$bcrumbs = $img_up_arrow. " ";
 			$bcrumbs .= '<a href="'. str_replace("ajax_request.php","index.php",$this_page). '">'. word("Home"). '</a>';
 			$bcrumbs .= "&nbsp;";
 			// Now we need to cut the last item off the list
 			$bcArray = array_slice($bcArray,0,count($bcArray)-1);
-			
+
 			// Now let's display the crumbs
 			$path = "";
 			for ($i=0; $i < count($bcArray); $i++){
 				$bcrumbs .= $img_up_arrow. "&nbsp;";
 				$path .= $bcArray[$i] ."/";
 				$curPath = substr($path,0,strlen($path)-1);
-				
+
 				$arr = array();
 				$arr['jz_path'] = $curPath;
-				
+
 				$link = str_replace("ajax_request.php","index.php",urlize($arr));
 				$bcrumbs .= '<a href="'. $link. '">'. $bcArray[$i]. '</a>';
 				$bcrumbs .= "&nbsp;";
@@ -391,25 +391,25 @@ class jzBlockClass {
 			}
 			$bcrumbs .= '</select>';
 			$bcrumbs .= "</form>&nbsp;";
-	
+
 			if ($return) {
 				return $bcrumbs;
 			}
 			echo $bcrumbs;
 	  }
 
-	
+
 	/**
 	* Displays the random playlist generator
-	* 
+	*
 	* @author Ross Carlson, Ben Dodson
 	* @version 2/20/05
 	* @since 2/20/05
 	*/
 	function randomGenerateSelector($node,$header = false, $return = false){
-		global $this_page, $random_play_amounts, $quick_list_truncate, 
+		global $this_page, $random_play_amounts, $quick_list_truncate,
 		  $default_random_type, $default_random_count, $jzUSER;
-		
+
 		$root = new jzMediaNode();
 		$display = new jzDisplay();
 
@@ -421,11 +421,11 @@ class jzBlockClass {
 		if ($return) {
 		  ob_start();
 		}
-		
+
 		if ($header) {
 		  echo $header;
 		} else {
-		  echo '<font size="1">' . word("Randomize selected") . '</font><br>'; 
+		  echo '<font size="1">' . word("Randomize selected") . '</font><br>';
 		}
 		    ?>
 		<form name="randomizer" action="<?php echo $this_page; ?>" method="post">
@@ -459,11 +459,11 @@ class jzBlockClass {
 				$ctr++;
 			}
 			echo '</select>';
-			// Now let's let them pick a genre				
+			// Now let's let them pick a genre
 			if (distanceTo("genre") !== false){
 				$curgenre = getInformation($node,'genre');
 				echo ' <select name="' . jz_encode("random_play_genre") .'" class="jz_select" style="width:75px;">';
-				if ($curgenre === false) 			
+				if ($curgenre === false)
 					echo '<option value="' . jz_encode("") . '" selected>All Genres</option>'. "\n";
 				else echo '<option value="' . jz_encode("") . '">All Genres</option>'. "\n";
 				if (!isset($genreArray)) {
@@ -472,7 +472,7 @@ class jzBlockClass {
 					$genreArray = $root->getSubNodes("nodes",distanceTo("genre"));
 				}
 				for ($ctr=0; $ctr < count($genreArray); $ctr++){
-					if ($genreArray[$ctr] <> ""){	
+					if ($genreArray[$ctr] <> ""){
 						$title = returnItemShortName($genreArray[$ctr]->getName(),$quick_list_truncate);
 						echo '<option ';
 						// Now let's see if this is the genre we're looking at
@@ -503,10 +503,10 @@ class jzBlockClass {
 			}
 
 	}
-	
+
 	/**
 	* Draws the playlist bar
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/11/05
 	* @since 01/11/05
@@ -517,18 +517,18 @@ class jzBlockClass {
 		if (!$jzUSER->getSetting('stream')){
 			return;
 		}
-		
-		$smarty = smartySetup();		
+
+		$smarty = smartySetup();
 		$smarty->assign('img_check', $img_check);
-		$smarty->assign('img_check_none', $img_check_none);		
+		$smarty->assign('img_check_none', $img_check_none);
 		$smarty->display(SMARTY_ROOT. 'templates/general/playlist-bar.tpl');
-		
+
 		return;
 	}
-	
+
 	/**
 	* Shows the chart system
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/26/05
 	* @since 01/26/05
@@ -540,10 +540,10 @@ class jzBlockClass {
 	* @param $numItems The number of items we want to return (defaults to 5)
 	* @param $format Should we format this or return raw data (defaults to true)
 	* @param $opts an array of extra options (transitioning to new parameter scheme)
-	* 
+	*
 	*/
 	function showCharts($node,$types=false, $numItems=false, $format=true, $vertAlign = false, $opts = false){
-	  global $album_name_truncate, $img_tiny_play, $img_tiny_play_dis, $jzUSER, $img_rss, $root_dir,$advanced_tooltips,$rss_in_charts,$num_items_in_charts,$chart_timeout_days,$chart_types; 
+	  global $album_name_truncate, $img_tiny_play, $img_tiny_play_dis, $jzUSER, $img_rss, $root_dir,$advanced_tooltips,$rss_in_charts,$num_items_in_charts,$chart_timeout_days,$chart_types;
 		$be = new jzBackend();
 		if ($be->hasFeature('charts') === false) {
 		  return;
@@ -560,7 +560,7 @@ class jzBlockClass {
 		    $nobr = true;
 		  }
 		}
-		
+
 		// Now let's do a loop creating all our blocks
 		if ($types === false || $types == "") {
 		  if (isset($chart_types) && !isNothing($chart_types)) {
@@ -608,7 +608,7 @@ class jzBlockClass {
 					$showDownload = true;
 					$rss = "most-downloaded";
 				break;
-				case "newalbums":	
+				case "newalbums":
 					$func = "getRecentlyAdded";
 					$arr['action'] = "popup";
 					$arr['ptype'] = "topstuff";
@@ -618,7 +618,7 @@ class jzBlockClass {
 					$showDownload = false;
 					$rss = "last-added";
 				break;
-			        case "newartists":	
+			        case "newartists":
 					$func = "getRecentlyAdded";
 					$arr['action'] = "popup";
 					$arr['ptype'] = "topstuff";
@@ -628,7 +628,7 @@ class jzBlockClass {
 					$showDownload = false;
 					$rss = "last-added-artists";
 				break;
-			        case "newtracks":	
+			        case "newtracks":
 					$func = "getRecentlyAdded";
 					$arr['action'] = "popup";
 					$arr['ptype'] = "topstuff";
@@ -639,7 +639,7 @@ class jzBlockClass {
 					$rss = "last-added-tracks";
 				break;
 
-			case "recentplaytrack":	
+			case "recentplaytrack":
 			  $func = "getRecentlyPlayed";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -649,7 +649,7 @@ class jzBlockClass {
 			  $showDownload = false;
 			  $rss = "recentplayed-track";
 			  break;
-			case "topplaytrack":	
+			case "topplaytrack":
 			  $func = "getMostPlayed";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -659,7 +659,7 @@ class jzBlockClass {
 			  $showDownload = false;
 			  $rss = "most-played-tracks";
 			  break;
-			case "recentplayalbum":	
+			case "recentplayalbum":
 			  $func = "getRecentlyPlayed";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -669,7 +669,7 @@ class jzBlockClass {
 			  $showDownload = false;
 			  $rss = "recentplayed-album";
 			  break;
-			case "recentplayartist":	
+			case "recentplayartist":
 			  $func = "getRecentlyPlayed";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -679,7 +679,7 @@ class jzBlockClass {
 			  $showDownload = false;
 			  $rss = "recentplayed-artist";
 			  break;
-			case "topratedalbum":	
+			case "topratedalbum":
 			  $func = "getTopRated";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -689,7 +689,7 @@ class jzBlockClass {
 			  $showDownload = false;
 			  $rss = "toprated-album";
 			  break;
-			case "topratedartist":	
+			case "topratedartist":
 			  $func = "getTopRated";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -699,7 +699,7 @@ class jzBlockClass {
 			  $showDownload = false;
 			  $rss = "toprated-artist";
 			  break;
-			case "topviewartist":	
+			case "topviewartist":
 			  $func = "getMostViewed";
 			  $arr['action'] = "popup";
 			  $arr['ptype'] = "topstuff";
@@ -712,7 +712,7 @@ class jzBlockClass {
 			default:
 			  continue;
 			}
-			
+
 			// Now let's get the data
 			if ($distance == "track") {
 			  $returnType = "tracks";
@@ -733,12 +733,12 @@ class jzBlockClass {
 			} else {
 			  $recent = $node->$func($returnType,distanceTo($distance,$node),$num_items_in_charts);
 			}
-						
+
 			// Now let's see if we got data
 			if (count($recent) == 0){continue;}
 			?>
 			<td width="25%" valign="top">
-				<?php 
+				<?php
 					if ($format){
 						echo '<div id="slickMainBlockBody">';
 					}
@@ -760,7 +760,7 @@ class jzBlockClass {
 										echo '">'. $img_rss. '</a>';
 									}
 									echo '<br>';
-								}											
+								}
 
 								// Now let's loop through the results
 								for ($i=0;$i<count($recent);$i++){
@@ -777,7 +777,7 @@ class jzBlockClass {
 									if ($year <> "-"){
 										$dispYear = " (". $year. ")";
 									}
-									
+
 									// Now let's create our links
 									if ($distance == "track") {
 									  $artnode = $item->getAncestor("album");
@@ -793,17 +793,17 @@ class jzBlockClass {
 									    $albumArr['jz_path'] = '';
 									    $artistArr['jz_path'] = '';
 									  }
-									} else { 
+									} else {
 									  $albumArr['jz_path'] = $item->getPath("String");
 									  if ($parent !== false) {
 									    $artistArr['jz_path'] = $parent->getPath("String");
 									  }
 									}
-									
+
 									// Now let's create our short names
 									$artistTitle = returnItemShortName($artist,$album_name_truncate);
-									$albumTitle = returnItemShortName($album,$album_name_truncate);													
-									
+									$albumTitle = returnItemShortName($album,$album_name_truncate);
+
 									// Now let's display it
 									if ($nobr) echo "<nobr>";
 									if (!$jzUSER->getSetting('stream')){
@@ -811,7 +811,7 @@ class jzBlockClass {
 									} else {
 										$display->playLink($item, $img_tiny_play, $album);
 									}
-									
+
 									// Ok, did they want advanced tooltips?
 									if ($advanced_tooltips == "true"){
 										// Now let's set the hover code
@@ -835,8 +835,8 @@ class jzBlockClass {
 
 										// Now let's fix up
 										$innerOver = str_replace("'","",str_replace('"',"",$innerOver));
-										$bTitle = str_replace("'","",str_replace('"',"",$bTitle));		
-										
+										$bTitle = str_replace("'","",str_replace('"',"",$bTitle));
+
 										if ($showTip) {
 										  $title = $display->returnToolTip($innerOver, $bTitle);
 										} else {
@@ -858,32 +858,32 @@ class jzBlockClass {
 									    $albumPlayCount = $item->getPlayCount();
 									  }
 										echo ' ('. $albumPlayCount. ')';
-									} 
+									}
 									if ($showDownload){
 										echo ' ('. $albumDLCount. ')';
-									} 
+									}
 									echo "</a><br>";
 									if ($nobr) echo "</nobr>";
-								}							
+								}
 								if ($nobr) echo '</nobr>';
 								?>
 						</td>
 					</tr>
 				</table>
-				<?php 
+				<?php
 					if ($format){
 						echo '</div>';
 					}
 				?>
 			</td>
 			    <?php if ($vertAlign) { echo '</tr><tr>'; } ?>
-		<?php	
+		<?php
 		}
 	}
-	
+
 	/**
 	* Shows the site news
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/26/05
 	* @since 01/26/05
@@ -892,9 +892,9 @@ class jzBlockClass {
 	function siteNews($node){
 		// Let's setup our objects
 		$be = new jzBackend();
-		
+
 		if (!is_object($node)){return;}
-		
+
 		if ($node->getName() == ""){
 			$news = "site-news";
 		} else {
@@ -902,14 +902,14 @@ class jzBlockClass {
 		}
 		$news = $be->loadData($news);
 		if ($news == ""){return;}
-					
+
 		// Now let's display the news
 		return $news;
 	}
-	
+
 	/**
 	* Draws the Jinzora Radio Block using the data from the current node
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/11/05
 	* @since 01/11/05
@@ -930,14 +930,14 @@ class jzBlockClass {
 		if ($cms_mode == "false"){
 			echo '<span class="jz_artistDesc">';
 		}
-		 
+
 		$display->randomPlayButton($el, 50, $img_play);
 		echo " <strong>". $el->getName(). "</strong><br>";
-	  
-		
-		$value = $display->radioPlayButton($el, 50); 
+
+
+		$value = $display->radioPlayButton($el, 50);
 		if (!$value){return;}
-		
+
 		?>
 		<strong><?php echo word("Similar Artists"); ?></strong>
 		<?php
@@ -945,14 +945,14 @@ class jzBlockClass {
 			echo '</span>';
 		}
 		?>
-		
+
 		</nobr>
 		<?php
 	}
-	
+
 	/**
 	* Draws the Jinzora similar artist block
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/11/05
 	* @since 01/11/05
@@ -963,15 +963,15 @@ class jzBlockClass {
 	function similarArtistBlock($artist, $onlyMatches = false, $limit = false){
 		global $jzSERVICES, $album_name_truncate, $img_tiny_play, $jzUSER, $img_tiny_play_dis, $cms_mode;
 
-		$ptype = $artist->getPType();			
-		
+		$ptype = $artist->getPType();
+
 		$display = new jzDisplay();
 		$artist = $artist->getAncestor("artist");
 
 		// Ok, now we need to search Echocloud to get matches to this artist
 		$simArray = $jzSERVICES->getSimilar($artist);
 		$simArray = seperateSimilar($simArray);
-		
+
 		if (($onlyMatches === true && sizeof($simArray['matches']) == 0) ||
 		    (sizeof($simArray['matches']) == 0 && sizeof($simArray['nonmatches']) == 0)) {
 		      return;
@@ -983,7 +983,7 @@ class jzBlockClass {
 		$smarty->assign('title', word("Similar Artists"));
 		$_SESSION['sim_limit'] = $limit;
 		$_SESSION['sim_onlyMatches'] = $onlyMatches;
-		
+
 		// Now let's include the right template
 		if ($ptype == "artist"){
 			$smarty->display(SMARTY_ROOT. 'templates/general/similar-artist.tpl');
@@ -991,10 +991,10 @@ class jzBlockClass {
 			$smarty->display(SMARTY_ROOT. 'templates/general/similar-artist-album.tpl');
 		}
 	}
-	
+
 	/**
 	* Draws the Jinzora similar albums block
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/11/05
 	* @since 01/11/05
@@ -1003,10 +1003,10 @@ class jzBlockClass {
 	*/
 	function similarAlbumBlock($element, $limit = false){
 		global $album_name_truncate, $jzSERVICES, $img_tiny_play, $img_tiny_play_dis, $jzUSER, $cms_mode;
-		
+
 		$display = new jzDisplay();
 		$element = $element->getAncestor("artist");
-		
+
 		if ($element === false) { return; }
 		// Ok, now we need to search Echocloud to get matches to this artist
 		$simArray = $jzSERVICES->getSimilar($element);
@@ -1021,16 +1021,16 @@ class jzBlockClass {
 
 		$smarty->display(SMARTY_ROOT. 'templates/general/similar-album.tpl');
 	}
-	
+
 	/**
 	* Draws the block that displays all tracks from an artist on the artist page
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/13/05
 	* @since 01/13/05
 	* @param $node The node of the item we are viewing
 	*/
-	function displayAllTracks($node){		
+	function displayAllTracks($node){
 		?>
 		<table width="100%" cellpadding="2" cellspacing="0" border="0">
 			<tr>
@@ -1044,16 +1044,16 @@ class jzBlockClass {
 		</table>
 		<?php
 	}
-	
+
 	/**
 	* Draws the block that displays a random sampling of tracks from an artist
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/13/05
 	* @since 01/13/05
 	* @param $node The node of the item we are viewing
 	*/
-	function displaySampler($node){	
+	function displaySampler($node){
 		$tracks = $node->getSubNodes("tracks",-1,true,4);
 		if (count($tracks) > 0){
 			?>
@@ -1098,7 +1098,7 @@ class jzBlockClass {
 	  } else {
 	    $jb_playwhere = "stream";
 	  }
-	  
+
 	  $url_array = array();
 	  $url_array['action'] = "popup";
 	  $url_array['ptype'] = "jukezora";
@@ -1151,10 +1151,10 @@ class jzBlockClass {
 				}
  	                        if ($showText) {
 					?>
-                    <?php if (isNothing($text)) { ?>	
+                    <?php if (isNothing($text)) { ?>
 					<font size="1">
 						<strong>
-							<?php 
+							<?php
 					                if (checkPlayback() == "jukebox") {
  					                  $theJWord = word("Jukebox");
 					                } else {
@@ -1165,12 +1165,12 @@ class jzBlockClass {
 								  $jz_jbstatus = $jb->getPlayerStatus();
 								  echo " - ". ucwords($jz_jbstatus);
 								}
-								
+
 							?>
                                                  </strong>
 					</font>
 					<?php } else if ($text != "off") { echo $text; } ?>
-					<?php				
+					<?php
 					} ?>
 				</td>
 			</tr>
@@ -1200,10 +1200,10 @@ class jzBlockClass {
 					<?php
 						if ($linebreaks){ echo '</td></tr><tr><td width="100%">'; } else { echo " &nbsp "; }
 						if ($jb_playwhere <> "stream" && checkPermission($jzUSER,"jukebox_admin") === true && $buttons == "default"){
-						
+
 						// Ok, now we need to make sure we can do things
 					 	$func = $jb->jbAbilities();
-						  
+
 						  echo "<nobr>";
 						  if ($func['playbutton']){
 							$display->displayJukeboxButton("play");
@@ -1234,7 +1234,7 @@ class jzBlockClass {
 		</table>
 		<?php
 	}
-  
+
 	/**
 	 * Transition to blocks/*.php
 	 *
@@ -1245,15 +1245,15 @@ class jzBlockClass {
 
 
 	  function trackTable($tracks, $purpose = false){
-	    global $media_dir, $jinzora_skin, $hierarchy, $album_name_truncate, $row_colors, 
+	    global $media_dir, $jinzora_skin, $hierarchy, $album_name_truncate, $row_colors,
 	      $img_more, $img_email, $img_rate, $img_discuss, $num_other_albums, $enable_ratings, $this_site, $allow_clips,
-	      $root_dir, $jzUSER, $hide_id3_comments,$max_song_length, $enable_discussion, $max_song_name_length, $show_lyrics_links, 
+	      $root_dir, $jzUSER, $hide_id3_comments,$max_song_length, $enable_discussion, $max_song_name_length, $show_lyrics_links,
 				$allow_send_email,$handle_compilations, $video_types, $show_track_numbers;
-	
+
 		if (sizeof($tracks) == 0) return;
 		// Let's setup the new display object
 		$display = &new jzDisplay();
-		
+
 		$tracks_only = array();
 		foreach ($tracks as $track) {
 		  if (is_object($track)) {
@@ -1290,7 +1290,7 @@ class jzBlockClass {
 		$showAlbumNames = false;
 		$trackTruncate = false;
 		$showPlayCount = false;
-		
+
 		if ($enable_discussion == "true"){
 			$showDisc = true;
 		}
@@ -1316,7 +1316,7 @@ class jzBlockClass {
 		  break;
 		case "sample":
 			// We only want to show album thumbs IF this artist has more than 1 album
-			$parent = $tracks_only[0]->getParent(); 
+			$parent = $tracks_only[0]->getParent();
 			$gParent = $parent->getParent();
 			$nodes = $gParent->getSubNodes("nodes");
 			$showNumbers = false;
@@ -1329,7 +1329,7 @@ class jzBlockClass {
 		  $trackTruncate = 20;
 		  break;
 		}
-		
+
 		if ($allow_send_email == "false"){
 			$showEmail = false;
 		}
@@ -1340,13 +1340,13 @@ class jzBlockClass {
 			?>
 			<form name="albumForm" action="<?php echo urlize(); ?>" method="POST">
 			<input type="hidden" name="<?php echo jz_encode("action"); ?>" value="<?php echo jz_encode("mediaAction"); ?>">
-				<?php if ($purpose != "search") { ?> 
+				<?php if ($purpose != "search") { ?>
 			  <input type="hidden" name="<?php echo jz_encode("jz_path"); ?>" value="<?php echo htmlentities(jz_encode($node->getPath("String"))); ?>">
 				<?php } ?>
 			<input type="hidden" name="<?php echo jz_encode("jz_list_type"); ?>" value="<?php echo jz_encode("tracks"); ?>">
 			<?php
 		}
-		
+
 		// Now let's setup the big table to display everything
 		$i=0;
 		  ?>
@@ -1387,7 +1387,7 @@ class jzBlockClass {
 		     $first_label = false;
 		     continue;
 		   }
-			 
+
 		 	// Let's make sure this isn't a lofi track
 			if (substr($child->getPath("String"),-9) == ".lofi.mp3" or substr($child->getPath("String"),-9) == ".clip.mp3"){continue;}
 		   // First let's grab all the tracks meta data
@@ -1408,10 +1408,10 @@ class jzBlockClass {
 		   <input type="checkbox" name="jz_list[]" value="<?php echo $value; ?>">
 		   </td>
 		   <?php } ?>
-		   
+
 		   <td width="99%" valign="top" class="jz_track_table_songs_td" nowrap>
-		   	<?php 
-		   		echo $display->playButton($child); 
+		   	<?php
+		   		echo $display->playButton($child);
 			?>
 			 <?php
 				// Now, is there a lofi version?
@@ -1432,15 +1432,15 @@ class jzBlockClass {
 					//echo '</td>';
 				}
 			   ?>
-			   
+
 		   <?php echo $display->downloadButton($child); ?>
 		   <?php
-		   
+
 		   // Do they want ratings?
 		   if ($enable_ratings == "true"){
 				$display->rateButton($child);
 		   }
-		   if ($showInfo){		    
+		   if ($showInfo){
 		     echo " ";
 		     $display->infoButton($child);
 		   }
@@ -1455,7 +1455,7 @@ class jzBlockClass {
 		   <?php
 		   }
 		   ?>
-		   <?php 
+		   <?php
 		   if ($showArtist !== false) {
 			 $j = 0;
 			 while ($j < sizeof($hierarchy) && $hierarchy[$j] != 'artist') {
@@ -1470,9 +1470,9 @@ class jzBlockClass {
 			   echo " / ";
 			 }
 		   }
-		   
-		   // This is where we display the name		   
-		   
+
+		   // This is where we display the name
+
 		   if ($multiArtist) {
 		     if ($handle_compilations == "true") {
 		       $artistName = $metaData['artist'];
@@ -1502,14 +1502,14 @@ class jzBlockClass {
 		   }
 			 if ($purpose == "search"){
 				 $album = $child->getAncestor("album");
-				 $display->link($album, $album->getName(), $album->getName(), "jz_track_table_songs_href"); 
+				 $display->link($album, $album->getName(), $album->getName(), "jz_track_table_songs_href");
 				 echo " / ";
 			 }
-			 
+
 			 if ($showNumbers){
-			 	echo $metaData['number']. " -&nbsp;";	
+			 	echo $metaData['number']. " -&nbsp;";
 			 }
-			 
+
 		   if ($jzUSER->getSetting('stream')){
 		     if ($showAlbum){
 		       $descName = $album->getName(). " - ". $child->getName();
@@ -1517,7 +1517,7 @@ class jzBlockClass {
 		       $descName = $child->getName();
 		     }
 		     // $tName = $child->getName();
-		     $display->link($child, $tName, $descName, "jz_track_table_songs_href"); 
+		     $display->link($child, $tName, $descName, "jz_track_table_songs_href");
 		   } else {
 		     echo $tName;
 		   }
@@ -1549,7 +1549,7 @@ class jzBlockClass {
 		   }*/
 		   ?>
 		   </td>
-		   
+
 		   <?php
 		   $lyricsSearch = false;
 		   if (isset($_POST['search_type'])){
@@ -1576,16 +1576,16 @@ class jzBlockClass {
 				echo '</td>';
 			}
 		   ?>
-		   
-		   
-		   <?php   	
+
+
+		   <?php
 			if ($showAlbumNames){
 				echo '<td width="1%" class="jz_track_table_songs_td" nowrap>';
 				$display->link($album, returnItemShortName($album->getName(),20),$album->getName(),"jz_track_table_songs_href");
 				echo '</td>';
 			}
 		   ?>
-		   
+
 			<?php
 				if ($showPlayCount){
 					echo '<td width="1%" align="center" valign="top" class="jz_track_table_songs_td" nowrap>';
@@ -1597,20 +1597,20 @@ class jzBlockClass {
 					echo '</td>';
 				}
 			?>
-		   
-		   
+
+
 		   <td width="6%" align="center" valign="top" class="jz_track_table_songs_td" nowrap>
 		   &nbsp; <?php echo convertSecMins($metaData['length']); ?> &nbsp;
 		   </td>
 		   </tr>
-		   <?php		
+		   <?php
 		   $i = 1 - $i;
 		   unset($gParent);unset($album);
 		 }
-		
+
 		// Now let's set a field with the number of checkboxes that were here
 		echo "</table>";
-		
+
 		// Now let's show the playlist bar if we should
 		if ($showCheck){
 			$this->blockSpacer();
@@ -1619,7 +1619,7 @@ class jzBlockClass {
 		}
 	  }
 
-  
+
   /**
    * Displays a table of the given nodes.
    *
@@ -1628,13 +1628,13 @@ class jzBlockClass {
    * @since 11/30/04
    */
   function nodeTable($nodes){
-    global $media_dir, $skin, $hierarchy, $album_name_truncate, $row_colors, 
-      $img_more, $img_email, $img_rate, $img_discuss, $num_other_albums, $img_download_dis;					
-    
+    global $media_dir, $skin, $hierarchy, $album_name_truncate, $row_colors,
+      $img_more, $img_email, $img_rate, $img_discuss, $num_other_albums, $img_download_dis;
+
     if (sizeof($nodes) == 0) return;
     // Let's setup the new display object
     $display = &new jzDisplay();
-    
+
     // Now let's setup the big table to display everything
     $i=0;
       ?>
@@ -1653,14 +1653,14 @@ class jzBlockClass {
 	   </td>
 	   -->
 	   <td width="1%" valign="top" class="jz_track_table_songs_td">
-	   <?php 
-	   	echo $display->downloadButton($child); 
+	   <?php
+	   	echo $display->downloadButton($child);
 	   ?>
 	   </td>
 	   <td width="1%" valign="top" class="jz_track_table_songs_td">
-	   <?php 
-	   	
-	   	echo $display->playButton($child); 
+	   <?php
+
+	   	echo $display->playButton($child);
 	   ?>
 	   </td>
 	   <td width="1%" valign="top" class="jz_track_table_songs_td">
@@ -1673,22 +1673,22 @@ class jzBlockClass {
 	   <a class="jz_track_table_songs_href" href=""><?php echo $img_discuss; ?></a>
 	   </td>
 	   <td width="1%" align="center" valign="top" class="jz_track_table_songs_td">&nbsp;
-	   
+
 	   </td>
 	   <td width="100%" valign="top" class="jz_track_table_songs_td">
-	   
-	   <?php 
+
+	   <?php
 	   $parent = $child->getNaturalParent();
 	   if ($parent->getLevel() > 0) {
-	     $display->link($parent, $parent->getName("String"), $parent->getName(), "jz_track_table_songs_href"); 
+	     $display->link($parent, $parent->getName("String"), $parent->getName(), "jz_track_table_songs_href");
 	     echo " / ";
 	   }
 	   echo "<!--m-->";
-	   $display->link($child, $child->getName("String"), $child->getName(), "jz_track_table_songs_href"); 
+	   $display->link($child, $child->getName("String"), $child->getName(), "jz_track_table_songs_href");
 	   ?><!--n--></a>
 	   </td>
 	   <td width="12%" class="jz_track_table_songs_td" nowrap>&nbsp;
-	   
+
 	   </td>
 	   <td width="10%" class="jz_track_table_songs_td" nowrap>
 	   &nbsp; &nbsp;
@@ -1699,7 +1699,7 @@ class jzBlockClass {
 	   &nbsp;  &nbsp;
 	   </td>
 	   <td width="10%" class="jz_track_table_songs_td" nowrap>&nbsp;
-	    
+
 	   </td>
 	   <td width="10%" class="jz_track_table_songs_td" nowrap>
 	   &nbsp;  &nbsp;
@@ -1708,16 +1708,16 @@ class jzBlockClass {
 	   &nbsp;  &nbsp;
 	   </td>
 	   </tr>
-	   <?php		
+	   <?php
 	   $i = 1 - $i; // cool trick ;)
 	 }
-    
+
     // Now let's set a field with the number of checkboxes that were here
     echo "<!--z--></table><br>";
   }
 
 
-  
+
 	/**
 	* Displays the random albums block
 	* @author Ross Carlson
@@ -1731,10 +1731,10 @@ class jzBlockClass {
 
 		// Should we be here????
 		if ($random_albums == "0" or $show_album_art == "false"){ return; }
-		
+
 		// Let's setup the new display object
 		$display = &new jzDisplay();
-		
+
 		// Let's make sure they didn't pass the data already
 		if ($valArray){
 			$artArray = $valArray;
@@ -1746,7 +1746,7 @@ class jzBlockClass {
 		// Now let's see how much we got back and make sure we just shouldn't return
 		if (count($artArray) == 0){ return; }
 
-		// Now let's display the images			
+		// Now let's display the images
 		?>
 		<table width="100%" cellpadding="5" cellspacing="0" border="0">
 			<tr>
@@ -1773,12 +1773,12 @@ class jzBlockClass {
 				?>
 			</tr>
 		</table>
-		<?php		
+		<?php
 
 		// Now let's add the Javascript for the rotations
 		?>
 		<SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT"><!--\
-			
+
 			//you may add your image file or text below
 			$c=1;
 			// Now let's create the variables
@@ -1788,22 +1788,22 @@ class jzBlockClass {
 					echo "var imgItem". $c. "=new Array()". "\n";
 					$c++;
 				}
-			
+
 				// Now let's build the first array with ALL the data so we can break it up later
 				$c=0;
-				for ($i=0; $i < count($artArray); $i++){					
+				for ($i=0; $i < count($artArray); $i++){
 					$albumName_long = $artArray[$i]->getName();
-					$albumName = returnItemShortName($artArray[$i]->getName(),12);	 					
+					$albumName = returnItemShortName($artArray[$i]->getName(),12);
 					$albumLink = str_replace('"',"\\\"",$display->link($artArray[$i],$albumName, word("Browse"). ": ". $albumName_long, "jz_random_art_block", true));
-					
+
 					$artist = $artArray[$i]->getNaturalParent();
-					$artistName_long = $artist->getName();	 
-					$artistName = returnItemShortName($artist->getName(),12);	 
+					$artistName_long = $artist->getName();
+					$artistName = returnItemShortName($artist->getName(),12);
 					$artistLink = str_replace('"',"\\\"",$display->link($artist,$artistName, word("Browse"). ": ". $artistName_long, "jz_random_art_block", true));
 					$artsize = explode("x",$random_art_size);
 					$imgSrc = str_replace('"',"'",$display->returnImage($artArray[$i]->getMainArt($random_art_size),$artArray[$i]->getName(),$artsize[0],$artsize[1],"fixed"));
 					$item_link = str_replace('"',"'",$display->link($artArray[$i],$imgSrc, $albumName_long, "jz_random_art_block", true));
-					
+
 					// Now, can they stream?
 					if ($jzUSER->getSetting('stream')){
 						$playLink = str_replace('"',"\\\"",$display->playLink($artArray[$i],word("Play"), word("Play"). ": ". $albumName_long, "jz_random_art_block", true));
@@ -1812,15 +1812,15 @@ class jzBlockClass {
 					} else {
 						$dispLink = "";
 					}
-					
-					// Let's make sure they aren'te view only				
+
+					// Let's make sure they aren'te view only
 					$arrayVar = "<center>". $artistLink. "<br>". $albumLink. "<br>". $item_link;
 					if ($jzUSER->getSetting('stream')){
 						$arrayVar .= "<br>". $dispLink. "</center>";
 					}
-					$fullArray[] = $arrayVar;					
+					$fullArray[] = $arrayVar;
 				}
-				
+
 				// Now we need to get the different arrays
 				$c=1; $start=0;
 				while ($c < ($random_albums + 1)){
@@ -1828,16 +1828,16 @@ class jzBlockClass {
 					for ($ctr=0; $ctr < count($dataArray); $ctr++){
 						echo "imgItem". $c. "[". $ctr. "]=\"". $dataArray[$ctr]. '"'. "\n";
 					}
-	
+
 					// Now let's move on
 					$start = $start+$random_per_slot;
 					$c++;
 				}
-				
+
 				// Now let's create the functions
 				$c=1;
 				while ($c < ($random_albums + 1)){
-					?>					
+					?>
 					var current<?php echo $c; ?>=0
 					<?php
 					$c++;
@@ -1859,7 +1859,7 @@ class jzBlockClass {
 						}
 						if (current<?php echo $c; ?>==<?php echo ($random_per_slot -1); ?>) current<?php echo $c; ?>=0
 						else current<?php echo $c; ?>++
-						<?php 
+						<?php
 							if ($random_per_slot <> 1){
 								?>
 								setTimeout("changeItem<?php echo $c; ?>()",<?php echo $random_rate; ?>)
@@ -1872,13 +1872,13 @@ class jzBlockClass {
 				}
 				$c=1;
 				while ($c < ($random_albums + 1)){
-					?>					
+					?>
 					changeItem<?php echo $c; ?>();
 					<?php
 					$c++;
 				}
 			?>
-			
+
 			//-->
 		</script>
 		<?php

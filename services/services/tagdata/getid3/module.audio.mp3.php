@@ -1928,7 +1928,7 @@ class getid3_mp3
         $LAMEpresetUsedLookup[480]  = '--preset '.(($LAMEtag['raw']['vbr_method'] == 4) ? 'fast ' : '').'standard';  // 3.94a15 Nov 12 2003
         $LAMEpresetUsedLookup[490]  = '-V1';
         $LAMEpresetUsedLookup[500]  = '--preset '.(($LAMEtag['raw']['vbr_method'] == 4) ? 'fast ' : '').'extreme';   // 3.94a15 Nov 12 2003
-        
+
         return (isset($LAMEpresetUsedLookup[$LAMEtag['preset_used_id']]) ? $LAMEpresetUsedLookup[$LAMEtag['preset_used_id']] : 'new/unknown preset: '.$LAMEtag['preset_used_id'].' - report to info@getid3.org');
     }
 

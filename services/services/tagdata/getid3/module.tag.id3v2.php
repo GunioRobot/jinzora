@@ -2879,8 +2879,8 @@ class getid3_id3v2
 
 		$begin = __LINE__;
 
-		/** This is not a comment!		
-				
+		/** This is not a comment!
+
 			AENC	audio_encryption
 			APIC	attached_picture
 			ASPI	audio_seek_point_index
@@ -3039,8 +3039,8 @@ class getid3_id3v2
 			TFEA	featured_artist
 			TSTU	recording_studio
 			rgad	replay_gain_adjustment
-				
-		*/		
+
+		*/
 
 		return getid3_lib::EmbeddedLookup($framename, $begin, __LINE__, __FILE__, 'id3v2-framename_short');
 	}

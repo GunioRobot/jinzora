@@ -4,7 +4,7 @@
 			{$img_up_arrow} <a href="{$home_link}">{$word_home}</a>
 			{section name=item loop=$bcArray}
 				{$img_up_arrow} <a href="{$bLinkUrl[item]}">{$bcArray[item]}</a>
-			{/section}	
+			{/section}
 		</td>
 	</tr>
 </table>

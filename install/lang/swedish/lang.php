@@ -26,7 +26,7 @@
 	$word_admin_pass = "Admin Lösenord:";
 	$word_default_access = "Default Behörighet:";
 	$word_no_access = "Ingen behörighet";
-	$word_lofi = "Lo-Fi";	
+	$word_lofi = "Lo-Fi";
 	$word_user = "Standard Användare";
 	$word_admin = "Admin";
 	$word_proceed_launch = "Fortsätt med att starta Jinzora >>";

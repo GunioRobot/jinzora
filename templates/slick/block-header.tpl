@@ -25,13 +25,13 @@
 		<tr>
 			<td colspan="4" class="jz_block_td">
 				<table width="100%" cellpadding="0" cellspacing="0" border="0" class="jz_left_iblock_inner">
-					<tr>	
+					<tr>
 						{php}
 							global $jz_path;
 							$display = new jzDisplay();
 							$blocks = new jzBlocks();
 							$node = new jzMediaNode($jz_path);
-						{/php}				
+						{/php}
 						{if $show_genre == "true"}
 							<td width="20%">
 								{php}
@@ -41,15 +41,15 @@
 									<br />
 									<form action="{$this_page}" method="{$mode}">
 									{php}
-										$display->hiddenPageVars(); 
-										$display->dropdown("genre"); 
+										$display->hiddenPageVars();
+										$display->dropdown("genre");
 									{/php}
 									</form>
 								{/if}
 							</td>
-						{/if}		
-						
-						
+						{/if}
+
+
 						{if $show_artist == "true"}
 							<td width="20%">
 								{php}
@@ -59,15 +59,15 @@
 									<br>
 									<form action="{$this_page}" method="{$mode}">
 									{php}
-										$display->hiddenPageVars(); 
-										$display->dropdown("artist"); 
+										$display->hiddenPageVars();
+										$display->dropdown("artist");
 									{/php}
 									</form>
 								{/if}
 							</td>
 						{/if}
-						
-						
+
+
 						{if $show_album == "true"}
 							<td width="20%">
 								{php}
@@ -77,15 +77,15 @@
 									<br>
 									<form action="{$this_page}" method="{$mode}">
 									{php}
-										$display->hiddenPageVars(); 
-										$display->dropdown("album"); 
+										$display->hiddenPageVars();
+										$display->dropdown("album");
 									{/php}
 									</form>
 								{/if}
 							</td>
 						{/if}
-						
-						
+
+
 						{if $song_drop == "true"}
 							<td width="20%">
 								{php}
@@ -96,13 +96,13 @@
 								{php}
 									$display->hiddenVariableField('action','playlist');
 									$display->hiddenVariableField('type','track');
-									$display->dropdown("track"); 
+									$display->dropdown("track");
 								{/php}
 								</form>
 							</td>
 						{/if}
-						
-						
+
+
 						{if $quick_drop == "true"}
 							<td width="20%">
 								<nobr>
@@ -112,8 +112,8 @@
 								</nobr>
 							</td>
 						{/if}
-						
-						
+
+
 						{if $show_resample == "true"}
 							<td width="20%">
 								<nobr>
@@ -123,7 +123,7 @@
 								</nobr>
 							</td>
 						{/if}
-					</tr> 
+					</tr>
 				</table>
 			</td>
 		</tr>

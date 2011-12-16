@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - This is the GD2 image resize service
 	*
@@ -25,17 +25,17 @@
 	* @author Ben Dodson <ben@jinzora.org>
 	* @author Ross Carlson <ross@jinzora.org>
 	*/
-	
+
 	$jzSERVICE_INFO = array();
 	$jzSERVICE_INFO['name'] = "GD2 Image Resizing";
 	$jzSERVICE_INFO['url'] = "http://www.boutell.com/gd/";
-	
+
 	define('SERVICE_IMAGES_gd2','true');
-	
-	
+
+
 	/**
 	* Rotates an image
-	* 
+	*
 	* @author Ross Carlson
 	* @version 4/16/05
 	* @since 4/15/05
@@ -43,33 +43,33 @@
 	*/
 	function SERVICE_ROTATE_IMAGE_gd2($image, $node){
 		global $allow_filesystem_modify, $include_path;
-		
+
 		// Let's make sure they have GD installed
 		if (gd_version() < 2) { return false; }
-		
+
 		// Well since we can't rotate an ID3 image let's see if it's ID3
 		if (stristr($image,"ID3:")){
 			// Now let's make a file out of this data
 			$jzSERVICES = new jzServices();
 			$jzSERVICES->loadStandardServices();
-			
+
 			// Now let's fix the path
 			$path = substr($image,4);
 			$meta = $jzSERVICES->getTagData($path);
-			
+
 			// Now let's create a file
 			$file = $include_path. 'data/images/'. str_replace("/","--",$path);
 			$handle = fopen($file, "wb");
-			fwrite($handle,$meta['pic_data']);				
+			fwrite($handle,$meta['pic_data']);
 			fclose($handle);
-			
+
 			// Now let's make this the image for the node
 			$node->addMainArt($file);
-			
+
 			// Now let's update the name so we can rotate
 			$image = $file;
 		}
-		
+
 		// First we have to delete any resized versions of this
 		$files = readDirInfo($include_path. 'data/images', "file");
 		foreach ($files as $file){
@@ -77,17 +77,17 @@
 				@unlink($file);
 			}
 		}
-		
+
 		// Now let's set our images
 		$source = @imagecreatefromjpeg($image);
 		$rotate = @imagerotate($source, 90, 0);
 		@imagejpeg($rotate,$image);
-		
+
 	}
-	
+
 	/**
 	* Creates resized images for a single image
-	* 
+	*
 	* @author Ross Carlson
 	* @version 4/05/05
 	* @since 4/05/05
@@ -97,13 +97,13 @@
 	*/
 	function SERVICE_CREATE_IMAGE_gd2($image, $dimensions, $text, $imageType = "audio", $force_create = "false") {
 		global $include_path, $create_blank_art;
-		
+
 		// Let's make sure they have GD installed
 		if (gd_version() < 2) { return false; }
-		
+
 		// Now should we just leave?
 		if ($create_blank_art == "false" and $force_create == "false"){ return false; }
-		
+
 		// First let's figure out the name for the image
 		$iArr = explode("/",$image);
 		$imgName = $iArr[count($iArr)-1];
@@ -111,21 +111,21 @@
 		$name = substr(implode("--",$iArr),2);
 		$path = $include_path. "data/images/". $name;
 		$image = $path. md5($imgName. $dimensions). ".jpg";
-		
+
 		// Let's get the dimensions
-		$dest_width = 200; 
+		$dest_width = 200;
 		$dest_height = 200;
-		
+
 		// Let's setup some things for below
 		$drop = 0;
 		$shadow = 0;
 		$font = 5;
 		$maxwidth = 200;
 		$truncate = 38;
-		
+
 		// Now let's see if we're too long...
 		if (strlen($text) > $truncate + 3){$text = substr($text,0,$truncate). "...";}
-		
+
 		// Ok, we now have the path let's create it
 		switch ($imageType){
 			case "audio":
@@ -133,7 +133,7 @@
 			break;
 			case "video":
 				$origImageName = "video.jpg";
-			break;			
+			break;
 		}
 		$src_img = imagecreatefromjpeg($include_path. "style/images/". $origImageName);
 		$dest_img = imageCreateTrueColor($dest_width, $dest_height);
@@ -143,12 +143,12 @@
 		$shadow = imagecolorallocate($dest_img, 0, 0, 0);
 
 		// Let's get the width and height of the source image
-		$src_width = imagesx($src_img); 
+		$src_width = imagesx($src_img);
 		$src_height = imagesy($src_img);
 
 		/* Now let's copy the data from the old picture to the new one witht the new settings */
 		imageCopyResampled($dest_img, $src_img, 0, 0, 0 ,0, $dest_width, $dest_height, $src_width, $src_height);
-		
+
 		// Now let's clean up our temp image
 		imagedestroy($src_img);
 
@@ -156,13 +156,13 @@
 		$fontwidth = ImageFontWidth(5);
 		$fontheight = ImageFontHeight(5);
 		// So that shadow is not off image on right align & bottom valign
-		$margin = floor(5 + 0)/2; 
+		$margin = floor(5 + 0)/2;
 		if ($maxwidth != NULL) {
 			$maxcharsperline = floor( ($dest_width - ($margin * 2)) / $fontwidth);
 			$text = wordwrap($text, $maxcharsperline, "\n", 1);
-		}		
+		}
 		$lines = explode("\n", $text);
-		
+
 		// Now let's setup the alignment
 		$y = ((imageSY($dest_img) - ($fontheight * sizeof($lines)))/2) + 50;
 		while (list($numl, $line) = each($lines)) {
@@ -173,25 +173,25 @@
 
 		// Now let's create our new image
 		@touch($image);
-		
+
 		// Now let's make sure that new image is writable
 		if (is_writable($image)){
 			// Let's create it
-			imagejpeg($dest_img, $image);		
+			imagejpeg($dest_img, $image);
 			// Now let's clean up our temp image
 			imagedestroy($dest_img);
-			
+
 			// Now we need to resize this
 			return SERVICE_RESIZE_IMAGE_gd2($image,$dimensions);
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+
 	/**
 	* Creates resized images for a single image
-	* 
+	*
 	* @author Ross Carlson
 	* @version 4/05/05
 	* @since 4/05/05
@@ -204,19 +204,19 @@
 
 		// Let's make sure they have GD installed
 		if (gd_version() < 2) { return $image; }
-		
+
 		// Now let's make sure this is a JPG
 		#if (!stristr($image,".jpg") and !stristr($image,"ID3:")){return $image;}
 		if ( !(stristr($image,".jpg") || stristr($image, ".gif") )  and !stristr($image,"ID3:")){return $image;}
 
 		// Should we do this at all?
 		if ($resize_images == "false"){return $image;}
-		
+
 		// Ok, let's get on with it...
 		// First let's create our filenames
 		$iArr = explode("/",$image);
 		$imgName = $iArr[count($iArr)-1];
-		
+
 		// Now let's see where this is gonna go
 		unset($iArr[count($iArr)-1]);
 		unset($iArr[0]);
@@ -237,30 +237,30 @@
 			return $destImage;
 		}
 	}
-	
-	
+
+
 	function createImage($source, $destination, $dimensions){
 		global $keep_porportions, $include_path, $jzSERVICES;
-		
+
 		// Ok, let's make sure the dimensions aren't empty
 		if (!$dimensions){return;}
-		
+
 		// Ok, first we need to see if this is an ID3 image and if so write it to a temp file
 		if (strstr($source,"ID3:")){
 			// Now let's get the data from the ID3 tag so we can write it out
 			$path = substr($source,4);
 			$meta = $jzSERVICES->getTagData($path);
-			
+
 			// Now let's create the new image file
 			$source = $include_path. "temp/tempimage.jpg";
 			$handle = fopen($source, "wb");
-			fwrite($handle,$meta['pic_data']);				
+			fwrite($handle,$meta['pic_data']);
 			fclose($handle);
 			$destination = substr($destination,0,-4). ".". $dimensions. ".jpg";
 		}
-		
+
 		// Let's grab the source image to work with it
-		if (($src_img = @imagecreatefromjpeg($source)) == false){ 
+		if (($src_img = @imagecreatefromjpeg($source)) == false){
 			$gdInfo = gd_info();
 			$gdGifSupport = $gdInfo["GIF Read Support"];
 			if( !$gdGifSupport ) { return $source; }
@@ -273,14 +273,14 @@
 
 		if ($src_img <> ""){
 			// Let's get the width and height of the source image
-			$src_width = imagesx($src_img); 
+			$src_width = imagesx($src_img);
 			$src_height = imagesy($src_img);
-			
+
 			// Let's set the width and height of the new image we'll create
 			$destArr = explode("x",$dimensions);
-			$dest_width = $destArr[0]; 
+			$dest_width = $destArr[0];
 			$dest_height = $destArr[1];
-			
+
 			// Now if the picture isn't a standard resolution (like 640x480) we
 			// need to find out what the new image size will be by figuring
 			// out which of the two numbers is higher and using that as the scale
@@ -300,16 +300,16 @@
 					$dest_width = $src_width / $scale;
 				}
 			}
-			
+
 			// Now let's create our destination image with our new height/width
 			$dest_img = imageCreateTrueColor($dest_width, $dest_height);
-			
+
 			// Now let's copy the data from the old picture to the new one witht the new settings
 			imageCopyResampled($dest_img, $src_img, 0, 0, 0 ,0, $dest_width, $dest_height, $src_width, $src_height);
-			
+
 			// Now let's create our new image
 			imagejpeg($dest_img, $include_path. $destination);
-			
+
 			// Now let's clean up all our temp images
 			//imagedestroy($src_img);
 			//imagedestroy($dest_img);

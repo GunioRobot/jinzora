@@ -12,20 +12,20 @@ function doTemplate($node) {
       $me = $me->getParent();
     }
   }
-  
+
   $breadcrumbs[] = array("name"=>word("Home"),"link"=>urlize(array()));
   $smarty->assign('breadcrumbs',$breadcrumbs);
 
   if (actionIsQueue()) {
-    $smarty->assign('Play',word('Add'));    
+    $smarty->assign('Play',word('Add'));
   } else {
     $smarty->assign('Play',word('Play'));
   }
-  
+
   $myNodes = $node->getSubNodes('nodes');
   sortElements($myNodes);
   $myTracks = $node->getSubNodes('tracks');
-  
+
   $nodes = array();
   for ($i = 0; $i < sizeof($myNodes); $i++) {
     $e = $myNodes[$i];
@@ -39,7 +39,7 @@ function doTemplate($node) {
     $tracks[] = smartyTrack($myTracks[$i]);
   }
   $smarty->assign('tracks',$tracks);
-  
+
   jzTemplate($smarty,'browse');
 }
 
@@ -51,7 +51,7 @@ function smartyNode($e) {
   $arr = array();
   $arr['name'] = $e->getName();
   $arr['link'] = urlize(array('jz_path'=>$e->getPath("String")));
-    
+
   if ($e->getPType() == "album" || $e->getPType == "disk") {
     if (isset($_SESSION['jz_playlist_queue'])) {
       $arr['openPlayTag'] = $display->getOpenAddToListTag($e);
@@ -65,7 +65,7 @@ function smartyNode($e) {
       $arr['openPlayTag'] = $display->getOpenPlayTag($e,true,50);
     }
   }
-  
+
   $compName = $arr['name'];
   if ($compare_ignores_the == "true" && strtoupper(substr($compName,0,4)) == 'THE ') {
     $compName = substr($compName,4);
@@ -88,7 +88,7 @@ function smartyNode($e) {
 function smartyTrack($e) {
   $display = new jzDisplay();
 
-  // meta  
+  // meta
   $arr = $e->getMeta();
   if (!is_array($arr)) $arr = array();
 

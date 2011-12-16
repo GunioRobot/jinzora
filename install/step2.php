@@ -101,8 +101,8 @@ function popuphelp(siteaccess,nodeid){
 			<span class="goToNext">
 				<?php echo $word_checking_optional; ?>
 			</span>
-		</div>		
-		<table width="100%" cellspacing="0" cellpadding="0" border="0">	
+		</div>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
 			<tr>
 				<td class="td" width="30%" align="left" valign="top">
 				PHP MySQL Support:
@@ -319,8 +319,8 @@ function popuphelp(siteaccess,nodeid){
 				</td>
 			</tr>
 		</table>
-			
-			
+
+
 		<div class="go">
 			<span class="goToNext">
 				<?php echo $word_checking_permissions; ?>

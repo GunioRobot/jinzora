@@ -4,7 +4,7 @@
 
 global $row_colors, $web_root, $root_dir, $directory_level;
 
-// Let's display the top of our page	
+// Let's display the top of our page
 $this->displayPageTop("", word("All Albums"));
 $this->openBlock();
 

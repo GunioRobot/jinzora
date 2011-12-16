@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated intof any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* This is the media backend for the database adaptor.
 	*
@@ -25,19 +25,19 @@
 	* @author Ben Dodson <bdodson@seas.upenn.edu>
 	*/
 	// Most classes should be included from header.php
-	
-	
+
+
 	// The music root is $media_dir.
 	class jzRawMediaNode extends jzMediaNodeClass {
-		
+
 		var $nodecount;
 		var $leafcount;
 		var $filepath;
 		var $root;
-		
+
 		/**
 		* Constructor wrapper for jzMediaNode.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/04
 		* @since 5/13/04
@@ -45,17 +45,17 @@
 		function jzRawMediaNode($par = array(), $mode = "path") {
 			$this->_constructor($par,$mode);
 		}
-		
+
 		/**
 		* Constructor wrapper for jzMediaNode.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/12/04
 		* @since 5/13/04
 		*/
 		function _constructor($par = array(),$mode) {
 			global $media_dir;
-			
+
 			$this->nodecount = false;
 			$this->leafcount = false;
 			$this->filepath  = false;
@@ -66,7 +66,7 @@
 		function updateCache($recursive = true, $root = false, $showStatus = false, $force = false, $readTags = true) {
 			global $sql_usr, $sql_type, $sql_pw, $sql_socket, $sql_db,$media_dir, $web_root, $root_dir;
 			$be = &new jzBackend();
-			
+
 			// FAST CASE:
 			// if we are non-recursive and haven't been modified, we are done.
 			$my_dir = $root;
@@ -79,15 +79,15 @@
 			    return $parent->updateCache(false,false,$showStatus,$force,$readTags);
 			  }
 			}
-			
+
 			if ($recursive === false) {
 				$nodePath = $this->getPath("String");
 				// If our naturalDepth is greater than 1, we need to update the cache
 				// at lower levels.
 				if ($this->getNaturalDepth() > 1) {
-					if (!($handle = opendir($my_dir))) 
+					if (!($handle = opendir($my_dir)))
 						die("Could not access directory $my_dir in database::updateCache");
-				
+
 					while ($file = readdir($handle)) {
 						$nextPath = ($nodePath == "") ? $file : $nodePath . "/" . $file;
 						if ($file == "." || $file == "..") {
@@ -109,14 +109,14 @@
 
 			// Do we want this error check?
 			//if ($my_dir === false || !is_dir($my_dir)) return;
-			
+
 			// connect to the database.
 			if (!$link = jz_db_connect())
             	die ("could not connect to database.");
-			
+
 			// Ok, now that we're updating the node we should purge the page cache
 			$_SESSION['jz_purge_file_cache'] = "true";
-			
+
 			if (!isset($nodePath)){$nodePath="";}
 				$slashedNodePath = jz_db_escape($nodePath);
 				$slashedFilePath = jz_db_escape($my_dir);
@@ -133,9 +133,9 @@
 				}
 				$sql .= " AND path LIKE '${slashedNodePath}${slash}%'";
 				$sql .= " AND filepath LIKE '${slashedFilePath}%'";
-				
+
 				if (jz_db_query($link, $sql) === false) die (jz_db_error($link));
-				
+
 				$sql = "UPDATE jz_tracks SET valid = 'false' WHERE valid != 'perm'";
 				$sql .= " AND path LIKE '${slashedNodePath}${slash}%'";
 				$sql .= " AND filepath LIKE '${slashedFilePath}%'";
@@ -146,7 +146,7 @@
 			if (false === jz_db_query($link, $sql)) die (jz_db_error($link));
 
 			$this->updateCacheHelper($be, $link, $recursive, $my_dir, $showStatus, $force, $readTags);
-			
+
 			$be = &new jzBackend();
 			$be->setUpdated();
 			//jz_db_close($link);
@@ -154,7 +154,7 @@
 
 		/**
 		 * Updates the cache using $this as the base node.
-		 * 
+		 *
 		 * @author Ben Dodson <bdodson@seas.upenn.edu>
 		 * @version 11/12/04
 		 * @since 5/13/04
@@ -176,24 +176,24 @@
 		    $media_dir = $root;
 		  else
 		    $media_dir = $this->getFilePath();
-		  
+
 		  if (!is_readable($media_dir)) return false;
 		  $mySlashedName = jz_db_escape($this->getName());
 		  $pathArray = $this->getPath();
 		  $nodePath = $this->getPath("String");
 		  $slashedNodePath = jz_db_escape($nodePath); // SQL no likey the quotes.
 		  $fullSlashedNodePath = jz_db_escape($media_dir);
-		  
-		  $level = $this->getLevel();              		
+
+		  $level = $this->getLevel();
 		  $ptype = findPType($this);
-		  
+
 		  /* Echo out our current status, if they want it: */
 		  if ($showStatus === true){
 		    showStatus($media_dir);
 		  } else if ($showStatus == "cli") {
 		    echo word("Scanning: ") . $media_dir . "\n";
 		  }
-		  
+
 		  // Now handle $this.
 		  $mdate = filemtime($media_dir);
 		  if ($mdate > ($curtime = time())) {
@@ -203,30 +203,30 @@
 		      $mdate = filemtime($media_dir);
 		    }
 		  }
-		  $stamp = $be->getUpdated($media_dir);		
+		  $stamp = $be->getUpdated($media_dir);
 
 		  $sql = "INSERT INTO jz_nodes(name,path,filepath,ptype,level,date_added,my_id) ";
-		  $sql .= "VALUES('$mySlashedName','$slashedNodePath','$fullSlashedNodePath','$ptype',$level,'$mdate','".uniqid("T")."')";			
+		  $sql .= "VALUES('$mySlashedName','$slashedNodePath','$fullSlashedNodePath','$ptype',$level,'$mdate','".uniqid("T")."')";
 		  // ADD MORE INFO TO DB.
 		  if (!jz_db_query($link, $sql)) {
 		    // the node was already in the database.
 		    $sql = "UPDATE jz_nodes SET valid = 'true' ";
 		    $sql .= "WHERE path " . jz_db_case_sensitive() . " '$slashedNodePath'";
-		    
+
 		    jz_db_query($link, $sql);
 		  }
 		  writeLogData('importer',"Importing node: ". $mySlashedName. " - ". $fullSlashedNodePath);
-		  
+
 		  // Now move inside $this's path.
-		  if (!($handle = opendir($media_dir))) 
+		  if (!($handle = opendir($media_dir)))
 		    die("Could not access directory $media_dir in database::updateCacheHelper.");
-		  
+
 		  // let's look for the best files to use while we are scanning this directory:
 		  $leafcount = 0;
 		  $nodecount = 0;
 		  $bestImage = "";
 		  $bestDescription = "";
-		  
+
 		  while ($file = readdir($handle)) {
 		    $nextPath = ($nodePath == "") ? $file : $nodePath . "/" . $file;
 		    $nextFile = $media_dir . "/" . $file;
@@ -250,7 +250,7 @@
 			    $sdate = filemtime($nextFile);
 			  }
 			}
-			
+
 			$spt = findPType($next);
 
 			if ($backend == "mysql") {
@@ -267,7 +267,7 @@
 
 			$sqlu = "UPDATE jz_nodes SET valid = 'true' ";
 			$sqlu .= "WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'";
-						
+
 			jz_db_query($link, $sqln) || jz_db_query($link,$sqlu);
 		      }
 		      $nodecount++;
@@ -307,7 +307,7 @@
 				break;
                               }
   			      $mediaref = $lines[0];
-			      
+
 			      // add to DB
  			      $mdate = filemtime($nextFile);
 			      if ($mdate > ($curtime = time())) {
@@ -319,7 +319,7 @@
 			      }
 		              $leafcount++;
 			      addWebTrack($mediaref,$nodePath,$mdate,$level,$link);
-			      
+
 
 			    }
 			  }
@@ -337,7 +337,7 @@
 			    $mdate = filemtime($nextFile);
 			  }
 			}
-			
+
 			// First, try putting me in the DB.
 			$slashedFileName = jz_db_escape($file);
 			$slashedFilePath = ($slashedNodePath == "") ? $slashedFileName : $slashedNodePath . "/" . $slashedFileName;
@@ -346,9 +346,9 @@
 			$sql = "INSERT INTO jz_nodes(name,path,filepath,ptype,level,date_added,leaf,my_id) ";
 			$sql .= "VALUES('$slashedFileName','$slashedFilePath','$fullSlashedFilePath','track',$level+1,'$mdate','true','".$mid."') ";
 			$updatesql = "UPDATE jz_nodes SET valid = 'true' WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'";
-			
+
 			jz_db_query($link,$sql) || jz_db_query($link,$updatesql);
-			
+
 			// Now, did they want to force this?
 			if (($stamp < $mdate) or $force) {
 			  $track = &new jzMediaTrack($nextPath);
@@ -356,7 +356,7 @@
 			  $track->playpath = $nextFile;
 			  if ($readTags === true) {
 			    $meta = $track->getMeta("file"); // read meta info from the file;
-			  } else {	
+			  } else {
 					$meta = array();
 					$meta['bitrate'] = "";
 					$meta['length'] = "";
@@ -372,7 +372,7 @@
 					$meta['lyrics'] = "";
 					$meta['type'] = "";
 			  }
-			  
+
 			  $pname = jz_db_escape($file);
 			  $bitrate = $meta['bitrate'];
 			  $length = $meta['length'];
@@ -397,13 +397,13 @@
 			    $long_description = jz_db_escape(fread($handle2, filesize($desc_file)));
 			    fclose($handle2);
 			  }
-			  			  
+
 			  // Now let's see if there is a thumbnail for this track
 			  $thumb_file = jz_db_escape(searchThumbnail($media_dir . "/" . $file));
-			  
+
 			  $sql = "INSERT INTO jz_tracks(path,level,my_id,filepath,name,trackname,bitrate,filesize,frequency,length,lyrics,genre,artist,album,year,number,extension)
 			       VALUES('$slashedFilePath',$level+1,'".$mid."','$fullSlashedFilePath','$pname','$name','$bitrate','$filesize','$frequency','$length','$lyrics','$genre','$artist','$album','$year','$track','$fileExt')";
-			  
+
 			  // Now let's update status and log this
 			  if (isset($_SESSION['jz_import_full_progress'])) {
 			    $_SESSION['jz_import_full_progress']++;
@@ -411,7 +411,7 @@
 			    $_SESSION['jz_import_full_progress'] = 1;
 			  }
 			  writeLogData('importer',"Importing track: ". $fullSlashedFilePath);
-			  
+
 			  $updatesql = "UPDATE jz_tracks SET valid = 'true',
 					level = $level+1,
 					trackname = '$name',
@@ -428,29 +428,29 @@
 					album = '$album',
 					number = '$track',
 					extension = '$fileExt'";
-			  
+
 			  $updatesql .= " WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'";
-			  	
+
 			  jz_db_query($link,$sql) || jz_db_query($link,$updatesql);
 			} else {
 			  $sql = "UPDATE jz_tracks SET valid = 'true' WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'";
 			  jz_db_query($link,$sql);
 			}
-			
+
 			// last thing: add thumb and/or descriptions.
 			$sql = "valid = 'true'";
-			
+
 			if (isset($thumb_file)) {
 			  $sql .= ", main_art = '$thumb_file'";
 			}
 			if (isset($description)) {
-			  $sql .= ", descr = '$description'";		
+			  $sql .= ", descr = '$description'";
 			}
 			if (isset($long_description)) {
 			  $sql .= ", longdesc = '$long_description'";
 			}
 			jz_db_query($link,"UPDATE jz_nodes SET $sql WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'");
-			
+
 		      }
 		    }
 		  }
@@ -461,8 +461,8 @@
 		  } else {
 		    $be->setUpdated($media_dir,0); // pretend it hasn't been updated since 1979.
 		  }
-		  
-		  
+
+
 		  $sqlUpdate = "nodecount = $nodecount, leafcount = $leafcount";
 		  if ($bestImage != "") {
 		    $sqlUpdate .= ", main_art = '$bestImage'";
@@ -473,20 +473,20 @@
 		  }
 		  $sql = "UPDATE jz_nodes SET $sqlUpdate WHERE path LIKE '$slashedNodePath'";
 		  if (false === jz_db_query($link,$sql)) die (jz_db_error($link));
-		  
+
 		  $slash = ($level == 0) ? "" : "/";
 		  // all done; remove everything beyond $this's path that is still not valid.
 		  $sql = "DELETE FROM jz_nodes WHERE ";
 		  $sql .= "level > $level AND path LIKE '${slashedNodePath}${slash}%' AND valid = 'false'";
 		  $sql .= " AND filepath LIKE '${fullSlashedNodePath}%'";
 		  jz_db_query($link, $sql);
-		  
+
 		  $sql = "DELETE FROM jz_tracks WHERE ";
 		  $sql .= "path LIKE '${slashedNodePath}${slash}%' AND valid = 'false'";
 		  $sql .= " AND filepath LIKE '${fullSlashedNodePath}%'";
 		  jz_db_query($link, $sql);
 		}
-		
+
 
 		/**
 		 * Helper function to add a single web track
@@ -500,7 +500,7 @@
 				$medianame = substr($medianame,0,strlen($medianame)-1);
 			}
 			$medianame = substr($medianame,strrpos($medianame,'/')+1);
-			$slashedNodePath = jz_db_escape($parent); 
+			$slashedNodePath = jz_db_escape($parent);
 			$slashedFileName = jz_db_escape($medianame);
 
 			// First, try putting me in the DB.
@@ -512,9 +512,9 @@
 			$sql = "INSERT INTO jz_nodes(name,path,filepath,ptype,level,date_added,leaf,my_id) ";
 			$sql .= "VALUES('$slashedFileName','$slashedFilePath','$fullSlashedFilePath','track',$level+1,'$mdate','true','".$mid."') ";
 			$updatesql = "UPDATE jz_nodes SET valid = 'true' WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'";
-			
+
 			jz_db_query($link,$sql) || jz_db_query($link,$updatesql);
-			
+
 			  $pname = jz_db_escape($medianame);
 			  $bitrate = "";
 			  $length = "";
@@ -532,10 +532,10 @@
 
 			  $long_description = "";
 			  $thumb_file = "";
-			  
+
 			  $sql = "INSERT INTO jz_tracks(path,level,my_id,filepath,name,trackname,bitrate,filesize,frequency,length,lyrics,genre,artist,album,year,number,extension)
 			       VALUES('$slashedFilePath',$level+1,'".$mid."','$fullSlashedFilePath','$pname','$name','$bitrate','$filesize','$frequency','$length','$lyrics','$genre','$artist','$album','$year','$track','$fileExt')";
-			  
+
 			  // Now let's update status and log this
 			  if (isset($_SESSION['jz_import_full_progress'])) {
 			    $_SESSION['jz_import_full_progress']++;
@@ -543,7 +543,7 @@
 			    $_SESSION['jz_import_full_progress'] = 1;
 			  }
 			  writeLogData('importer',"Importing track: ". $fullSlashedFilePath);
-			  
+
 			  $updatesql = "UPDATE jz_tracks SET valid = 'true',
 					level = $level+1,
 					trackname = '$name',
@@ -551,27 +551,27 @@
 					filesize = '$filesize',
 					frequency = '$frequency',
 					length = '$length',";
-			  
+
 			  $updatesql .= "year = '$year',
 					genre = '$genre',
 					artist = '$artist',
 					album = '$album',
 					number = '$track',
 					extension = '$fileExt'";
-			  
+
 			  $updatesql .= " WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'";
-			  	
+
 			  jz_db_query($link,$sql) || jz_db_query($link,$updatesql);
-		
-			
+
+
 			// last thing: add thumb and/or descriptions.
 			$sql = "valid = 'true'";
-			
+
 			jz_db_query($link,"UPDATE jz_nodes SET $sql WHERE path " . jz_db_case_sensitive() . " '$slashedFilePath'");
-		  
+
 		}
 
-		
+
 		/**
 		* Counts the number of subnodes $distance steps down.
 		* $distance = -1 does a recursive count.
@@ -582,15 +582,15 @@
 		*/
 		function getSubNodeCount($type='both', $distance=false) {
 			global $sql_type, $sql_pw, $sql_socket, $sql_db, $sql_usr,$backend,$default_importer;
-			
+
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
 			// alias:
 			if ($type == "tracks") {
 				$type = "leaves";
 			}
-			
+
 			// can we do it quickly?
 			if ($distance == 1 && !($this->nodecount === false)) {
 			  if ($type == 'nodes') {
@@ -602,10 +602,10 @@
 			  return $this->nodecount + $this->leafcount;
 			}
 
-			
+
 			if ($default_importer == "id3tags") {
 			  //return sizeof($this->getSubNodes($type,$distance,true,0));
-			  
+
 				$pathArray = $this->getPath();
 				$level = $this->getLevel();
 				$pathString = jz_db_escape($this->getPath("String"));
@@ -624,13 +624,13 @@
           		} else {
               		$op = "=";
                 	$level = $level + $distance;
-          		}      
-			
-			
+          		}
+
+
 				// now the query.
 				if ($type == "leaves") {
 					$sql = "SELECT COUNT(*) FROM jz_tracks WHERE level $op $level AND hidden = 'false' AND path LIKE '${pathString}%'";
-					
+
 					$res = jz_db_simple_query($sql);
 					return $res[0];
 				} else {
@@ -646,24 +646,24 @@
 					$res = jz_db_simple_query($sql);
 					return $res[0];
 				}
-			  
+
 			}
 
 			if ($distance == 1) {
 				if (!$link = jz_db_connect())
 	                     		die ("could not connect to database.");
-	                     		
+
 				$pathArray = $this->getPath();
 				$level = $this->getLevel();
 				$pathString = jz_db_escape($this->getPath("String"));
 	                     	$sql = "SELECT nodecount,leafcount FROM jz_nodes WHERE path LIKE '${pathString}'";
-	                     	
+
 	                     	$results = jz_db_query($link,$sql);
 	                     	jz_db_close($link);
 
 	                     	if (!isset($results->data[0]))
 	                     		return 0;
-	                     		
+
 	                     	if ($type == "nodes") {
 	                     		return $results->data[0]['nodecount'];
 	                     	}
@@ -674,15 +674,15 @@
 	                     		return $results->data[0]['leafcount'] + $results->data[0]['nodecount'];
 	                     	}
 			}
-			
+
 			$pathArray = $this->getPath();
 			$level = $this->getLevel();
 			$pathString = jz_db_escape($this->getPath("String"));
 			if ($pathString != "") { $pathString .= "/"; }
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     	
+
                      	// speed up the common case of counting all tracks.
                      	if ($distance == -1 && $type == "leaves" && $this->getLevel() == 0) {
                      		$sql = "SELECT COUNT(*) FROM jz_tracks";
@@ -690,7 +690,7 @@
 				jz_db_close($link);
 				return $results->data[0][0];
                      	}
-	
+
                      	if ($distance == -1) {
                      		$op = ">";
                      	}
@@ -698,7 +698,7 @@
                      		$op = "=";
                      		$level = $level + $distance;
                      	}
-                     	
+
                      	$lim = "";
                      	if ($type == "leaves") {
                      		$lim = "AND leaf = 'true'";
@@ -716,22 +716,22 @@
 
 		/**
 		* Returns the subnodes as an array.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/31/04
 		* @since 5/14/2004
 		*/
 		function getSubNodes($type="nodes", $distance=false, $random=false, $limit=0, $hasArt = false) {
 			global $sql_type, $sql_pw, $sql_socket, $sql_db, $sql_usr,$backend,$default_importer;
-			
+
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
 			// alias:
 			if ($type == "tracks") {
 				$type = "leaves";
 			}
-			
+
 			$pathArray = $this->getPath();
 			$level = $this->getLevel();
 			$pathString = jz_db_escape($this->getPath("String"));
@@ -752,18 +752,18 @@
           	} else {
               	$op = "=";
                 $level = $level + $distance;
-          	}      
+          	}
             if ($type != "leaves" && $hasArt !== false) {
             	$artString = "AND main_art != ''";
             } else {
             	$artString = "";
             }
-			
-			
+
+
 			// now the query.
 			if ($type == "leaves") {
 				$sql = "SELECT * FROM jz_tracks WHERE level $op $level AND hidden = 'false' AND path LIKE '${pathString}%'";
-				
+
 				if ($random) {
 				  $sql .= " ORDER BY " . jz_db_rand_function();
 				}
@@ -796,27 +796,27 @@
 				return jz_db_object_query($sql);
 			}
 		}
-	
-		
+
+
 		/**
 		* Returns the hidden subnodes as an array.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/31/04
 		* @since 10/31/04
 		*/
 		function getHiddenSubNodes($distance = false) {
 			global $sql_type, $sql_pw, $sql_socket, $sql_db, $sql_usr;
-		
+
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
-			
+
 			$pathArray = $this->getPath();
 			$level = $this->getLevel();
 			$pathString = jz_db_escape($this->getPath("String"));
 			if ($pathString != "") { $pathString .= "/"; }
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
 
@@ -826,10 +826,10 @@
                      	else {
                      		$op = "=";
                      		$level = $level + $distance;
-                     	}        
-                     	
+                     	}
+
                      	$sql = "SELECT * FROM jz_nodes WHERE level $op $level AND hidden = 'true' AND path LIKE '${pathString}%'";
-                     	
+
                      	$results = jz_db_query($link,$sql);
 			jz_db_close($link);
 
@@ -850,27 +850,27 @@
 				}
 			}
 			return $arr;
-                     	      
+
 		}
-		
+
 		/**
 		* Alphabetical listing of a node.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
-		*/	
+		*/
 		function getAlphabetical($letter, $type = "nodes", $distance = false) {
 			global $sql_type, $sql_pw, $sql_socket, $sql_db, $sql_usr,$compare_ignores_the,$backend;
 
                         $letter = strtolower($letter);
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
 
 			$pathString = jz_db_escape($this->getPath("String"));
 			if ($pathString != "") { $pathString .= "/"; }
-			
+
 			$level = $this->getLevel();
 
 			if ($distance == -1) {
@@ -881,11 +881,11 @@
 				$level = $level + $distance;
 				$op = "=";
 			}
-			
+
 			if ($type == "nodes") {
 				$t = "AND leaf = 'false'";
 			}
-			
+
 			$LIKE = jz_db_case_insensitive();
 
 			if ($type == "tracks" || $type == "leaves") {
@@ -905,30 +905,30 @@
 			      				$results = jz_db_object_query("SELECT path FROM jz_tracks WHERE path LIKE '${pathString}%' AND trackname $LIKE '${letter}%' ORDER BY trackname");
                             }
 			  }
-			  
+
 			}
-			
+
 			else if ($letter == "#") {
                 $results = jz_db_object_query("SELECT * FROM jz_nodes WHERE level $op $level $t AND path LIKE '${pathString}%' AND (" . jz_db_leading_digit('name') . ") ORDER BY name");
 				  //TODO: add special characters (IE, anything not a-zA-Z)
 			}
 			else if ($letter == "*") {
-				$results = jz_db_object_query("SELECT * FROM jz_nodes 
+				$results = jz_db_object_query("SELECT * FROM jz_nodes
 				  WHERE level $op $level $t AND path LIKE '${pathString}%' ORDER BY name");
 			}
 			else {
                                 if ($compare_ignores_the != "false") {
                                   if ($letter == "t") {
-                                    $results = jz_db_object_query("SELECT * FROM jz_nodes 
+                                    $results = jz_db_object_query("SELECT * FROM jz_nodes
 				      WHERE level $op $level $t AND path LIKE '${pathString}%'
 				      AND ((name $LIKE 't%' AND name NOT $LIKE 'the %') OR (name $LIKE 'the t%')) ORDER BY name");
                                   } else {
-                                    $results = jz_db_object_query("SELECT * FROM jz_nodes 
+                                    $results = jz_db_object_query("SELECT * FROM jz_nodes
 				      WHERE level $op $level $t AND path LIKE '${pathString}%'
 				      AND (name $LIKE '${letter}%' OR name $LIKE 'the ${letter}%')  ORDER BY name");
                                   }
                                 } else {
-			 	  $results = jz_db_object_query("SELECT * FROM jz_nodes 
+			 	  $results = jz_db_object_query("SELECT * FROM jz_nodes
 				    WHERE level $op $level $t AND path LIKE '${pathString}%'
 				    AND name $LIKE '${letter}%' ORDER BY name");
                                }
@@ -936,30 +936,30 @@
 			// have $results.
 			return $results;
 		}
-	
-	
+
+
 
 		/**
 		* Searches media
-		* 
+		*
 		* @author Ben Dodson
 		* @version 12/26/04
 		* @since 9/21/04
 		*/
 		function search($searchArray2, $type='both', $depth = -1, $limit=0, $op = "and", $metasearch = array(), $exclude = array()) {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$backend;
-		
+
 		  // alias:
 		  if ($type == "tracks") {
 		    $type = "leaves";
 		  }
-		  
+
 		  if ($depth === false) {
 		    $depth = $this->getNaturalDepth();
 		  }
-		  
+
 			// allow strings as well as arrays for searching:
-			if (is_string($searchArray2) && $op != "exact") {	
+			if (is_string($searchArray2) && $op != "exact") {
 				if (stristr($searchArray2,"\"") === false) {
 					if ($searchArray2 == "") {
 						$searchArray = array();
@@ -987,7 +987,7 @@
 			} else {
 				$searchArray = $searchArray2;
 			}
-			
+
 			// exclude array, too:
 			if (is_string($exclude)) {
 				if ($exclude == "") {
@@ -1019,45 +1019,45 @@
 			} else {
 				$excludeArray = $exclude;
 			}
-			
-			
+
+
 			// Now that we have search array, let's jz_db_escape here so we don't have to later.
 			for ($i = 0; $i < sizeof($searchArray); $i++) {
 				$searchArray[$i] = jz_db_escape($searchArray[$i]);
 			}
-			
+
 			// Clean up:
 			$tmp = array();
 			if (is_array($searchArray)) {
 				foreach ($searchArray as $term) {
 					if (!($term == "" || $term == " ")) {
-						$tmp[] = $term; 
+						$tmp[] = $term;
 					}
 				}
 				$searchArray = $tmp;
 			}
-			
+
 			$tmp = array();
 			foreach ($excludeArray as $term) {
 				if (!($term == "" || $term == " ")) {
-					$tmp[] = $term; 
+					$tmp[] = $term;
 				}
 			}
 			$excludeArray = $tmp;
 
 			// INSENSITIVE OPERATION:
 			$INSOP = jz_db_case_insensitive();
-			
+
 			// SEARCH:
 			$constraints = array();
-		
+
 
 			// LYRICS: a different kind of search.
 			if ($type == "lyrics") {
 				if ($this->getLevel() > 0) {
 					$constraints[] = "path LIKE '".jz_db_escape($this->getPath("String"))."/%'";
 				}
-			
+
 				// Level
 				if ($depth < 0) {
 					$lvl = $this->getLevel();
@@ -1066,7 +1066,7 @@
 					$lvl = $this->getLevel() + $depth;
 					$constraints[] = "level = $lvl";
 				}
-			
+
 				if ($op == "exact") {
 					$constraints[] = "lyrics $INSOP '%$searchArray2'%";
 				} else {
@@ -1084,13 +1084,13 @@
 					}
 					$constraints[] = $string;
 				}
-		     
+
 				// TERMS TO EXCLUDE
 				if ($excludeArray != array()) {
 					$string = "(lyrics NOT $INSOP";
 					$string .= " '%$excludeArray[0]%'";
 					for ($i = 1; $i < sizeof($excludeArray); $i++) {
-						$string .= " AND lyrics NOT $INSOP '%$excludeArray[$i]%'";	
+						$string .= " AND lyrics NOT $INSOP '%$excludeArray[$i]%'";
 					}
 					$string .= ")";
 					$constraints[] = $string;
@@ -1108,38 +1108,38 @@
 				if ($limit > 0) {
 					$sql .= " LIMIT $limit";
 				}
-		    
+
 				if (!$link = jz_db_connect())
 					die ("could not connect to database.");
-		    
+
 				$results = jz_db_query($link, $sql);
 				jz_db_close($link);
 				$return = array();
-				
+
 				if ($results === false) {
 					return $return;
 				}
-				
+
 				foreach ($results->data as $row) {
 					$return[] = &new jzMediaTrack(jz_db_unescape($row['path']));
 				}
-				
+
 				return $return;
-			}  
+			}
 
 
 			// MEDIA SEARCH (not lyrics)
 			if ($this->getLevel() > 0) {
 				$constraints[] = "path LIKE '".jz_db_escape($this->getPath("String"))."/%'";
 			}
-			
+
 			// Type
 			if ($type == "leaves") {
 				$constraints[] = "leaf = 'true'";
 			}	else if ($type == "nodes") {
 				$constraints[] = "leaf = 'false'";
 			}
-			
+
 			// Level
 			if ($depth < 0) {
 				$lvl = $this->getLevel();
@@ -1148,7 +1148,7 @@
 				$lvl = $this->getLevel() + $depth;
 				$constraints[] = "level = $lvl";
 			}
-		  
+
 
 			// ID search:
 			if ($type == "id") {
@@ -1188,7 +1188,7 @@
 				$string .= " OR (name $INSOP '%$searchArray[$i]%' AND path NOT $INSOP '%$searchArray[$i]%/%')";
 			      }
 			      $string .= ")";
-			      
+
 			      // Now require the rest to be in the path.
 			      $string .= " AND (path $INSOP";
 			      $string .= " '%$searchArray[0]%'";
@@ -1199,13 +1199,13 @@
 			      $constraints[] = $string;
 			    }
 			  }
-			  
+
 			  // Stuff to exclude:
 			  if ($excludeArray != array()) {
 			    $string = "(path NOT $INSOP";
 			    $string .= " '%$excludeArray[0]%'";
 			    for ($i = 1; $i < sizeof($excludeArray); $i++) {
-			      $string .= " AND path NOT $INSOP '%$excludeArray[$i]%'";	
+			      $string .= " AND path NOT $INSOP '%$excludeArray[$i]%'";
 			    }
 			    $string .= ")";
 			    $constraints[] = $string;
@@ -1215,7 +1215,7 @@
 			if ($constraints == array()) {
 				die("Error: no constraints in search.");
 			}
-			
+
 			$sql = "SELECT path,leaf FROM jz_nodes WHERE";
 			$sql .= " ($constraints[0])";
 			for ($i = 1; $i < sizeof($constraints); $i++) {
@@ -1226,7 +1226,7 @@
 			}
 			if (!$link = jz_db_connect())
 				die ("could not connect to database.");
-				
+
 			$results = jz_db_query($link, $sql);
 			jz_db_close($link);
 			$return = array();
@@ -1234,7 +1234,7 @@
 			if ($results === false) {
 				return $return;
 			}
-			
+
 			for ($i = 0; $i < $results->rows; $i++) {
 				if ($results->data[$i]['leaf'] == "true") {
 				  $me = &new jzMediaTrack(jz_db_unescape($results->data[$i]['path']));
@@ -1250,95 +1250,95 @@
 				  $return[] = $me;
 				}
 			}
-			
+
 			if ($type == "leaves" && $metasearch != array()) {
 				$return = filterSearchResults($return,$metasearch);
 			}
-			
+
 			return $return;
 		}
-		
+
 
 
 		/**
 		* Add this node to the featured list.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
 		*/
 		function addFeatured() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	jz_db_query($link, "UPDATE jz_nodes SET featured = 'true' WHERE path = '$path'");
 		}
-		
+
 		/**
 		* Removes this node from the featured list.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
 		*/
 		function removeFeatured() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	jz_db_query($link, "UPDATE jz_nodes SET featured = 'false' WHERE path = '$path'");
 		}
 
 		/**
 		* Removes this node from the featured list.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
 		*/
 		function isFeatured() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	$results = jz_db_query($link, "SELECT featured FROM jz_nodes WHERE path = '$path'");
                      	if ($results->data[0]['featured'] == "true") { return true; }
                      	else { return false; }
 		}
-		
+
 		/**
 		* Removes this node from the featured list.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
 		*/
 		function getFeatured($distance = -1, $limit = 1) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
-			
+
 			$slash = ($this->getLevel() == 0) ? "" : "/";
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
 			if ($path != "") { $path .= "/"; }
-			
+
 			if ($limit > 0) {
 				$lim = " LIMIT $limit";
 			} else {
 				$lim = "";
 			}
-			
-			
+
+
 			if ($distance <= 0) {
 				$dis = "";
 			}
@@ -1353,91 +1353,91 @@
 
             return jz_db_object_query($query);
 		}
-		
+
 		/**
 		* Returns the 'ptype' of this node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
 		*/
 		function getPType() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
-			if ($this->getLevel() == 0) return "root";				
+
+			if ($this->getLevel() == 0) return "root";
 			if (!$link = jz_db_connect())
                 		die ("could not connect to database.");
-                		
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_query($link, "SELECT ptype FROM jz_nodes WHERE path = '$path'");
 			jz_db_close($link);
             return jz_db_unescape($results->data[0]['ptype']);
 		}
-		
-		
+
+
 		/**
 		* Sets the 'ptype' of this node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
 		*/
 		function setPType($type) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-								
+
 			if (!$link = jz_db_connect())
                 		die ("could not connect to database.");
                 	$ptype = jz_db_escape($ptype);
-                	
+
                 	$path = jz_db_escape($this->getPath("String"));
                 	jz_db_query($link, "UPDATE jz_nodes SET ptype='$type' WHERE path = '$path'");
 		}
-		
+
 		/**
 		* Adds a request.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/2/04
 		* @since 9/2/04
 		*/
 		function addRequest($entry, $comment, $user, $type = "request") {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$entry = jz_db_escape($entry);
 			$comment = jz_db_escape($comment);
 			$user = jz_db_escape($user);
 			$type = jz_db_escape(strtolower($type)); // ...you never know :)
 			$path = jz_db_escape($this->getPath("String"));
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-			
+
 			$res = jz_db_query($link,"SELECT * FROM jz_requests");
 			$num = $res->rows + 1;
 			if (false === jz_db_query($link, "INSERT INTO jz_requests(my_id,entry,comment,my_user,type,path)
                      	                  VALUES($num,'$entry','$comment','$user','$type','$path')")) die(jz_db_error($link));
 		}
-		
-		
+
+
 		/**
 		* Gets the requests
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/2/04
 		* @since 9/2/04
 		*/
 		function getRequests($distance = -1, $type = "all") {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$path = jz_db_escape($this->getPath("String"));
-			
+
 			$type = strtolower($type);
 			if ($type == "all") {
 				$typequery = "";
 			} else {
 				$typequery = "AND type LIKE '$type'";
 			}
-			
+
 			if ($this->getLevel() == 0) {
 			  $slash = '';
 			} else {
@@ -1445,9 +1445,9 @@
 			}
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-			
+
 			$results = jz_db_query($link, "SELECT * FROM jz_requests WHERE path LIKE '${path}${slash}%' $typequery");
-			
+
 			$return = array();
 			foreach ($results->data as $a) {
 				$el = array();
@@ -1457,7 +1457,7 @@
 				$el['user'] = jz_db_unescape($a['my_user']);
 				$el['type'] = jz_db_unescape($a['type']);
 				$el['path'] = jz_db_unescape($a['path']);
-				
+
 				if ($distance <= 0) {
 					$return[] = $el;
 				} else {
@@ -1469,97 +1469,97 @@
 			}
 			return $return;
 		}
-		
-		
+
+
 		/**
 		* Removes request of given $id.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/2/04
 		* @since 9/2/04
 		*/
 		function removeRequest($id) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	if (false === jz_db_query($link, "DELETE FROM jz_requests WHERE my_id=$id")) die(jz_db_error($link));
 		}
-	
-	
+
+
 		/**
 		* Adds link to the given node.
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function addLink ($node) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$parent = jz_db_escape($this->getPath("String"));
 			$type = ($node->isLeaf()) ? 'leaf' : 'node';
 			$path = jz_db_escape($node->getPath("String"));
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-			
+
 			// let's remove it so we don't have duplicates.
 			$this->removeLink($node);
-			
+
 			// now we'll add it.
 			$res = jz_db_query($link,"SELECT * FROM jz_links");
 			$num = $res->rows + 1;
 			if (false === jz_db_query($link, "INSERT INTO jz_links(my_id,parent,path,type)
                      	                  VALUES($num,'$parent','$path','$type')")) die(jz_db_error($link));
-			
+
 		}
-		
+
 		/**
 		* Removes the link to the given node.
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function removeLink ($node) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$parent = jz_db_escape($this->getPath("String"));
 			$type = ($node->isLeaf()) ? 'leaf' : 'node';
 			$path = jz_db_escape($node->getPath("String"));
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-			
+
 			if (false === jz_db_query($link, "DELETE FROM jz_links WHERE parent = '$parent' AND path = '$path' AND type = '$type'")) die(jz_db_error($link));
 		}
-		
-		
+
+
 		/**
 		* Gets the node's links.
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function getLinks($type = 'both') {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			// alias:
 			if ($type == "tracks") {
 				$type = "leaves";
 			}
-			
+
 			$parent = jz_db_escape($this->getPath("String"));
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-			
+
 			if ($type == 'both') {
 				$tstring = "";
 			}
@@ -1569,7 +1569,7 @@
 			if ($type == 'leaves') {
 				$tstring = "AND type = 'leaf'";
 			}
-			
+
 			$results = jz_db_query($link, "SELECT * FROM jz_links WHERE parent = '$parent' $tstring");
 
 			$return = array();
@@ -1583,15 +1583,15 @@
 			}
 			return $return;
 		}
-			
+
 		/**
 		 * Injects a leaf or a node into $this.
 		 * If sizeof($path) > 1, does so 'recursively'
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @version 10/15/04
 		 * @since 10/15/04
-		 */	
+		 */
 		function oldInject($path, $filepath, $type = "leaf") {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$media_dir,$hierarchy;
 
@@ -1602,7 +1602,7 @@
 
 		  if (!$link = jz_db_connect())
 		    die ("could not connect to database.");
-		  
+
 		  if ($type == "track") {
 		    $type = "leaf";
 		  }
@@ -1615,28 +1615,28 @@
 		    $nextpath[] = $head;
 		    $nexttrack = &new jzMediaTrack($nextpath);
 		    $nextnode = &new jzMediaNode($nextpath);
-		    
+
 		    $ptype = findPType($this);
-		    
+
 		    $media_path = "." . $media_dir;
 		    if (file_exists($filepath)) {
 		      $date = filemtime($filepath);
 		    } else {
 		      $date = 0;
-		    }				
-		    
+		    }
+
 		    if (sizeof($path) == 0) {
 		      // just add $next to cache.
 		      $tlevel = $this->getLevel()+1;
 		      $tpath = jz_db_escape(implode("/",$nextpath));
 		      $tfilepath = jz_db_escape($filepath);
 		      $thead = jz_db_escape($head);
-		      
+
 		      $tptype = jz_db_escape($hierarchy[$this->getLevel()]);
 		      if ($tptype == "track") {
 				$tptype = "disk";
 		      }
-		      
+
 		      if ($type == "leaf") {
 				$mid = uniqid("T");
 				$sql = "INSERT INTO jz_nodes(path,ptype,level,name,leaf,date_added,filepath,valid,my_id)";
@@ -1644,7 +1644,7 @@
 				jz_db_query($link,$sql);
 
 				$sql = "INSERT INTO jz_tracks(path,level,name,filepath,valid,my_id) VALUES('$tpath','$tlevel','$thead','$tfilepath','perm','".$mid."')";
-				if (jz_db_query($link,$sql)) {	
+				if (jz_db_query($link,$sql)) {
 			 	 $ppath = jz_db_escape($this->getPath("String"));
 			  	$sql = "UPDATE jz_nodes SET leafcount = leafcount+1 WHERE path = '$ppath'";
 			  	jz_db_query($link,$sql);
@@ -1653,7 +1653,7 @@
 				else {
 			 	 return false;
 				}
-			
+
 		      }
 		      else {
 			// Remember, INSERT will fail if the path already exists.
@@ -1663,9 +1663,9 @@
 			if (jz_db_query($link,$sql)) {
 			  $ppath = jz_db_escape($this->getPath("String"));
 			  $sql = "UPDATE jz_nodes SET nodecount = nodecount+1 WHERE path = '$ppath'";
-			  jz_db_query($link,$sql);	
+			  jz_db_query($link,$sql);
 			}
-			
+
 			return $nextnode;
 		      }
 		    }
@@ -1673,9 +1673,9 @@
 		      $npath = jz_db_escape($nextnode->getPath("String"));
 		      $nlevel = $nextnode->getLevel();
 		      $nhead = jz_db_escape($head);
-		      
+
 		      $nptype = findPType($nextnode);
-		      
+
 		      $sql = "INSERT INTO jz_nodes(path,ptype,level,name,leaf,date_added,valid,my_id)";
 		      $sql .= " VALUES('$npath','$nptype',$nlevel,'$nhead','false','$date','perm','".uniqid("T")."')";
 		      if (jz_db_query($link,$sql)) {
@@ -1685,13 +1685,13 @@
 						} else {
 							$sql = "UPDATE jz_nodes SET nodecount = nodecount+1 WHERE path = '$ppath'";
 						}
-						
-						jz_db_query($link,$sql);	
+
+						jz_db_query($link,$sql);
 		      }
 		      return $nextnode->oldInject($path,$filepath,$type);
 		    }
 		  }
-		}		
+		}
 
 
 		/**
@@ -1706,31 +1706,31 @@
 		**/
 		function getMostDownloaded($type = "nodes", $distance = false, $limit = 10) {
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
-			
+
 			$pathArray = $this->getPath();
 			$level = $this->getLevel();
 			$pathString = jz_db_escape($this->getPath("String"));
 			if ($pathString != "") { $pathString .= "/"; }
-			
+
 			$sql = "SELECT path,leaf FROM jz_nodes";
-						
+
 			if ($distance <= 0) {
 				$sql .= " WHERE level > $level";
 			} else {
 				$level = $level + $distance;
 				$sql .= " WHERE level = $level";
 			}
-			
+
 			$sql .= " AND path LIKE '${pathString}%' and dlcount <> 0";
-			
+
 			if ($type == "tracks" || $type == "leaves") {
 				$sql .= " AND leaf = 'true'";
 			} else if ($type == "nodes") {
 				$sql .= " AND leaf = 'false'";
 			}
-			
+
 			$sql .= " ORDER BY dlcount desc LIMIT $limit";
 
 			return jz_db_object_query($sql);
@@ -1748,31 +1748,31 @@
 		**/
 		function getMostPlayed($type = "nodes", $distance = false, $limit = 10) {
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
-			
+
 			$pathArray = $this->getPath();
 			$level = $this->getLevel();
 			$pathString = jz_db_escape($this->getPath("String"));
 			if ($pathString != "") { $pathString .= "/"; }
-			
+
 			$sql = "SELECT * FROM jz_nodes";
-			
+
 			if ($distance <= 0) {
 				$sql .= " WHERE level > $level";
 			} else {
 				$level = $level + $distance;
 				$sql .= " WHERE level = $level";
 			}
-			
+
 			$sql .= " AND path LIKE '${pathString}%' and playcount <> 0";
-			
+
 			if ($type == "tracks" || $type == "leaves") {
 				$sql .= " AND leaf = 'true'";
 			} else if ($type == "nodes") {
 				$sql .= " AND leaf = 'false'";
 			}
-			
+
 			$sql .= " ORDER BY playcount desc LIMIT $limit";
 
 			return jz_db_object_query($sql);
@@ -1791,14 +1791,14 @@
 		**/
 		function getMostViewed($type = "nodes", $distance = false, $limit = 10) {
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
-			
+
 			$pathArray = $this->getPath();
 			$level = $this->getLevel();
 			$pathString = jz_db_escape($this->getPath("String"));
 			if ($pathString != "") { $pathString .= "/"; }
-			
+
 			$sql = "SELECT * FROM jz_nodes";
 
 			if ($distance <= 0) {
@@ -1807,22 +1807,22 @@
 				$level = $level + $distance;
 				$sql .= " WHERE level = $level";
 			}
-			
+
 			$sql .= " AND path LIKE '${pathString}%' and viewcount <> 0";
-			
+
 			if ($type == "tracks" || $type == "leaves") {
 				$sql .= " AND leaf = 'true'";
 			} else if ($type == "nodes") {
 				$sql .= " AND leaf = 'false'";
 			}
-			
+
 			$sql .= " ORDER BY viewcount desc LIMIT $limit";
 
 			return jz_db_object_query($sql);
 
 		}
 
-		
+
 		/**
 		*
 		* @author Ben Dodson
@@ -1835,14 +1835,14 @@
 		**/
 		function getRecentlyAdded($type = "nodes", $distance = false, $limit = 10) {
 		  if ($distance === false) {
-		    $distance = $this->getNaturalDepth();	
+		    $distance = $this->getNaturalDepth();
 		  }
-		  
+
 		  $pathArray = $this->getPath();
 		  $level = $this->getLevel();
 		  $pathString = jz_db_escape($this->getPath("String"));
 		  if ($pathString != "") { $pathString .= "/"; }
-		  
+
 		  $sql = "SELECT * FROM jz_nodes";
 
 		  if ($distance <= 0) {
@@ -1854,7 +1854,7 @@
 		  }
 
 		  $sql .= " AND path LIKE '${pathString}%'";
-		  
+
 		  if ($type == "tracks" || $type == "leaves") {
 		    $sql .= " AND leaf = 'true'";
 		  } else if ($type == "nodes") {
@@ -1877,14 +1877,14 @@
 		**/
 		function getTopRated($type = "nodes", $distance = false, $limit = 10) {
 		  if ($distance === false) {
-		    $distance = $this->getNaturalDepth();	
+		    $distance = $this->getNaturalDepth();
 		  }
-		  
+
 		  $pathArray = $this->getPath();
 		  $level = $this->getLevel();
 		  $pathString = jz_db_escape($this->getPath("String"));
 		  if ($pathString != "") { $pathString .= "/"; }
-		  
+
 		  $sql = "SELECT path,leaf FROM jz_nodes";
 
 		  if ($distance <= 0) {
@@ -1896,7 +1896,7 @@
 		  }
 
 		  $sql .= " AND path LIKE '${pathString}%' AND rating_val != 0";
-		  
+
 		  if ($type == "tracks" || $type == "leaves") {
 		    $sql .= " AND leaf = 'true'";
 		  } else if ($type == "nodes") {
@@ -1918,19 +1918,19 @@
 		**/
 		function getRecentlyPlayed($type = "nodes", $distance = false, $limit = 10) {
 		  if ($distance === false) {
-		    $distance = $this->getNaturalDepth();	
+		    $distance = $this->getNaturalDepth();
 		  }
-		  
+
 		  $pathArray = $this->getPath();
 		  $level = $this->getLevel();
 		  $pathString = jz_db_escape($this->getPath("String"));
 		  if ($pathString != "") { $pathString .= "/"; }
-		  
+
 		  $sql = "SELECT path,leaf FROM jz_nodes";
 
 		  if (!$link = jz_db_connect())
 		    die ("could not connect to database.");
-		  
+
 		  if ($distance <= 0) {
 		    $sql .= " WHERE level > $level";
 		  }
@@ -1940,7 +1940,7 @@
 		  }
 
 		  $sql .= " AND path LIKE '${pathString}%' AND lastplayed != 0";
-		  
+
 		  if ($type == "tracks" || $type == "leaves") {
 		    $sql .= " AND leaf = 'true'";
 		  } else if ($type == "nodes") {
@@ -1963,63 +1963,63 @@
 		  }
 
 		  $link = jz_db_connect();
-		  
+
 		  $results = jz_db_query($link, "SELECT sum(filesize) FROM jz_tracks WHERE $pathstring filesize != '-' AND filesize > 0");
 		  $stats['total_size'] = $results->data[0][0];
-		  
+
 		  $results = jz_db_query($link, "SELECT sum(length) FROM jz_tracks WHERE $pathstring length != '-' AND length > 0");
 		  $stats['total_length'] = $results->data[0][0];
-		  
+
 		  $results = jz_db_query($link, "SELECT count(*) FROM jz_tracks $fullpathstring");
 		  $stats['total_tracks'] = $tracks = $results->data[0][0];
-		  
+
 		  $results = jz_db_query($link, "SELECT avg(bitrate) FROM jz_tracks WHERE $pathstring bitrate != '-' AND bitrate > 0");
 		  $stats['avg_bitrate'] = round($results->data[0][0],2);
-		  
+
 		  $results = jz_db_query($link, "SELECT avg(length) FROM jz_tracks WHERE $pathstring length != '-' AND length > 0");
 		  $stats['avg_length'] = round($results->data[0][0],0);
 
 
 		  $results = jz_db_query($link, "SELECT avg(filesize) FROM jz_tracks WHERE $pathstring filesize != '-' AND filesize > 0");
 		  $stats['avg_size'] = round($results->data[0][0],2);
-		  
+
 		  $results = jz_db_query($link, "SELECT avg(year) FROM jz_tracks WHERE $pathstring year != '-' AND year > 1000");
 		  $stats['avg_year'] = round($results->data[0][0],2);
-		  
+
 		  $str = "";
 		  // stringize stuff:
 		  $stats['avg_length_str'] = stringize_time($stats['avg_length']);
 		  $stats['total_length_str'] = stringize_time($stats['total_length']);
 		  $stats['total_size_str'] = stringize_size($stats['total_size']);
-		  
+
 		  if (($d = distanceTo('genre',$this)) !== false)
 		    $stats['total_genres'] = $this->getSubNodeCount('nodes',$d);
 		  else
 		    $stats['total_genres'] = 0;
-		  
+
 		  if (($d = distanceTo('artist',$this)) !== false)
 		    $stats['total_artists'] = $this->getSubNodeCount('nodes',$d);
 		  else
 		    $stats['total_artists'] = 0;
-		  
+
 		  if (($d = distanceTo('album',$this)) !== false)
 		    $stats['total_albums'] = $this->getSubNodeCount('nodes',$d);
 		  else
 		    $stats['total_albums'] = 0;
-		  
+
 		  // nodes at track level are disks.
 		  if (($d = distanceTo('track',$this)) !== false)
 		    $stats['total_disks'] = $this->getSubNodeCount('nodes',$d);
 		  else
 		    $stats['total_disks'] = 0;
-		  
+
 		  $this->stats = $stats;
 			return $stats;
 		}
 
 		/**
 		* Removes media from the database.
-		* This is a dangerous function, as it also removes sub-media. 
+		* This is a dangerous function, as it also removes sub-media.
 		*
 		* @author Ben Dodson
 		* @version 7/31/05
@@ -2027,7 +2027,7 @@
 		*/
 		function removeMedia($element) {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-		  
+
 		  if ($element->getLevel() == 0) {
 		    return false;
 		  }
@@ -2044,7 +2044,7 @@
 		  if ($element->isLeaf()) {
 		    jz_db_query($link, "DELETE FROM jz_tracks WHERE path = '${path}'");
 		  } else {
-		    jz_db_query($link, "DELETE FROM jz_tracks WHERE path LIKE '${path}/%'");		    
+		    jz_db_query($link, "DELETE FROM jz_tracks WHERE path LIKE '${path}/%'");
 		    jz_db_query($link,"DELETE FROM jz_nodes WHERE path LIKE '${path}/%'");
 		  }
 		  // Now let's reset our node/leaf counts for the parent.
@@ -2053,7 +2053,7 @@
 		  $res = jz_db_query($link, "SELECT COUNT(*) FROM jz_nodes WHERE leaf = 'true' AND level = ${plvl}+1 AND path LIKE '${parentpath}/%'");
 		  $lcount = $res->data[0][0];
 		  jz_db_query($link, "UPDATE jz_nodes SET leafcount=${lcount} WHERE path = '${parentpath}'");
-		  
+
 		  $res = jz_db_query($link, "SELECT COUNT(*) FROM jz_nodes WHERE leaf = 'false' AND level = ${plvl}+1 AND path LIKE '${parentpath}/%'");
 		  $ncount = $res->data[0][0];
 		  jz_db_query($link, "UPDATE jz_nodes SET nodecount=${ncount} WHERE path = '${parentpath}'");
@@ -2067,7 +2067,7 @@
 		  return;
 		}
 
-		
+
 
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -2078,17 +2078,17 @@
 		/* * * * * * * * * * * * * * * * * * *
 		 *            Overrides              *
 		 * * * * * * * * * * * * * * * * * * */
-		
+
 /**
  * Returns the date the node was added.
- * 
+ *
  * @author Ben Dodson <bdodson@seas.upenn.edu>
  * @version 5/14/2004
  * @since 5/14/2004
  */
 function getDateAdded() {
 	global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-	               		
+
     $path = jz_db_escape($this->getPath("String"));
     $results = jz_db_simple_query("SELECT date_added FROM jz_nodes WHERE path = '$path'");
     return $results['date_added'];
@@ -2161,7 +2161,7 @@ function getID() {
 function setID($id) {
   if (!$link = jz_db_connect())
     die ("could not connect to database.");
-  
+
   $path = jz_db_escape($this->getPath("String"));
   $mid = jz_db_escape($id);
   $res = jz_db_query($link, "UPDATE jz_nodes SET my_id='${mid}' WHERE path = '$path'");
@@ -2169,11 +2169,11 @@ function setID($id) {
     jz_db_close($link);
     return false;
   }
-  
+
   if ($this->isLeaf()) {
     $res = jz_db_query($link, "UPDATE jz_tracks SET my_id='${mid}' WHERE path = '$path'");
   }
-  
+
   $this->myid = $id;
   jz_db_close($link);
   return true;
@@ -2206,36 +2206,36 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the number of times the node has been played.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function getPlayCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (isset($this->playcount)) {
 			  return $this->playcount;
 			}
-	
+
            	$path = jz_db_escape($this->getPath("String"));
            	$results = jz_db_simple_query("SELECT playcount FROM jz_nodes WHERE path = '$path'");
 			$this->playcount = $results['playcount'];
             return $results['playcount'];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's playcount, as well
 		* as the playcount of its parents.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function increasePlayCount() {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$jzUSER;
-      		
+
 		  $path = jz_db_escape($this->getPath("String"));
 			$sql = "UPDATE jz_nodes SET playcount = playcount+1, lastplayed = " . time();
 
@@ -2245,24 +2245,24 @@ function filenameToPath($fp) {
 			$sql .= "('" . $jzUSER->getName()."','" .$this->getID(). "',now())";
 			jz_db_simple_query($sql);
 
-			                     	
+
 			if (sizeof($ar = $this->getPath()) > 0) {
 			  array_pop($ar);
 			  $next = &new jzMediaNode($ar);
 			  $next->increasePlayCount();
 			}
 		}
-	
+
 		/**
 		* Sets the elements playcount.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function setPlayCount($n) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!(is_int($n) || is_numeric($n))) {
 				return false;
 			}
@@ -2271,18 +2271,18 @@ function filenameToPath($fp) {
 		}
 
 
-	
+
        /**
 		* Increments the node's view count
 		*
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 3/15/2005
 		* @since 3/15/2005
 		*/
 		function increaseViewCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE jz_nodes SET viewcount = viewcount+1 WHERE path = '$path'");
 		}
@@ -2290,14 +2290,14 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the number of times the node has been viewed.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 3/15/2005
 		* @since 3/15/2005
 		*/
 		function getViewCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db__simple_query("SELECT viewcount FROM jz_nodes WHERE path = '$path'");
             return $results['viewcount'];
@@ -2305,7 +2305,7 @@ function filenameToPath($fp) {
 
        /**
 		* Sets the elements viewcount
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 8/11/05
 		* @since 8/11/05
@@ -2322,39 +2322,39 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the number of times the node has been downloaded.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function getDownloadCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-					       
+
 			if (isset($this->dlcount)) {
 			  return $this->dlcount;
 			}
-	
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT dlcount FROM jz_nodes WHERE path = '$path'");
 			$this->dlcount = $results['dlcount'];
         	return $results['dlcount'];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's download count, as well
 		* as the count of its parents.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function increaseDownloadCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			 		
+
             $path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE jz_nodes SET dlcount = dlcount+1 WHERE path = '$path'");
-                     	
+
             if (sizeof($ar = $this->getPath()) > 0) {
             	array_pop($ar);
                 $next = &new jzMediaNode($ar);
@@ -2364,14 +2364,14 @@ function filenameToPath($fp) {
 
 		/**
 		* Sets the elements download count.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function setDownloadCount($n) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!(is_int($n) || is_numeric($n))) {
 				return false;
 			}
@@ -2381,22 +2381,22 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the main art for the node.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/04
 		* @since 5/14/04
 		*/
 		function getMainArt($dimensions = false, $createBlank = true, $imageType="audio") {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$jzSERVICES;
-		  
+
 		  $path = jz_db_escape($this->getPath("String"));
 		  $results = jz_db_simple_query("SELECT main_art FROM jz_nodes WHERE path = '$path'");
-		  
+
 		  if ($results['main_art']) {
 		    // Now let's make create the resized art IF needed
 		    $this->artpath = jz_db_unescape($results['main_art']);
 		    return parent::getMainArt($dimensions,$createBlank, $imageType);
-		  } else if ($this->isLeaf() === false) { 
+		  } else if ($this->isLeaf() === false) {
 		    // Now let's see if we can get art from the tags
 		    $tracks = $this->getSubNodes("tracks");
 		    if (count($tracks) > 0){
@@ -2415,17 +2415,17 @@ function filenameToPath($fp) {
 		  // inheritance is sweet.
 		  return parent::getMainArt($dimensions,$createBlank, $imageType);
 		}
-		
+
 		/**
 		* Sets the node's main art
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
 		*/
 		function addMainArt($image) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$image = jz_db_escape($image);
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("UPDATE jz_nodes SET main_art = '$image' WHERE path = '$path'");
@@ -2435,20 +2435,20 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the miscellaneous artwork attached to the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function getRandomArt() {}
-		
-		
+
+
 		/**
 		* Adds misc. artwork to the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function addRandomArt($image) {}
 
@@ -2456,33 +2456,33 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns a brief description for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
 		*/
 		function getShortDescription() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-					
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT descr FROM jz_nodes WHERE path = '$path'");
             if (isset($results['descr'])) {
 	        	return jz_db_unescape($results['descr']);
 	        } else { return false; }
 		}
-		
-		
+
+
 		/**
 		* Adds a brief description.
-		* 
-		* @author Ben Dodson 
-		* @version 5/21/04 
+		*
+		* @author Ben Dodson
+		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function addShortDescription($text) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
-			$text = jz_db_escape($text); 		
+
+			$text = jz_db_escape($text);
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("UPDATE jz_nodes SET descr = '$text' WHERE path = '$path'");
 		}
@@ -2490,14 +2490,14 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the description of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
 		*/
 		function getDescription() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (isset($this->longdesc)) {
 			  $desc = $this->longdesc;
 				while (substr($desc,0,4) == "<br>" or substr($desc,0,6) == "<br />"){
@@ -2510,12 +2510,12 @@ function filenameToPath($fp) {
 				}
 				return $desc;
 			}
-    		
+
 			$path = jz_db_escape($this->getPath("String"));
 			$results = jz_db_simple_query("SELECT longdesc FROM jz_nodes WHERE path = '$path'");
 
 			if ($results['longdesc']) {
-				
+
 				$desc = jz_db_unescape($results['longdesc']);
 				while (substr($desc,0,4) == "<br>" or substr($desc,0,6) == "<br />"){
 					if (substr($desc,0,4) == "<br>"){
@@ -2527,22 +2527,22 @@ function filenameToPath($fp) {
 				}
 				$this->longdesc = $desc;
 				return $desc;
-			} else { 
+			} else {
 				$this->longdesc = false;
-				return false; 
+				return false;
 			}
 		}
-		
+
 		/**
 		* Adds a description.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function addDescription($text) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$text = jz_db_escape($text);
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("UPDATE jz_nodes SET longdesc = '$text' WHERE path = '$path'");
@@ -2551,37 +2551,37 @@ function filenameToPath($fp) {
 
 		/**
 		* Gets the overall rating for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
 		*/
 		function getRating() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-				
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT rating_val FROM jz_nodes WHERE path = '$path'");
             return $results['rating_val'];
 		}
-		
-		
+
+
 		/**
 		* Add a rating for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function addRating($rating, $weight = false) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $rating_weight, $jzUSER;
-			
+
 			if ($weight === false) {
 			  $weight = $jzUSER->getSetting('ratingweight');
 			}
 
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     	
+
 			$addRating = $rating * $weight;
 			$addWeight = $weight;
 
@@ -2596,7 +2596,7 @@ function filenameToPath($fp) {
 
 			$results = jz_db_query($link, "UPDATE jz_nodes SET rating=rating+$addRating,
                                                      rating_count=rating_count+$addWeight, rating_val=$rval WHERE path = '$path'");
-		
+
 			if ($rating_weight > 0 && $this->getLevel() > 0) {
 				$path = $this->getPath();
 				array_pop($path);
@@ -2605,17 +2605,17 @@ function filenameToPath($fp) {
 			}
 			jz_db_close($link);
 		}
-		
+
 		/**
 		* Gets the number of people who have rated this element
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/11/04
 		* @since 6/11/04
 		*/
 		function getRatingCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT rating_count FROM jz_nodes WHERE path = '$path'");
             return $results['rating_count'];
@@ -2624,21 +2624,21 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the node's discussion
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
 		*/
 		function getDiscussion() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
-                     	
+
                      	$results = jz_db_query($link, "SELECT * FROM jz_discussions WHERE path LIKE '$path' ORDER BY my_id");
-                     	
+
                      	$discussion = array();
                      	$i = 0;
                      	foreach ($results->data as $key => $data) {
@@ -2646,7 +2646,7 @@ function filenameToPath($fp) {
                      		$discussion[$i]['comment'] = jz_db_unescape($data['comment']);
 				$discussion[$i]['id'] = $data['my_id'];
 				$discussion[$i]['date'] = $data['date_added'];
-                     		
+
                      		$i++;
                      	}
                      	jz_db_close($link);
@@ -2656,21 +2656,21 @@ function filenameToPath($fp) {
 
 		/**
 		* Adds a blurb to the node's discussion
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 8/11/05
 		* @since 5/15/04
-		*/				
+		*/
 		function addDiscussion($text,$username) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	$text = jz_db_escape($text);
                      	$username = jz_db_escape($username);
-                     	
+
 			$res = jz_db_query($link,"SELECT * FROM jz_discussions");
 			$num = $res->rows + 1;
                      	if (false === jz_db_query($link, "INSERT INTO jz_discussions(my_id,path,my_user,comment,date_added)
@@ -2679,7 +2679,7 @@ function filenameToPath($fp) {
 		}
 
 
-		
+
         /**
 		 * Adds a full discussion,
 		 * given from $element->getDiscussion();
@@ -2690,19 +2690,19 @@ function filenameToPath($fp) {
 		 **/
          function addFullDiscussion($disc) {
 		   global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-		   
+
 		   $path = jz_db_escape($this->getPath("String"));
 		   foreach ($disc as $entry) {
 		     $user = jz_db_escape($entry['user']);
 		     $comment = jz_db_escape($entry['comment']);
 		     $id = $entry['id'];
 		     $date = $entry['date'];
-		     
+
 		     jz_db_simple_query("INSERT INTO jz_discussions(my_id,path,user,comment,date_added)
                      	                  VALUES($id,'$path','$user','$comment',$date)");
-		   }	     
+		   }
 		 }
-		
+
 
 
 
@@ -2711,14 +2711,14 @@ function filenameToPath($fp) {
 		* if it is a leaf, returns the info from getMeta[year]
 		* else, returns the first matching year it finds.
 		* Entry is '-' for no year.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function getYear() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (isset($this->year)) {
 			  return $this->year;
 			}
@@ -2728,31 +2728,31 @@ function filenameToPath($fp) {
             	$results = jz_db_simple_query("SELECT year FROM jz_tracks WHERE path = '$path'");
 				$this->year = $results['year'];
 	            return $results['year'];
-            } else { 
+            } else {
 	        	$results = jz_db_simple_query( "SELECT year FROM jz_tracks WHERE path LIKE '${path}/%' AND year != '-' ORDER BY path LIMIT 1");
 	            if (false !== $results) {
 					$this->year = $results['year'];
 					return $results['year'];
-	       		} else { 
+	       		} else {
 					$this->year = "-";
-					return "-"; 
+					return "-";
 				}
            }
 		}
-		
-		
+
+
 		/**
 		* Returns a string that points to the location
 		* where this node's non-jinzora-specific data should be stored
 		* (album art, text, etc.)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function getDataPath() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $allow_filesystem_modify;
-									
+
 			if ($allow_filesystem_modify) {
 				$path = jz_db_escape($this->getPath("String"));
                 $results = jz_db_simple_query("SELECT filepath FROM jz_nodes WHERE path = '$path'");
@@ -2768,51 +2768,51 @@ function filenameToPath($fp) {
 		* Returns a string that points to the location
 		* where this node's non-jinzora-specific data should be stored
 		* (album art, text, etc.)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function getFilePath() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $allow_filesystem_modify;
-										
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT filepath FROM jz_nodes WHERE path = '$path'");
            	return jz_db_unescape($results['filepath']);
 		}
-		
-		
+
+
 		function setFilePath($mypath) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $allow_filesystem_modify;
-	
+
             $path = jz_db_escape($this->getPath("String"));
             $mypath = jz_db_escape($mypath);
             $results = jz_db_simple_query("UPDATE jz_nodes SET filepath = '$mypath' WHERE path = '$path'");
 		}
-		
-		
+
+
 		/**
 		* Marks this element as hidden.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function hide() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-	
+
             $path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE nodes SET hidden='true' WHERE path = '$path'");
-                     	
+
             if ($this->isLeaf()) {
             	jz_db_simple_query("UPDATE jz_tracks SET hidden='true' WHERE path = '$path'");
-            }	
+            }
 		}
 
 
 		/**
 		* Unhides the element
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
@@ -2822,13 +2822,13 @@ function filenameToPath($fp) {
 
             $path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE jz_nodes SET hidden='false' WHERE path = '$path'");
-                     	
+
             if ($this->isLeaf()) {
             	jz_db_simple_query("UPDATE jz_tracks SET hidden='false' WHERE path = '$path'");
             }
 		}
 		// end global_include: overrides.php
-		
+
 	}
 
 	class jzRawMediaTrack extends jzMediaTrackClass {
@@ -2836,7 +2836,7 @@ function filenameToPath($fp) {
 		var $title;
 		/**
 		* Constructor wrapper for jzMediaTrack.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/11/04
 		* @since 5/11/04
@@ -2845,25 +2845,25 @@ function filenameToPath($fp) {
 			$this->title = false;
 			$this->_constructor($par,$mode);
 		}
-		
-		
+
+
 		/**
 		* Returns the track's name (not filename)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/	
+		*/
 		function getName() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!isNothing($this->title)) {
 			  return $this->title;
 			}
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	$results = jz_db_query($link, "SELECT trackname FROM jz_tracks WHERE path LIKE '$path'");
                      	$name = jz_db_unescape($results->data[0]['trackname']);
@@ -2873,28 +2873,28 @@ function filenameToPath($fp) {
 			  return $name;
 			}
 		}
-		
-		
+
+
 		/**
 		* Returns the track's complete, useable file path.
 		* $target is one of: user|host|general
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/12/04
 		* @since 5/21/04
-		*/		
+		*/
 		function getFileName($target = "user") {
-		
+
 			if ($this->playpath === false || $this->playpath == "") {
 				// Let's check the DB connection?
 				if (!$link = jz_db_connect())
 					die ("could not connect to database.");
-			
+
 				$path = jz_db_escape($this->getPath("String"));
 				$results = jz_db_query($link, "SELECT filepath FROM jz_nodes WHERE path LIKE '$path'");
 				jz_db_close($link);
 				$string = jz_db_unescape($results->data[0]['filepath']);
-				
+
 				if ($string == "" || $string == false) {
 					// ERROR?
 					return false;
@@ -2922,16 +2922,16 @@ function filenameToPath($fp) {
 		* album
 		* lyrics
 		* type [extension]
-		* 
+		*
 		* These are taken mostly from the ID3.
 		*
 		* @author
 		* @version
 		* @since
-		*/		
+		*/
 		function getMeta($mode = "cache") {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$media_dirs;
-		
+
 			if ($mode == "cache" && $this->meta != array()) {
 				return $this->meta;
 			}
@@ -2939,11 +2939,11 @@ function filenameToPath($fp) {
 				$meta = array();
 				if (!$link = jz_db_connect())
 					die ("could not connect to database.");
-					
+
 				$path = jz_db_escape($this->getPath("String"));
-				$results = jz_db_query($link, "SELECT jz_tracks.*,jz_nodes.name,jz_nodes.descr FROM jz_tracks,jz_nodes 
+				$results = jz_db_query($link, "SELECT jz_tracks.*,jz_nodes.name,jz_nodes.descr FROM jz_tracks,jz_nodes
 				WHERE jz_nodes.path = '$path' AND jz_nodes.path = jz_tracks.path");
-				
+
 				$meta['title'] = jz_db_unescape($results->data[0]['trackname']);
 				$meta['bitrate'] = jz_db_unescape($results->data[0]['bitrate']);
 				$meta['frequency'] = jz_db_unescape($results->data[0]['frequency']);
@@ -2958,7 +2958,7 @@ function filenameToPath($fp) {
 				$meta['album'] = jz_db_unescape($results->data[0]['album']);
 				$meta['lyrics'] = jz_db_unescape($results->data[0]['lyrics']);
 				$meta['type'] = jz_db_unescape($results->data[0]['extension']);
-				
+
 				// Now let's get the ID
 				$pArr = $this->getPath();
 				unset($pArr[count($pArr)-1]);
@@ -2966,7 +2966,7 @@ function filenameToPath($fp) {
 				if (is_file($media_dirs. "/". $path. "/album.id")){
 					$meta['id'] =  file_get_contents($media_dirs. "/". $path. "/album.id");
 				}
-				
+
 				if (isNothing($meta['type'])) {
 				  $meta = parent::getMeta("file");
 				  $this->setMeta($meta,"cache");
@@ -2988,20 +2988,20 @@ function filenameToPath($fp) {
 				return parent::getMeta($mode);
 			}
 		}
-		
+
 		/**
 		* Sets the track's meta information.
 		* $meta is an array of meta fields to set.
 		* $mode specifies where to update the meta,
 		* false means do it in the cache and in the id3.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/13/04
 		* @since 10/13/04
-		*/		
+		*/
 		function setMeta($meta, $mode = false) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if ($mode == false) {
 				$this->setMeta($meta,"file");
 				$this->setMeta($meta,"cache");
@@ -3009,11 +3009,11 @@ function filenameToPath($fp) {
 			if ($mode == "cache") {
 				if (!$link = jz_db_connect())
                      			die ("could not connect to database.");
-			
+
 				$slashedFilePath = jz_db_escape($this->getPath("String"));
 				$updatesql = "UPDATE jz_tracks SET valid = 'true'";
-				
-				
+
+
 				if (isset($meta['title']))
 					$updatesql .= ", trackname = '" . jz_db_escape($meta['title']) ."'";
 	                     	if (isset($meta['bitrate']))
@@ -3024,7 +3024,7 @@ function filenameToPath($fp) {
 	                     		 $updatesql .= ", filesize = '" . jz_db_escape($meta['size']) . "'";
 	                     	if (isset($meta['year']))
 	                     		 $updatesql .= ", year = '" . jz_db_escape($meta['year']) . "'";
-	                     	
+
 	                     	if (isset($meta['length']))
 	                     		$updatesql .= ", length = '" . jz_db_escape($meta['length']) . "'";
 	                     	if (isset($meta['number']))
@@ -3039,18 +3039,18 @@ function filenameToPath($fp) {
 	                     		$updatesql .= ", lyrics = '" . jz_db_escape($meta['lyrics']) . "'";
 	                     	if (isset($meta['type']))
 	                     		$updatesql .= ", extension = '" . jz_db_escape($meta['type']) . "'";
-						
+
 				$updatesql .= " WHERE path LIKE '$slashedFilePath'";
 				jz_db_query($link,$updatesql);
-				
-				
-				
-				$updatesql = "UPDATE jz_nodes SET valid = 'true'";								
+
+
+
+				$updatesql = "UPDATE jz_nodes SET valid = 'true'";
 				if (isset($meta['filename']))
 	                     		 $updatesql .= ", name = '" . jz_db_escape($meta['filename']) . "'";
 	                    	if (isset($meta['comment']))
-	                     		$updatesql .= ", descr = '" . jz_db_escape($meta['comment']) . "'";		
-	                     		
+	                     		$updatesql .= ", descr = '" . jz_db_escape($meta['comment']) . "'";
+
 				$updatesql .= " WHERE path LIKE '$slashedFilePath'";
 				jz_db_query($link,$updatesql);
 
@@ -3062,38 +3062,38 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the track's lyrics.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function getLyrics() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	$results = jz_db_query($link, "SELECT lyrics FROM jz_tracks WHERE path LIKE '$path'");
                      	return jz_db_unescape($results->data[0]['lyrics']);
 		}
-		
+
 		//////////////////////////////////////
 		// begin global_include: overrides.php
 		/* * * * * * * * * * * * * * * * * * *
 		 *            Overrides              *
 		 * * * * * * * * * * * * * * * * * * */
-		
+
 /**
  * Returns the date the node was added.
- * 
+ *
  * @author Ben Dodson <bdodson@seas.upenn.edu>
  * @version 5/14/2004
  * @since 5/14/2004
  */
 function getDateAdded() {
 	global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-	               		
+
     $path = jz_db_escape($this->getPath("String"));
     $results = jz_db_simple_query("SELECT date_added FROM jz_nodes WHERE path = '$path'");
     return $results['date_added'];
@@ -3166,7 +3166,7 @@ function getID() {
 function setID($id) {
   if (!$link = jz_db_connect())
     die ("could not connect to database.");
-  
+
   $path = jz_db_escape($this->getPath("String"));
   $mid = jz_db_escape($id);
   $res = jz_db_query($link, "UPDATE jz_nodes SET my_id='${mid}' WHERE path = '$path'");
@@ -3174,11 +3174,11 @@ function setID($id) {
     jz_db_close($link);
     return false;
   }
-  
+
   if ($this->isLeaf()) {
     $res = jz_db_query($link, "UPDATE jz_tracks SET my_id='${mid}' WHERE path = '$path'");
   }
-  
+
   $this->myid = $id;
   jz_db_close($link);
   return true;
@@ -3211,41 +3211,41 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the number of times the node has been played.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function getPlayCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (isset($this->playcount)) {
 			  return $this->playcount;
 			}
-	
+
            	$path = jz_db_escape($this->getPath("String"));
            	$results = jz_db_simple_query("SELECT playcount FROM jz_nodes WHERE path = '$path'");
 			$this->playcount = $results['playcount'];
             return $results['playcount'];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's playcount, as well
 		* as the playcount of its parents.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function increasePlayCount() {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$jzUSER;
-      		
+
             $path = jz_db_escape($this->getPath("String"));
 			$sql = "UPDATE jz_nodes SET playcount = playcount+1, lastplayed = " . time();
 
             jz_db_simple_query("$sql  WHERE path = '$path'");
-			                     	
+
 	    $sql = "INSERT INTO jz_playcounts VALUES ";
 	    $sql .= "('" . $jzUSER->getName()."','" .$this->getID(). "',now())";
 	    jz_db_simple_query($sql);
@@ -3256,17 +3256,17 @@ function filenameToPath($fp) {
 				$next->increasePlayCount();
             }
 		}
-	
+
 		/**
 		* Sets the elements playcount.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function setPlayCount($n) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!(is_int($n) || is_numeric($n))) {
 				return false;
 			}
@@ -3275,18 +3275,18 @@ function filenameToPath($fp) {
 		}
 
 
-	
+
        /**
 		* Increments the node's view count
 		*
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 3/15/2005
 		* @since 3/15/2005
 		*/
 		function increaseViewCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE jz_nodes SET viewcount = viewcount+1 WHERE path = '$path'");
 		}
@@ -3294,14 +3294,14 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the number of times the node has been viewed.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 3/15/2005
 		* @since 3/15/2005
 		*/
 		function getViewCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db__simple_query("SELECT viewcount FROM jz_nodes WHERE path = '$path'");
             return $results['viewcount'];
@@ -3309,7 +3309,7 @@ function filenameToPath($fp) {
 
        /**
 		* Sets the elements viewcount
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 8/11/05
 		* @since 8/11/05
@@ -3326,39 +3326,39 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the number of times the node has been downloaded.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function getDownloadCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-					       
+
 			if (isset($this->dlcount)) {
 			  return $this->dlcount;
 			}
-	
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT dlcount FROM jz_nodes WHERE path = '$path'");
 			$this->dlcount = $results['dlcount'];
         	return $results['dlcount'];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's download count, as well
 		* as the count of its parents.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function increaseDownloadCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			 		
+
             $path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE jz_nodes SET dlcount = dlcount+1 WHERE path = '$path'");
-                     	
+
             if (sizeof($ar = $this->getPath()) > 0) {
             	array_pop($ar);
                 $next = &new jzMediaNode($ar);
@@ -3368,14 +3368,14 @@ function filenameToPath($fp) {
 
 		/**
 		* Sets the elements download count.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/2004
 		* @since 5/14/2004
 		*/
 		function setDownloadCount($n) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!(is_int($n) || is_numeric($n))) {
 				return false;
 			}
@@ -3385,22 +3385,22 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the main art for the node.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 5/14/04
 		* @since 5/14/04
 		*/
 		function getMainArt($dimensions = false, $createBlank = true, $imageType="audio") {
 		  global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db,$jzSERVICES;
-		  
+
 		  $path = jz_db_escape($this->getPath("String"));
 		  $results = jz_db_simple_query("SELECT main_art FROM jz_nodes WHERE path = '$path'");
-		  
+
 		  if ($results['main_art']) {
 		    // Now let's make create the resized art IF needed
 		    $this->artpath = jz_db_unescape($results['main_art']);
 		    return parent::getMainArt($dimensions,$createBlank, $imageType);
-		  } else if ($this->isLeaf() === false) { 
+		  } else if ($this->isLeaf() === false) {
 		    // Now let's see if we can get art from the tags
 		    $tracks = $this->getSubNodes("tracks");
 		    if (count($tracks) > 0){
@@ -3419,17 +3419,17 @@ function filenameToPath($fp) {
 		  // inheritance is sweet.
 		  return parent::getMainArt($dimensions,$createBlank, $imageType);
 		}
-		
+
 		/**
 		* Sets the node's main art
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
 		*/
 		function addMainArt($image) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$image = jz_db_escape($image);
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("UPDATE jz_nodes SET main_art = '$image' WHERE path = '$path'");
@@ -3439,20 +3439,20 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the miscellaneous artwork attached to the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function getRandomArt() {}
-		
-		
+
+
 		/**
 		* Adds misc. artwork to the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function addRandomArt($image) {}
 
@@ -3460,33 +3460,33 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns a brief description for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
 		*/
 		function getShortDescription() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-					
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT descr FROM jz_nodes WHERE path = '$path'");
             if (isset($results['descr'])) {
 	        	return jz_db_unescape($results['descr']);
 	        } else { return false; }
 		}
-		
-		
+
+
 		/**
 		* Adds a brief description.
-		* 
-		* @author Ben Dodson 
-		* @version 5/21/04 
+		*
+		* @author Ben Dodson
+		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function addShortDescription($text) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
-			$text = jz_db_escape($text); 		
+
+			$text = jz_db_escape($text);
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("UPDATE jz_nodes SET descr = '$text' WHERE path = '$path'");
 		}
@@ -3494,14 +3494,14 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the description of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
 		*/
 		function getDescription() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (isset($this->longdesc)) {
 			  $desc = $this->longdesc;
 				while (substr($desc,0,4) == "<br>" or substr($desc,0,6) == "<br />"){
@@ -3514,12 +3514,12 @@ function filenameToPath($fp) {
 				}
 				return $desc;
 			}
-    		
+
 			$path = jz_db_escape($this->getPath("String"));
 			$results = jz_db_simple_query("SELECT longdesc FROM jz_nodes WHERE path = '$path'");
 
 			if ($results['longdesc']) {
-				
+
 				$desc = jz_db_unescape($results['longdesc']);
 				while (substr($desc,0,4) == "<br>" or substr($desc,0,6) == "<br />"){
 					if (substr($desc,0,4) == "<br>"){
@@ -3531,22 +3531,22 @@ function filenameToPath($fp) {
 				}
 				$this->longdesc = $desc;
 				return $desc;
-			} else { 
+			} else {
 				$this->longdesc = false;
-				return false; 
+				return false;
 			}
 		}
-		
+
 		/**
 		* Adds a description.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function addDescription($text) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			$text = jz_db_escape($text);
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("UPDATE jz_nodes SET longdesc = '$text' WHERE path = '$path'");
@@ -3555,37 +3555,37 @@ function filenameToPath($fp) {
 
 		/**
 		* Gets the overall rating for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
 		*/
 		function getRating() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-				
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT rating_val FROM jz_nodes WHERE path = '$path'");
             return $results['rating_val'];
 		}
-		
-		
+
+
 		/**
 		* Add a rating for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function addRating($rating, $weight = false) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $rating_weight, $jzUSER;
-			
+
 			if ($weight === false) {
 			  $weight = $jzUSER->getSetting('ratingweight');
 			}
 
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     	
+
 			$addRating = $rating * $weight;
 			$addWeight = $weight;
 
@@ -3600,7 +3600,7 @@ function filenameToPath($fp) {
 
 			$results = jz_db_query($link, "UPDATE jz_nodes SET rating=rating+$addRating,
                                                      rating_count=rating_count+$addWeight, rating_val=$rval WHERE path = '$path'");
-		
+
 			if ($rating_weight > 0 && $this->getLevel() > 0) {
 				$path = $this->getPath();
 				array_pop($path);
@@ -3609,17 +3609,17 @@ function filenameToPath($fp) {
 			}
 			jz_db_close($link);
 		}
-		
+
 		/**
 		* Gets the number of people who have rated this element
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/11/04
 		* @since 6/11/04
 		*/
 		function getRatingCount() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT rating_count FROM jz_nodes WHERE path = '$path'");
             return $results['rating_count'];
@@ -3628,21 +3628,21 @@ function filenameToPath($fp) {
 
 		/**
 		* Returns the node's discussion
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
 		*/
 		function getDiscussion() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
-                     	
+
                      	$results = jz_db_query($link, "SELECT * FROM jz_discussions WHERE path LIKE '$path' ORDER BY my_id");
-                     	
+
                      	$discussion = array();
                      	$i = 0;
                      	foreach ($results->data as $key => $data) {
@@ -3650,7 +3650,7 @@ function filenameToPath($fp) {
                      		$discussion[$i]['comment'] = jz_db_unescape($data['comment']);
 				$discussion[$i]['id'] = $data['my_id'];
 				$discussion[$i]['date'] = $data['date_added'];
-                     		
+
                      		$i++;
                      	}
                      	jz_db_close($link);
@@ -3660,21 +3660,21 @@ function filenameToPath($fp) {
 
 		/**
 		* Adds a blurb to the node's discussion
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 8/11/05
 		* @since 5/15/04
-		*/				
+		*/
 		function addDiscussion($text,$username) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (!$link = jz_db_connect())
                      		die ("could not connect to database.");
-                     		
+
                      	$path = jz_db_escape($this->getPath("String"));
                      	$text = jz_db_escape($text);
                      	$username = jz_db_escape($username);
-                     	
+
 			$res = jz_db_query($link,"SELECT * FROM jz_discussions");
 			$num = $res->rows + 1;
                      	if (false === jz_db_query($link, "INSERT INTO jz_discussions(my_id,path,my_user,comment,date_added)
@@ -3683,7 +3683,7 @@ function filenameToPath($fp) {
 		}
 
 
-		
+
         /**
 		 * Adds a full discussion,
 		 * given from $element->getDiscussion();
@@ -3694,19 +3694,19 @@ function filenameToPath($fp) {
 		 **/
          function addFullDiscussion($disc) {
 		   global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-		   
+
 		   $path = jz_db_escape($this->getPath("String"));
 		   foreach ($disc as $entry) {
 		     $user = jz_db_escape($entry['user']);
 		     $comment = jz_db_escape($entry['comment']);
 		     $id = $entry['id'];
 		     $date = $entry['date'];
-		     
+
 		     jz_db_simple_query("INSERT INTO jz_discussions(my_id,path,user,comment,date_added)
                      	                  VALUES($id,'$path','$user','$comment',$date)");
-		   }	     
+		   }
 		 }
-		
+
 
 
 
@@ -3715,14 +3715,14 @@ function filenameToPath($fp) {
 		* if it is a leaf, returns the info from getMeta[year]
 		* else, returns the first matching year it finds.
 		* Entry is '-' for no year.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/		
+		*/
 		function getYear() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-			
+
 			if (isset($this->year)) {
 			  return $this->year;
 			}
@@ -3732,31 +3732,31 @@ function filenameToPath($fp) {
             	$results = jz_db_simple_query("SELECT year FROM jz_tracks WHERE path = '$path'");
 				$this->year = $results['year'];
 	            return $results['year'];
-            } else { 
+            } else {
 	        	$results = jz_db_simple_query( "SELECT year FROM jz_tracks WHERE path LIKE '${path}/%' AND year != '-' ORDER BY path LIMIT 1");
 	            if (false !== $results) {
 					$this->year = $results['year'];
 					return $results['year'];
-	       		} else { 
+	       		} else {
 					$this->year = "-";
-					return "-"; 
+					return "-";
 				}
            }
 		}
-		
-		
+
+
 		/**
 		* Returns a string that points to the location
 		* where this node's non-jinzora-specific data should be stored
 		* (album art, text, etc.)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function getDataPath() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $allow_filesystem_modify;
-									
+
 			if ($allow_filesystem_modify) {
 				$path = jz_db_escape($this->getPath("String"));
                 $results = jz_db_simple_query("SELECT filepath FROM jz_nodes WHERE path = '$path'");
@@ -3772,51 +3772,51 @@ function filenameToPath($fp) {
 		* Returns a string that points to the location
 		* where this node's non-jinzora-specific data should be stored
 		* (album art, text, etc.)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function getFilePath() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $allow_filesystem_modify;
-										
+
             $path = jz_db_escape($this->getPath("String"));
             $results = jz_db_simple_query("SELECT filepath FROM jz_nodes WHERE path = '$path'");
            	return jz_db_unescape($results['filepath']);
 		}
-		
-		
+
+
 		function setFilePath($mypath) {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db, $allow_filesystem_modify;
-	
+
             $path = jz_db_escape($this->getPath("String"));
             $mypath = jz_db_escape($mypath);
             $results = jz_db_simple_query("UPDATE jz_nodes SET filepath = '$mypath' WHERE path = '$path'");
 		}
-		
-		
+
+
 		/**
 		* Marks this element as hidden.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function hide() {
 			global $sql_type,$sql_pw,$sql_usr,$sql_socket,$sql_db;
-	
+
             $path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE nodes SET hidden='true' WHERE path = '$path'");
-                     	
+
             if ($this->isLeaf()) {
             	jz_db_simple_query("UPDATE jz_tracks SET hidden='true' WHERE path = '$path'");
-            }	
+            }
 		}
 
 
 		/**
 		* Unhides the element
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
@@ -3826,7 +3826,7 @@ function filenameToPath($fp) {
 
             $path = jz_db_escape($this->getPath("String"));
             jz_db_simple_query("UPDATE jz_nodes SET hidden='false' WHERE path = '$path'");
-                     	
+
             if ($this->isLeaf()) {
             	jz_db_simple_query("UPDATE jz_tracks SET hidden='false' WHERE path = '$path'");
             }

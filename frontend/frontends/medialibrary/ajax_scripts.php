@@ -5,7 +5,7 @@ function submitForm(form, url) {
       echo 'form.submit();';
     } else {
 ?>
-      ajax_submit_form(form, url, maindiv_cb); 
+      ajax_submit_form(form, url, maindiv_cb);
 <?php
     }
 ?>

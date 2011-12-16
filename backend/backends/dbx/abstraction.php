@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 /**
- * - JINZORA | Web-based Media Streamer -  
- * 
- * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
- * (but can be used for any media file that can stream from HTTP). 
- * Jinzora can be integrated into a CMS site, run as a standalone application, 
+ * - JINZORA | Web-based Media Streamer -
+ *
+ * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+ * (but can be used for any media file that can stream from HTTP).
+ * Jinzora can be integrated into a CMS site, run as a standalone application,
  * or integrated into any PHP website.  It is released under the GNU GPL.
- * 
+ *
  * - Resources -
  * - Jinzora Author: Ross Carlson <ross@jasbone.com>
  * - Web: http://www.jinzora.org
- * - Documentation: http://www.jinzora.org/docs	
+ * - Documentation: http://www.jinzora.org/docs
  * - Support: http://www.jinzora.org/forum
  * - Downloads: http://www.jinzora.org/downloads
  * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
- * 
+ *
  * - Contributors -
  * Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
- * 
+ *
  * - Code Purpose -
  * This is the media backend for the database adaptor.
  *
@@ -28,7 +28,7 @@
 
 function jz_db_connect() {
   global $sql_type, $sql_pw, $sql_socket, $sql_db, $sql_usr;
-  
+
   switch ($sql_type) {
   case "DBX_MSSQL":
     $sqlt = DBX_MSSQL;
@@ -64,7 +64,7 @@ function jz_db_create() {
 
 
 function jz_db_query($link, $sql) {
-  return @dbx_query($link, $sql);  
+  return @dbx_query($link, $sql);
 }
 
 
@@ -75,7 +75,7 @@ function jz_db_error($link) {
 function jz_db_close($link) {
 	// Hack by Ross to fix things for Postnuke
 	return;
-	
+
 	return @dbx_close($link);
 }
 

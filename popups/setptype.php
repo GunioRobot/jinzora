@@ -2,7 +2,7 @@
 
 /**
 	* Displays the tool to let the user set the page type
-	* 
+	*
 	* @author Ross Carlson, Ben Dodson
 	* @version 01/27/05
 	* @since 01/27/05

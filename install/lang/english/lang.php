@@ -27,7 +27,7 @@
 	$word_admin_pass = "Admin Password:";
 	$word_default_access = "Default Access Level:";
 	$word_no_access = "Login Required";
-	$word_lofi = "Lo-Fi";	
+	$word_lofi = "Lo-Fi";
 	$word_user = "Standard User";
 	$word_admin = "Admin";
 	$word_viewonly = "View Only";
@@ -169,7 +169,7 @@
 	$word_cms_db_pick = "For CMS modes you MUST use your existing CMS database for Jinzora - this will not affect your current CMS installation.  Please make sure and use that CMS database here<br><br>";
 	$word_install_type_clarify = "If you are unsure about the installation type to choose please take the default here.";
 	$word_confirm_password = "Confirm Password:";
-	
+
 	$word_create_database = "Create Database:";
 	$word_create_database_help = "Would you like the installer to create the database and tables for you?  You can choose:<li>True - Create the database and all tables (requires the correct permissions in your database)<li>False - Do not create the database, the database MUST be manually created first (using install/jinzora.sql)<li>Drop - Drop the existing database and recreate it";
 	$word_drop = "True (drop existing database)";

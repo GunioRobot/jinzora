@@ -8,7 +8,7 @@
 				</td>
 			</tr>
 			<tr>
-				<?php 
+				<?php
 					if ($step  == 1){ $step = 0; }
 					$complete = round(($step / 9)*100,0);
 					$left = 100 - $complete;
@@ -27,18 +27,18 @@
 			<tr>
 				<td>
 					<span class="statusLine">
-						<?php 
+						<?php
 							echo 'Install '. $complete. '% complete';
 						?>
 					</span>
 				</td>
 			</tr>
 		</table>
-	</div>  
+	</div>
 	</div>
 	<div id="footer">
 		Jinzora :: Free Your Media
-		&raquo; <a target="_blank" href="http://www.jinzora.com/">www.jinzora.com</a> 
+		&raquo; <a target="_blank" href="http://www.jinzora.com/">www.jinzora.com</a>
 	</div>
   </body>
 </html>

@@ -1,6 +1,6 @@
 backend.php:
 	function compareNodes($a, $b)
-	function pathize($str) 
+	function pathize($str)
 	function blankCache($type = "node")
 	function getInformation(&$element,$type = "album")
 	function findPType(&$node)
@@ -8,7 +8,7 @@ backend.php:
 	function distanceTo($type = "album", $node = false)
 	function translate_uri($uri)
 	function estimateRating($val)
-	
+
 	class jzBackend // General stuff for the backend.
 		function jzBackend()
 		function install() // see notes in classes.php.
@@ -20,7 +20,7 @@ backend.php:
 		function getDataDir()
 		function getStats()
 		function getRecentlyAdded($distance, $limit)
-	
+
 	class jzMediaElement // shared functionality.
 		function jzMediaElement($par = array())
 		function _constructor($arg = array())

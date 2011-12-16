@@ -38,7 +38,7 @@ global $img_folder;
 			} else {
 				$folder = word("folder");
 			}
-			$array[$i]['items'] = $display->link($item,$count. " ". $folder, false, false, true);					
+			$array[$i]['items'] = $display->link($item,$count. " ". $folder, false, false, true);
 		} else {
 			if (($count = $item->getSubNodeCount("tracks")) <> 0){
 				if ($count > 1) {
@@ -50,8 +50,8 @@ global $img_folder;
 			}
 		}
 		$array[$i]['play_button'] = $display->playButton($item, false, false, false, true);
-		$array[$i]['random_button'] = $display->randomPlayButton($item, false, false, false, true); 
-		
+		$array[$i]['random_button'] = $display->randomPlayButton($item, false, false, false, true);
+
 		// Now do we hvae another row?
 		$array[$i]['subitems'] = false;
 		if (($art = $item->getMainArt($image_size. "x". $image_size)) <> false or (($desc = $item->getDescription()) <> "")) {
@@ -71,12 +71,12 @@ global $img_folder;
 				$array[$i]['read_more'] =  ' <a href="'. urlize($url_array). '" onclick="openPopup(this, 450, 450); return false;">...read more</a>';
 			}
 		}
-		$c = 1 - $c; 
+		$c = 1 - $c;
 		$array[$i]['row'] = $row_colors[$c];
 		$i++;
 	}
 	$smarty->assign('image_dir', $image_dir);
 	$smarty->assign('items', $array);
-	
+
 	jzTemplate($smarty, "standard-page");
 ?>

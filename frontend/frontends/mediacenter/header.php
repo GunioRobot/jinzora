@@ -1,52 +1,52 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - Contains the Slimzora display functions
 	*
-	* @since 02.17.04 
+	* @since 02.17.04
 	* @author Ross Carlson <ross@jinzora.org>
 	* @author Ben Dodson <ben@jinzora.org>
 	*/
-	
+
 	// Let's require the main classes for all the functions below
 	require_once($include_path. 'frontend/class.php');
-	require_once($include_path. 'frontend/blocks.php');	
-	
+	require_once($include_path. 'frontend/blocks.php');
+
 	// Now let's set some variables for this specific frontend
 	//$css = $include_path. "frontend/frontends/mediacenter/style/$jinzora_skin/default.php";
 	//$image_dir = $include_path. 'frontend/frontends/mediacenter/style/'. $jinzora_skin. '/';
-	//include($include_path. "frontend/icons.lib.php");	
-	
+	//include($include_path. "frontend/icons.lib.php");
+
 	// override the blocks and frontend
 	// This allows me to have specific display items
 	// for only this frontend
 	class jzBlocks extends jzBlockClass {
-	
+
 		// The TrackTable block displays a small table of our tracks
 		function trackTable($tracks, $purpose = false) {
 			global $row_colors, $jinzora_skin, $root_dir, $show_artist_album, $show_track_num, $this_page;
-			
+
 			// Let's setup the objects
 			$display = &new jzDisplay();
-			
+
 			// Now lets setup our form
 			// First we need to know the node for these tracks
 			// We can create this by getting the ancestor from the first track
@@ -58,14 +58,14 @@
 			<input type="hidden" name="<?php echo jz_encode("jz_path"); ?>" value="<?php echo htmlentities(jz_encode($node->getPath("String"))); ?>">
 			<input type="hidden" name="<?php echo jz_encode("jz_list_type"); ?>" value="<?php echo jz_encode("tracks"); ?>">
 			<?php
-			
+
 			$i=0; // Counter
 			// Now let's loop through the track nodes
 			foreach($tracks as $track){
 				// Let's get the meta data
 				// This will return the meta data (like length, size, bitrate) into a keyed array
 				$meta = $track->getMeta();
-				
+
 				// Now let's display
 				?>
 				<table width="100%" cellspacing="0" cellpadding="4">
@@ -74,13 +74,13 @@
 							<input type="checkbox" name="jz_list[]" value="<?php echo jz_encode($track->getPath("String")); ?>">
 						</td>
 						<td width="1" valign="top">
-							<?php 
+							<?php
 								// Now let's link to download this track
 								$display->downloadButton($track);
 							?>
 						</td>
 						<td width="1" valign="top" align="right">
-							<?php 
+							<?php
 								// Did they want track numbers?
 								if ($show_track_num == "true"){
 									// Now let's link to this track
@@ -93,12 +93,12 @@
 							?>
 						</td>
 						<td width="100%" valign="top">
-							<?php 
+							<?php
 								// Let's display the name of the track with a link to it using our display object
 								echo "<nobr>";
 								$display->playLink($track, $meta['title']);
 								echo "</nobr>";
-								
+
 								if ($show_artist_album == "true"){
 									echo "<br>";
 									// Now let's get the parents
@@ -123,18 +123,18 @@
 									echo '<div style="font-size:9px;"><nobr>'. $txt2. $split."</nobr><nobr>". $txt1. '</nobr></div>';
 								}
 							?>
-						</td>	
+						</td>
 						<td width="1" valign="middle" nowrap align="right">
-							
+
 						</td>
 						<td width="1" valign="top" nowrap align="right">
 							<table width="100%" cellspacing="5" cellpadding="0">
 								<tr>
 									<td align="right" valign="middle" nowrap>
 										<div style="font-size: 8px;">
-										<?php 
+										<?php
 											// Now let's link to this track
-											echo convertSecMins($meta['length']); 
+											echo convertSecMins($meta['length']);
 											echo ' &#183; ';
 											echo $meta['bitrate']. " Kbit/s";
 											echo ' &#183; ';
@@ -143,17 +143,17 @@
 											$eArr = explode(".",$meta['filename']);
 											echo strtoupper($eArr[count($eArr)-1]);
 											echo " ";
-											
+
 										?>
-										</div>	
+										</div>
 									</td>
 									<td align="left" valign="middle">
 										<?php
-											$display->playButton($track); 
+											$display->playButton($track);
 										?>
 									</td>
 								</tr>
-							</table>						
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -174,10 +174,10 @@
 		function jzFrontend() {
 			parent::_constructor();
 		}
-			
+
 		function pageTop($node) {
-			global $img_home, $jinzora_skin, $root_dir, $css, $this_page, $cms_mode, 
-				   $jzUSER, $include_path, $desc_truncate, $image_size, $jinzora_url, 
+			global $img_home, $jinzora_skin, $root_dir, $css, $this_page, $cms_mode,
+				   $jzUSER, $include_path, $desc_truncate, $image_size, $jinzora_url,
 				   $image_dir, $jukebox, $jzSERVICES, $jukebox_display, $cms_mode,
 				   $show_artist_alpha, $show_artist_list, $allow_resample;
 
@@ -187,33 +187,33 @@
 			$smarty = smartySetup();
 
 			// Now let's make sure our Node is set and if not set one
-			if (!is_object($node)) $node = new jzMediaNode();			
+			if (!is_object($node)) $node = new jzMediaNode();
 
 			// Let's include the settings file
 			include_once($include_path. 'frontend/frontends/mediacenter/settings.php');
-			
+
 			// Let's set some variables
 			$smarty->assign('root_dir', $root_dir);
-			
+
 			// Ok, now let's include the first template
 			$smarty->display(SMARTY_ROOT. 'templates/mediacenter/header.tpl');
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 			exit();
 
-			$display->preHeader();	
-			
+			$display->preHeader();
+
 			$smarty->assign('this_page', $this_page);
 			$smarty->assign('img_home', $img_home);
 			$smarty->assign('cms_mode', $cms_mode);
 			$smarty->assign('image_dir', $image_dir);
 			$smarty->assign('jinzora_url', $jinzora_url);
 			$smarty->display(SMARTY_ROOT. 'templates/mediacenter/header.tpl');
-			
+
 			// Now let's see if we should show the jukebox iframe
 			$smarty->assign('jukebox_queue', false);
 			if (checkPermission($jzUSER,"jukebox_queue")){
@@ -223,9 +223,9 @@
 				} else {
 					$smarty->assign('jukebox_display', "full");
 				}
-			}	
+			}
 			$smarty->display(SMARTY_ROOT. 'templates/mediacenter/jukebox.tpl');
-			
+
 			// Let's show the news
 			$siteNews = $blocks->siteNews($node);
 			$smarty->assign('site_news', $siteNews);
@@ -234,23 +234,23 @@
 			}
 
 
-			
-			
+
+
 			// Now do we have art or image or desc at the album level
 			if ($node->getPType() == "album"){
-				if (($art = $node->getMainArt($image_size. "x". $image_size)) <> false or (($desc = $node->getDescription()) <> "")) {	
+				if (($art = $node->getMainArt($image_size. "x". $image_size)) <> false or (($desc = $node->getDescription()) <> "")) {
 					$desc = $node->getDescription();
 					// Ok, let's display
 					echo '<table width="100%" cellspacing="0" cellpadding="5">';
 					echo '<tr class="and_head1">';
 					echo '<td width="100%" align="left">';
-					
+
 					// Let's display the name
 					$artist = $node->getAncestor('artist');
 					echo "<strong>";
 					if ($artist !== false) {
-						$display->link($artist,$artist->getName()); 
-						echo " - "; 
+						$display->link($artist,$artist->getName());
+						echo " - ";
 					}
 					echo $node->getName();
 					if (!isNothing($node->getYear())){
@@ -262,7 +262,7 @@
 						$display->image($art,$node->getName(),$image_size,$image_size,"limit",false,false,$align,"4","4");
 					}
 					if ($cms_mode == "false"){
-						echo '<div class="jz_artistDesc">';	
+						echo '<div class="jz_artistDesc">';
 					}
 					echo $display->returnShortName($desc,$desc_truncate);
 					// Do we need the read more link?
@@ -283,14 +283,14 @@
 			// Can this user powersearch?
 			$on=true;
 			if ($jzUSER->getSetting('powersearch') and $on == true){
-				
+
 			if ($cms_mode == "true") {
 				$method = "GET";
 			} else {
 				$method = "POST";
 			}
 			?>
-				
+
 				<table width="100%" cellspacing="0" cellpadding="0"><tr height="2" style="background-image: url('<?php echo $image_dir; ?>row-spacer.gif');"><td width="100%"></td></tr></table>
 			<?php
 				}
@@ -301,25 +301,25 @@
 			} else {
 				$jzPath = $_GET['jz_path'];
 			}
-			
+
 			// Now should we show this bar?
 			$bcArray = explode("/",$jzPath);
 			?>
 			<table width="100%" cellspacing="0" cellpadding="5">
 				<tr class="and_head1">
 					<td width="50%" valign="middle">
-						<?php 
+						<?php
 							$url = array();
 							echo '<a href="'.urlize($url).'"><img src="'.$image_dir.'open-folder.gif" border="0"></a>';
 							// Now let's see if we need the breadcrumbs
 							unset($bcArray[count($bcArray)-1]);
 							$path = "";
-							echo ' <a href="'.urlize($url).'">'. word("Home"). '</a>';	
+							echo ' <a href="'.urlize($url).'">'. word("Home"). '</a>';
 							foreach($bcArray as $item){
 								if ($item <> ""){
 									$path .= "/". $item;
 									$arr['jz_path'] = $path;
-										echo ' / <a href="'. urlize($arr). '">'. $item. '</a>';										
+										echo ' / <a href="'. urlize($arr). '">'. $item. '</a>';
 								}
 								unset($arr);
 							}
@@ -332,16 +332,16 @@
 								<?php echo word("Artist"). ": "; ?>
 								<form action="<?php echo $this_page; ?>" method="post">
 								<?php
-									$display->hiddenPageVars(); 
-									$display->dropdown("artist"); 
+									$display->hiddenPageVars();
+									$display->dropdown("artist");
 								?>
 								</form>
 								&nbsp; | &nbsp;
 							<?php
 								}
 							?>
-							
-				   			
+
+
 				   			<?php echo word('Search:'); ?>
 							<form action="<?php echo $this_page  ?>" method="<?php echo $method; ?>">
 							<?php foreach (getURLVars($this_page) as $key => $val) { echo '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($val) . '">'; } ?>
@@ -362,15 +362,15 @@
 								<input type="hidden" name="doSearch" value="true">
 								<input type="submit" class="jz_submit" value="Go">
 							</form>
-							
-							
+
+
 					</td>
 				</tr>
 			</table>
-				
+
 			<?php
-			
-			
+
+
 			// Now let's see if we need the breadcrumbs
 			if ($_GET['jz_path'] <> ""){
 				?>
@@ -385,7 +385,7 @@
 									$mode = "GET";
 								}
 								$mode = "GET";
-								
+
 								if (isset($_POST['jz_path'])){
 									$bcArray = explode("/",$_POST['jz_path']);
 								} else {
@@ -412,7 +412,7 @@
 								}
 								echo '</select>'. "\n";
 								//$display->hiddenVariableField("jz_path");
-								$display->hiddenPageVars();					
+								$display->hiddenPageVars();
 								echo '<input type="hidden" name="frontend" value="'. $_GET['frontend']. '">'. "\n";
 								echo "</form>";
 							?>
@@ -422,11 +422,11 @@
 								$display->playButton($node);
 								echo "&nbsp;";
 								$display->randomPlayButton($node);
-								
+
 								$url_array = array();
 								$url_array['jz_path'] = $node->getPath("String");
 								$url_array['action'] = "popup";
-								$url_array['ptype'] = "iteminfo"; 
+								$url_array['ptype'] = "iteminfo";
 								echo ' <a onclick="openPopup(this, 450, 450); return false;" href="'. urlize($url_array). '"><img src="'. $image_dir. 'more.gif" border="0"></a>';
 							?>
 						</td>
@@ -503,14 +503,14 @@
 							    } else {
 							      echo '&nbsp;';
 							    }
-							    
+
 							?>
 							</td>
-							    
+
 			</table>
-			
-			
-			<table width="100%" cellspacing="0" cellpadding="0"><tr height="2" style="background-image: url('<?php echo $image_dir; ?>row-spacer.gif');"><td width="100%"></td></tr></table>				
+
+
+			<table width="100%" cellspacing="0" cellpadding="0"><tr height="2" style="background-image: url('<?php echo $image_dir; ?>row-spacer.gif');"><td width="100%"></td></tr></table>
 			<table width="100%" cellspacing="0" cellpadding="3">
 				<tr class="and_head1">
 					<td width="100%" align="center">
@@ -518,7 +518,7 @@
 							if ($cms_mode == "false"){
 							      $display->loginLink();
 							    }
-			
+
 							if ($jzUSER->getSetting('edit_prefs') !== false) {
 									if ($cms_mode == "false"){echo " | ";}
 									//echo " - ";
@@ -541,10 +541,10 @@
 			<table width="100%" cellspacing="0" cellpadding="0"><tr height="2" style="background-image: url('<?php echo $image_dir; ?>row-spacer.gif');"><td width="100%"></td></tr></table>
 			</td></tr></table>
 			<?php
-			
+
 			$jzSERVICES->cmsClose();
 		}
-		
+
 		function standardPage(&$node) {
 			global $jinzora_skin, $root_dir, $row_colors, $image_size, $desc_truncate, $image_dir, $jzSERVICES, $show_frontpage_items, $show_artist_alpha, $sort_by_year;
 
@@ -552,10 +552,10 @@
 			$blocks = &new jzBlocks();
 			$display = &new jzDisplay();
 			$fe = &new jzFrontend();
-						
+
 			// Let's display the header
 			$this->pageTop($node);
-                        
+
 			// Now let's get the sub nodes to where we are
 			if (isset($_GET['jz_letter'])) {
 				$root = new jzMediaNode();
@@ -572,7 +572,7 @@
 			} else {
 				sortElements($nodes,"name");
 			}
-			
+
 			echo '<form name="albumForm" method="POST" action="'.urlize().'">';
 			echo '<input type="hidden" name="'.jz_encode('jz_list_type').'" value="'.jz_encode('nodes').'">';
 			// Now let's loop through the nodes
@@ -586,21 +586,21 @@
 						</td>
 						<td width="1%" valign="middle">
 							<?php
-								$display->link($item,'<img src="'. $image_dir. 'folder.gif" border="0">'); 
+								$display->link($item,'<img src="'. $image_dir. 'folder.gif" border="0">');
 							?>
 						</td>
 						<td width="96%" valign="middle">
-							<?php 
+							<?php
 								// Now let's link to this item
 								$name = $item->getName();
 								if (!isNothing($item->getYear()) and $item->getPType() == "album"){
 									$name .= " (". $item->getYear(). ")";
 								}
-								$display->link($item,$name); 
+								$display->link($item,$name);
 							?>
-						</td>	
+						</td>
 						<td width="1%" valign="middle" nowrap align="right">
-							<?php 
+							<?php
 								// Now let's show the sub items
 								if (($count = $item->getSubNodeCount("nodes")) <> 0){
 								  if ($count > 1) {
@@ -626,7 +626,7 @@
 								// Let's show a play button
 								$display->playButton($item);
 								echo "&nbsp;";
-								$display->randomPlayButton($item); 
+								$display->randomPlayButton($item);
 							?>
 							&nbsp;
 						</td>
@@ -638,7 +638,7 @@
 							?>
 							<tr class="<?php echo $row_colors[$i]; ?>">
 								<td width="1%" valign="middle">
-									
+
 								</td>
 								<td width="99%" valign="middle" colspan="4">
 									<?php
@@ -655,7 +655,7 @@
 											echo ' <a href="'. urlize($url_array). '" onclick="openPopup(this, 450, 450); return false;">...read more</a>';
 										}
 									?>
-								</td>	
+								</td>
 							</tr>
 							<?php
 						}
@@ -686,22 +686,22 @@
 									<?php $display->addListButton(); ?>
 									<?php $display->hiddenVariableField('action','mediaAction'); ?>
 									<?php $display->hiddenVariableField('path',$_GET['jz_path']); ?>
-									
+
 									<?php
 										$url_array = array();
 										$url_array['action'] = "popup";
 										$url_array['ptype'] = "playlistedit";
 										echo '<a href="javascript:;" onClick="openPopup('. "'". urlize($url_array). "'". ',600,600); return false;"><img src="'. $image_dir. 'playlist.gif" border="0"></a>';
 										echo '&nbsp;'; $display->playlistSelect(115,false,"all");
-			
-									?>						
+
+									?>
 								</form>
 						</td>
 					</tr>
 				</table>
 				<?php
 			}
-      echo '</form>';			
+      echo '</form>';
 			// Now let's close out
 			$this->footer($node);
 		}

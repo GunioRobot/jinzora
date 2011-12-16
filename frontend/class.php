@@ -1,40 +1,40 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/*
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Ressources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* - Primary start page for Jinzora
 	*
 	* @since 11/3/04
 	* @author Ross Carlson <ross@jinzora.org>, Ben Dodson <bdodson@seas.upenn.edu>
 	*/
-	
+
 	// define the default frontend class.
 	class jzFrontendClass {
-	
+
 		var $name;
 		var $width;
 		var $standardFooter;
 
 		/**
 		* Constructor wrapper for jzFrontend.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/3/04
 		* @since 11/3/04
@@ -42,10 +42,10 @@
 		function jzFrontendClass() {
 			$this->_constructor();
 		}
-		
+
 		/**
 		* Constructor wrapper for jzMediaNode.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/3/04
 		* @since 11/3/04
@@ -59,10 +59,10 @@
 			$this->ajax_list = array();
 			$this->standardFooter = true;
 		}
-		
+
 		/**
 		* Draws the registration page
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 3/11/05
 		* @since 3/11/05
@@ -147,19 +147,19 @@
 
 		/**
 		* Draws the login page.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/3/04
 		* @since 5/13/04
 		*/
 		function loginPage($failed = false) {
-		
+
 			$display = &new jzDisplay();
 			//$display->preHeader('Login',$this->width,$this->align);
-			
+
 			echo '<body onLoad="document.getElementById(\'loginform\').field1.focus();"></body>';
-			
-			$urla = array();			
+
+			$urla = array();
 			$urla['jz_path'] = isset($_GET['jz_path']) ? $_GET['jz_path'] : '';
 			?>
 				<style>
@@ -204,10 +204,10 @@
 				      } else {
 					// submit the other form
 					// so we can submit a non-cleartext PW without changing browser's stored PW.
-					document.getElementById("loginSecureForm").field1.value = 
+					document.getElementById("loginSecureForm").field1.value =
 					         document.getElementById("loginform").field1.value;
 
-					document.getElementById("loginSecureForm").field2.value = 
+					document.getElementById("loginSecureForm").field2.value =
 					hex_md5(document.getElementById("loginform").field2.value);
 
 					document.getElementById("loginSecureForm").remember.value =
@@ -258,8 +258,8 @@
 									if ($data['allow_registration'] == "true") {
 									?>
 										&nbsp;<input class="jz_submit" type="submit" name="<?php echo jz_encode('self_register'); ?>" value="<?php echo word("Register"); ?>" onclick="document.getElementById('loginform').doregister.value='true'">
-									<?php 
-									} 
+									<?php
+									}
 									?>
 
 							</form>
@@ -276,20 +276,20 @@
 			<?php
 			//this->footer();
 		}
-		
-		
+
+
 		function pageTop($title = false, $endBreak = "true", $ratingItem = ""){
-		        global $this_page, $img_home, $quick_list_truncate, $img_random_play, $cms_mode, 
-				$random_play_amounts, $directory_level, $img_up_arrow, $header_drops, $genre_drop, $artist_drop, 
-				$album_drop, $quick_drop, $root_dir, $web_root, $song_drop, $audio_types, $video_types, $media_dir, 
+		        global $this_page, $img_home, $quick_list_truncate, $img_random_play, $cms_mode,
+				$random_play_amounts, $directory_level, $img_up_arrow, $header_drops, $genre_drop, $artist_drop,
+				$album_drop, $quick_drop, $root_dir, $web_root, $song_drop, $audio_types, $video_types, $media_dir,
 				$img_more,$img_random_play_dis, $url_seperator, $help_access, $jukebox, $jukebox_num,
-				$disable_random, $jz_lang_file, $show_slimzora, $img_slim_pop, $allow_resample, $resampleRates, $default_random_type, 
-				$default_random_count, $display_previous, $echocloud, $display_recommended, $enable_requests, $enable_ratings, 
+				$disable_random, $jz_lang_file, $show_slimzora, $img_slim_pop, $allow_resample, $resampleRates, $default_random_type,
+				$default_random_count, $display_previous, $echocloud, $display_recommended, $enable_requests, $enable_ratings,
 				$enable_search, $enable_meta_search, $user_tracking_display, $user_tracking_admin_only, $site_title, $node,
 			        $jzUSER, $allow_filesystem_modify,$jukebox_display,$jbArr,$include_path;
-			
+
 			// Let's see if they wanted to pass a title
-			if (!$title) { $title = $site_title; }				
+			if (!$title) { $title = $site_title; }
 
 			// Let's setup our objects
 			$root = &new jzMediaNode();
@@ -303,7 +303,7 @@
 							<tr class="jz_header_table_tr">
 								<td width="80" align="left" valign="top" class="" >
 									<nobr>
-									<?php									
+									<?php
 									// Now let's make sure they can see this
 									if ($jzUSER->getSetting("view") === true){
 										// Let's display the home icon
@@ -315,21 +315,21 @@
 											<a href="<?php echo $item_url; ?>" onClick="openPopup(this, 500, 500, false, 'Help'); return false;" target="_blank"><?php echo $img_more; ?></a>
 											<?php
 										}
-										
+
 										// Now let's show them the Slimzora popup
 										if ($show_slimzora && $jzUSER->getSetting('view') !== false){
 										  $display->popupLink("slimzora");
-										}	
+										}
 									} else {
 										echo "&nbsp;";
 									} if (checkPermission($jzUSER,"play")) {
 									  echo '&nbsp';
 									  $display->popupLink('plmanager');
 									}
-									
+
 									// Now let's see if they get the tools menu
 									if ($_SESSION['jz_access_level'] == "admin"){
-										global $skin, $jz_MenuItemLeft, $jz_MenuSplit, $jz_MenuItemHover, $jz_MainItemHover, $main_img_dir, $jz_MenuItem;	
+										global $skin, $jz_MenuItemLeft, $jz_MenuSplit, $jz_MenuItemHover, $jz_MainItemHover, $main_img_dir, $jz_MenuItem;
 										//include_once($web_root. $root_dir. '/lib/menu/tools-menu.php');
 									}
 								?>
@@ -363,7 +363,7 @@
 								</td>
 								<td width="50%" valign="top" class="jz_header_table_td" align="right">
 									<div align="right">
-									
+
 									<?php
 								    $display->loginLink();
 									echo " | ";
@@ -403,13 +403,13 @@
 											$method = "POST";
 										}
 										  ?>
-										  
+
 											<form action="<?php echo $this_page  ?>" method="<?php echo $method; ?>" name="searchForm" <?php echo $onSubmit; ?>>
 											<?php foreach (getURLVars($this_page) as $key => $val) { echo '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($value) . '">'; } ?>
 											<input class="jz_input" type="text" name="search_query" size="15" value="<?php echo $value; ?>">
 											<select class="jz_select" name="search_type">
 												<option value="ALL">All Media</option>
-												
+
 												<?php
 													if (distanceTo("artist") !== false){
 														echo '<option value="artists">'. word("Artists"). '</option>'. "\n";
@@ -427,12 +427,12 @@
 											</nobr>
 										<?php
 									}
-									
+
 									// Let's show them the up arrow, unless they are viewing the first page
 										?>
 										<table width="100%" cellpadding="0"><tr><td width="100%" align="right"><div align="right"><nobr>
 										   <?php $bcrumbs = $blocks->breadCrumbs();
-											
+
 											// Now let's display the header for the block
 											$title = "Browse";
 											if ($node->getName() <> ""){
@@ -446,7 +446,7 @@
 										?>
 										</nobr></div></td></tr></table>
 										<?php
-										    
+
 								?>
 								</div>
 								</td>
@@ -476,25 +476,25 @@
 				    echo '</div>' , "\n";
 				    jzTableOpen("100","0","jz_header_table");
 				}
-				// Let's see if they wanted to turn the drop down boxes off 
+				// Let's see if they wanted to turn the drop down boxes off
 				if ($header_drops == "true"){
 					?>
 					<tr class="jz_header_table_tr">
 						<td width="100%" align="right" valign="top" class="jz_header_table_outer" colspan="2" style="padding:5px;">
 							<table width="100%" cellpadding="0" cellspacing="0" border="0">
 								<tr class="jz_header_table_tr">
-								<?php				
+								<?php
 					   if (checkPermission($jzUSER,"jukebox_queue") && ($jukebox_display == "small" or $jukebox_display == "minimal")) {
 					     ?>
 					     <td width="15%" valign="top" class="jz_header_table_td"><div id="smallJukebox">
 					     <?php
 					     $blocks->smallJukebox(false,'top');
-					     ?>					     
+					     ?>
 					     </div></td>
 					     <?php
 					   }
 
-	
+
 									// Let's make sure they wanted to see the Genre drop down
 									if ($genre_drop != "false" && distanceTo("genre") !== false){
 										?>
@@ -509,7 +509,7 @@
 											</td>
 										<?php
 									}
-									
+
 									// Let's see if they are looking at 2 levels or 3 and show them the artists select box
 									if ($artist_drop != "false" && distanceTo("artist") !== false){
 										?>
@@ -522,7 +522,7 @@
 											</td>
 										<?php
 									}
-									
+
 									// Let's see if they are looking at 2 levels or 3 and show them the artists select box
 									if ($album_drop != "false" && distanceTo("album") !== false){
 										?>
@@ -535,7 +535,7 @@
 											</td>
 										<?php
 									}
-					
+
 									if ($song_drop != "false"){
 										?>
 											<td width="15%" valign="top" class="jz_header_table_td">
@@ -554,33 +554,33 @@
 										$blocks->randomGenerateSelector($node);
 										echo '</nobr>';
 										jzTDClose();
-									}							
-		
+									}
+
 									// Now let's display the resampler
 									if ($display->wantResampleDropdown($node)){
 										jzTDOpen("10","left","top","jz_header_table_td","0");
 										$display->displayResampleDropdown($node);
 										jzTDClose();
-									}			
+									}
 								jzTRClose();
-					
+
 							// Now let's close out
 							jzTableClose();
 						jzTDClose();
 					jzTRClose();
-				} 
-			// This closes our big table above		
+				}
+			// This closes our big table above
 			jzTableClose();
 		}
-	
-	
+
+
 		function footer($node=false){
 			global $jinzora_url, $this_pgm, $version, $allow_lang_choice,
-			$this_page, $web_root, $root_dir, $allow_theme_change, $cms_mode, $skin, $show_loggedin_level, 
-			$jz_lang_file, $shoutcast, $sc_refresh, $sc_host, $sc_port, $sc_password, $url_seperator, $jukebox, $show_jinzora_footer, 
+			$this_page, $web_root, $root_dir, $allow_theme_change, $cms_mode, $skin, $show_loggedin_level,
+			$jz_lang_file, $shoutcast, $sc_refresh, $sc_host, $sc_port, $sc_password, $url_seperator, $jukebox, $show_jinzora_footer,
 			$hide_pgm_name, $media_dir, $img_sm_logo, $show_page_load_time, $allow_speed_choice, $img_play, $img_random_play, $img_playlist,
 			$show_page_load_time,$allow_interface_choice,$allow_style_choice,
-			$jzUSER,$jzSERVICES, $cms_mode; 
+			$jzUSER,$jzSERVICES, $cms_mode;
 
 			$display = &new jzDisplay();
 
@@ -640,19 +640,19 @@
 
 		/**
 		* Draws the search results page.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 12/18/04
 		* @since 11/20/04
 		*/
 		function searchResults($string, $type, $power_search = false) {
-			global $cms_type,$jzSERVICES; 
-			
+			global $cms_type,$jzSERVICES;
+
 			$display = &new jzDisplay();
 			$blocks = &new jzBlocks();
 			$tracks = array();
 			$nodes = array();
-			
+
 			// remember, $this is a frontend.
 			// This has to go before SQL querries.
 			// If our keywords say to play the results
@@ -663,7 +663,7 @@
 			    $display->preheader('Search Results',$this->width,$this->align);
 			    $this->pageTop('Search Results');
 			  }
-			  
+
 			  $results = handleSearch($string, $type);
 			  if (sizeof($results) == 0 && muteOutput($check['keywords'])) {
 			    $display->preheader('Search Results',$this->width,$this->align);
@@ -676,12 +676,12 @@
 			  $root = new jzMediaNode();
 			  $results = $root->powerSearch();
 			}
-			
+
 			echo '<table width="100%" cellpadding="3"><tr><td>';
 
 			foreach ($results as $val) {
 				if ($val->isLeaf()) {
-					$tracks[] = $val;	
+					$tracks[] = $val;
 				}
 				else {
 					$nodes[] = $val;
@@ -708,31 +708,31 @@
 			$this->footer();
 			$jzSERVICES->cmsClose();
 		}
-		
+
 		/**
 		* Power search page.
-		* 
+		*
 		* @author
 		* @version
 		* @since
 		*/
 		function powerSearch() {
-			global $this_page, $audio_types, $video_types, $directory_level, $root_dir; 
-			
-			
+			global $this_page, $audio_types, $video_types, $directory_level, $root_dir;
+
+
 			$blocks = &new jzBlocks();
-			
+
 			$showHeadFoot = true;
 			$display = new jzDisplay();
 			// First let's show the header
 			$display->preHeader(word("Power Search"),$this->width,$this->align);
 			if ($showHeadFoot){ $this->pageTop(word("Power Search")); }
-			
-			
+
+
 			echo '<table width="100%" cellpadding="5" style="padding:5px;"><tr><td valign="top" width="10%" valign="top">';
 			$blocks->blockHeader("Power Search");
 			$blocks->blockBodyOpen();
-			
+
 			// Now let's show the power search form
 			?>
 				<form action="<?php echo $this_page; ?>" method="POST">
@@ -744,7 +744,7 @@
 							<nobr><?php echo word("Operator"); ?>:</nobr>
 						</td>
 						<td width="55%">
-							<input type="radio" name="operator" checked value="and"> <?php echo word("and"); ?> 
+							<input type="radio" name="operator" checked value="and"> <?php echo word("and"); ?>
 							<input type="radio" name="operator" value="or"> <?php echo word("or"); ?>
 						</td>
 					</tr>
@@ -871,7 +871,7 @@
 						<td width="55%">
 							<?php
 								echo '<select class="jz_select" name="frequency_operator"><option value="=">=</option><option value=">">></option><option value="<"><</option></select>';
-								$sample_rates = "48,44.1,32,24,22.05,16,12,11.025,8";		
+								$sample_rates = "48,44.1,32,24,22.05,16,12,11.025,8";
 								$sampleArray = explode(',',$sample_rates);
 								echo ' <select style="width: 60px;" class="jz_select" name="frequency">';
 								echo '<option value=""> - </option>'. "\n";
@@ -958,21 +958,21 @@
 				</table>
 			</form><br>
 			<?php
-			
+
 			$blocks->blockBodyClose();
 			echo '</td></tr></table>';
-			
+
 			// Now let's show the footer
 			if ($showHeadFoot){ $this->footer(); }
-		
-		}		
-				
+
+		}
+
 		/**
 		* Draws a 'standard' page of type:
 		* root, genre, artist, album, disk, generic
 		* A frontend doesn't have to support all (or any) of these pagetypes,
 		* but should understand they exist.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/3/04
 		* @since 5/13/04
@@ -1008,7 +1008,7 @@
 			  $this->pageTop($title);
 			}
 		  }
-			
+
 		  if ($maindiv) {
 		    if ($gzip_handler == "true" && $cms_type <> "mambo" && $cms_type <> "cpgnuke") {
 		      @ob_start('ob_gzhandler');
@@ -1034,10 +1034,10 @@
 		  // if it doesn't exist, check the 'default' config for it.
 		  if (!is_file($pageInclude)) {
 		    $pageInclude = $include_path. "frontend/frontends/classic/${type}.php";
-				
+
 				if (!is_file($pageInclude)) {
 					$pageInclude = $include_path. "frontend/frontends/${me}/generic.php";
-				}				
+				}
 				if (!is_file($pageInclude)) {
 					$pageInclude = $include_path. "frontend/frontends/classic/generic.php";
 				}
@@ -1046,7 +1046,7 @@
 		      die("Invalid level '${type}' in your hierarchy.");
 		    }
 		  }
-			
+
 		  require_once($pageInclude);
 		  // each of those php files has a drawPage() function
 		  // that takes a node as input.

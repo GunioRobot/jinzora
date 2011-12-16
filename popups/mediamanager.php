@@ -53,7 +53,7 @@ if (isset ($_GET['sub_action'])) {
 					$_SESSION['all_media_paths'] .= $_POST['edit_media_path'] . "|";
 				}
 
-				// actually import it:						
+				// actually import it:
 
 				// First let's get a listing of ALL files so we'll be able to estimate how long this will take
 				// Was this set from the popup?
@@ -64,7 +64,7 @@ if (isset ($_GET['sub_action'])) {
 					echo '<div id="filecount"></div>';
 ?>
 							<script language="javascript">
-								fc = document.getElementById("filecount");							
+								fc = document.getElementById("filecount");
 								-->
 							</SCRIPT>
 							<?php
@@ -83,7 +83,7 @@ if (isset ($_GET['sub_action'])) {
 				$_SESSION['jz_install_timeLeft'] = 0;
 ?>
 						<script language="javascript">
-							fc.innerHTML = '&nbsp;';									
+							fc.innerHTML = '&nbsp;';
 							-->
 						</SCRIPT>
 						<?php
@@ -103,7 +103,7 @@ if (isset ($_GET['sub_action'])) {
 ?>
 							<script language="javascript">
 							d = document.getElementById("importStatus");
-							p = document.getElementById("importProgress");							
+							p = document.getElementById("importProgress");
 							-->
 							</SCRIPT>
 							<?php
@@ -143,8 +143,8 @@ if (isset ($_GET['sub_action'])) {
 					<script language="javascript">
 						d = document.getElementById("importStatus");
 						p = document.getElementById("importProgress");
-						p.innerHTML = '<?php echo word("Import Complete!"); ?></strong> (<?php echo round(((time() - $startTime)/60),2). " ". word("minutes"); ?>)';						
-						d.innerHTML = '<br><?php echo "<strong>". word("Import Stats"). "</strong><br>"; ?>';						
+						p.innerHTML = '<?php echo word("Import Complete!"); ?></strong> (<?php echo round(((time() - $startTime)/60),2). " ". word("minutes"); ?>)';
+						d.innerHTML = '<br><?php echo "<strong>". word("Import Stats"). "</strong><br>"; ?>';
 						-->
 					</SCRIPT>
 					<?php
@@ -197,13 +197,13 @@ if (isset ($_GET['sub_action'])) {
 						</script>
 						<form action="<?php echo urlize($arr); ?>" method="POST" name="setup8">
 							<center>
-								<input type="text" name="edit_media_path" size="30"> 
+								<input type="text" name="edit_media_path" size="30">
 								<input type="hidden" name="edit_media_length" value="">
 								<input onClick="browseMedia();" type="button" value="Browse">
 								<br><br>
 								<input type="submit" name="edit_import_media_dir" value="<?php echo word("Import Directory"); ?>" class="jz_submit">
 							</center>
-						</form>					
+						</form>
 						<?php
 
 			}

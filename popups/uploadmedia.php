@@ -1,14 +1,14 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die('Security breach detected.');
 /**
 	* Allows the user to add media
-	* 
+	*
 	* @author Ross Carlson, Ben Dodson
 	* @version 03/01/05
 	* @since 03/01/05
 	*/
-	
+
 		global $audio_types, $video_types, $include_path, $root_dir, $jzUSER,$node;
-		
+
 
 		if (checkPermission($jzUSER,"upload",$node->getPath("String")) === false) {
 			echo word("Insufficient permissions.");
@@ -22,11 +22,11 @@
 			exit();
 			$this->closeWindow(true);
 		}
-		
+
 		// Let's open the page
 		$this->displayPageTop("",word("Add Media"). ": ". $node->getName());
 		$this->openBlock();
-		
+
 		// Did they want to create a link track
 		// This will show them the form
 		if (isset($_POST['add_link_track'])){
@@ -52,12 +52,12 @@
 			$this->closeButton(true);
 			exit();
 		}
-		
+
 		// Ok, did they want to uploade?
 		if (isset($_POST['uploadfiles'])){
 			// First let's flushout the display
 			flushdisplay();
-			
+
 			echo word("Writing out files, please stand by..."). "<br><br>";
 			echo '<div id="status"></div>';
 			?>
@@ -160,7 +160,7 @@
 					}
 				}
 			}
-			
+
 			?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
 				s.innerHTML = "<nobr><?php echo word('Status: Upload Complete!'); ?><br><?php echo $c; ?> <?php echo word('files uploaded'); ?></nobr>";
@@ -175,9 +175,9 @@
 				thisWin.close();
 			-->
 			</SCRIPT>
-			<?php	
-			echo '<br><br><center>';	
-			$this->closeButton();	
+			<?php
+			echo '<br><br><center>';
+			$this->closeButton();
 			echo '</center>';
 			exit();
 		}
@@ -185,18 +185,18 @@
 		if (isset($_POST['justclose'])){
 			$this->closeWindow(false);
 		}
-		
+
 		echo word('When uploading you may upload single files or zip files containing all the files you wish to upload.  These will then be extracted once they have been uploaded.  You may also add your descritpion files and album art now and they will be displayed.  The following media types are supported by this system and may be uploaded:');
 		echo "<br><br>". word('Audio'). ": ". $audio_types. "<br>". word('Video'). ": ". $video_types;
 		echo "<br><br>";
-		
+
 		// Now let's start our form so they can upload
 		$arr = array();
 		$arr['action'] = "popup";
 		$arr['ptype'] = "uploadmedia";
 		$arr['jz_path'] = $_GET['jz_path'];
 		echo '<form action="'. urlize($arr). '" method="POST" enctype="multipart/form-data">';
-		?>		
+		?>
 		<center>
 			<?php echo word("New Sub Path"); ?>: <br>
 			<input type="text" name="edit_new_sub" class="jz_input" size="40"><br><br>
@@ -213,7 +213,7 @@
 					var sh = screen.height;
 					var winOpt = "width=" + boxWidth + ",height=" + boxHeight + ",left=" + ((sw - boxWidth) / 2) + ",top=" + ((sh - boxHeight) / 2) + ",menubar=no,toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=no";
 					thisWin = window.open(obj,'StatusPop',winOpt);
-				}	
+				}
 			-->
 			</SCRIPT>
 			<?php
@@ -226,7 +226,7 @@
 		</center>
 		<?php
 		echo '</form>';
-		
+
 		$this->closeBlock();
 
 ?>

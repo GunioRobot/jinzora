@@ -19,25 +19,25 @@
 <div id="slickMainBlockBody">
 	{php}
 		global $jzSERVICES, $jzUSER, $album_name_truncate, $img_tiny_play;
-		
+
 		$node = new jzMediaNode($_GET['jz_path']);
 		$element = $node->getAncestor("artist");
 		$display = new jzDisplay();
 		$simArray = $jzSERVICES->getSimilar($element);
 		$simArray = seperateSimilar($simArray);
-		
+
 		$i=0;
 		shuffle($simArray['matches']);
 		echo "<nobr>";
 		for ($e=0;$e<count($simArray['matches']);$e++){
-			if (isset($simArray['matches'][$e])){		
+			if (isset($simArray['matches'][$e])){
 				// Let's setup our objects to get the data from
 				$artist = $simArray['matches'][$e];
 				$item = $artist->getSubNodes("nodes");
 				if (count($item) == 0){continue;}
 				foreach ($item as $album) {
 					$arr['jz_path'] = $album->getPath("String");
-					break;						
+					break;
 				}
 				if (isset($arr['jz_path'])){
 					// Now let's get 1 random album from this artist

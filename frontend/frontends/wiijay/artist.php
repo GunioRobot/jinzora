@@ -1,20 +1,20 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *        
-	* JINZORA | Web-based Media Streamer   
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	* JINZORA | Web-based Media Streamer
 	*
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
-	* or integrated into any PHP website.  It is released under the GNU GPL. 
-	* 
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
+	* or integrated into any PHP website.  It is released under the GNU GPL.
+	*
 	* Jinzora Author:
-	* Ross Carlson: ross@jasbone.com 
+	* Ross Carlson: ross@jasbone.com
 	* http://www.jinzora.org
-	* Documentation: http://www.jinzora.org/docs	
+	* Documentation: http://www.jinzora.org/docs
 	* Support: http://www.jinzora.org/forum
 	* Downloads: http://www.jinzora.org/downloads
 	* License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* Contributors:
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
 	*
@@ -22,16 +22,16 @@
 	* Created: 9.24.03 by Ross Carlson
 	*
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	
-	// This function displays all the Genres or Artists 
+
+	// This function displays all the Genres or Artists
 	function drawPage(&$node){
 
-		global $media_dir, $skin, $hierarchy, $album_name_truncate, $web_root, $root_dir, 
+		global $media_dir, $skin, $hierarchy, $album_name_truncate, $web_root, $root_dir,
 		       $jz_MenuItemLeft, $jz_MenuSplit, $jz_MenuItemHover, $jz_MainItemHover, $jz_MenuItem,
-			   $disable_random, $allow_download, $allow_send_email, $amg_search, $echocloud, $include_path, 
+			   $disable_random, $allow_download, $allow_send_email, $amg_search, $echocloud, $include_path,
 			   $img_play, $img_random_play, $this_page, $img_check, $img_check_none, $jzUSER, $img_play_dis, $img_random_play_dis,
  		       $show_sampler, $show_similar, $show_radio, $show_album_art, $days_for_new, $img_new, $num_album_cols, $show_album_art, $art_size;
-							
+
 		$display = &new jzDisplay();
 		$blocks = &new jzBlocks();
 		$fe = &new jzFrontend();
@@ -62,9 +62,9 @@
 									  }
 									  echo '<tr>';
 									}
-									
+
 									echo '<td class="jz_nj_block_body" valign="top" width="'.$colwidth.'%">';
-									$display->playButton($album); 
+									$display->playButton($album);
 									echo " ";
 									$linktext = $album->getName();
 									if ($show_album_art == "true") {
@@ -73,7 +73,7 @@
 									    $linktext .= $display->returnImage($art);
 									  }
 									}
-									$display->link($album, $linktext, word("Browse: "). $album->getName());						
+									$display->link($album, $linktext, word("Browse: "). $album->getName());
 									//echo " (". $album->getSubNodeCount("tracks"). ")";
 									echo '</td>';
 									$c++;
@@ -87,7 +87,7 @@
 				                    </tr>
 						</table>
 						<br>
-					
+
 					</td>
 				<?php
 					} else {
@@ -137,10 +137,10 @@
 					*/
 					}
 				?>
-					
-				
-				
-				
+
+
+
+
 			</tr>
 		</table>
 		<br>

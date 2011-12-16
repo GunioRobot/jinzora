@@ -26,7 +26,7 @@
 	$word_admin_pass = "Администраторска Парола :";
 	$word_default_access = "Достъп по подразбиране:";
 	$word_no_access = "No Access";
-	$word_lofi = "Lo-Fi";	
+	$word_lofi = "Lo-Fi";
 	$word_user = "Standard User";
 	$word_admin = "Admin";
 	$word_proceed_launch = "Преминаване към стартиране на Jinzora >>";

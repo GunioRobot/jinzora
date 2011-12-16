@@ -1,9 +1,9 @@
 <?php
 	header('Content-type: text/css');
 	if (!defined(jz_font_size)){
-		define("jz_font_size","11px");	
+		define("jz_font_size","11px");
 	}
-	
+
 	require_once(dirname(__FILE__).'/../system.php');
 ?>
 
@@ -14,7 +14,7 @@
 	padding:3px 3px 3px 3px;
 }
 #slickLeftBlock {
-	border: 1px solid #474747; 
+	border: 1px solid #474747;
 	background-color: <?php echo jz_bg_color; ?>;
 	width: 147px;
 	font-size: 10px;
@@ -28,7 +28,7 @@
 }
 #slickMainBlockBody {
 	padding: 4px 4px 4px 4px;
-	border: 1px solid #474747; 
+	border: 1px solid #474747;
 	background-color: <?php echo jz_bg_color; ?>;
 }
 #slickMainBlockHeaderRight{
@@ -96,7 +96,7 @@ body {
 .and_head2 { background-color:<?php echo jz_pg_bg_color; ?>; }
 
 .jz_block_td {
-	border: 1px solid #474747; 
+	border: 1px solid #474747;
 	background-color: <?php echo jz_bg_color; ?>;
 }
 td {
@@ -104,17 +104,17 @@ td {
 	font-size: <?php echo jz_font_size; ?>;
 	color: <?php echo jz_headers; ?>;
 }
-form { 
+form {
 	display:inline;
 }
 a {
 	text-decoration: none;
 	font-size: <?php echo jz_font_size; ?>;
 }
-a:link { 
+a:link {
 	color: <?php echo jz_link_color; ?>;
 }
-a:visited { 
+a:visited {
 	color: <?php echo jz_link_color; ?>;
 }
 a:hover {
@@ -180,13 +180,13 @@ a:hover {
 .jz_artist_album {
 	font-size: 11px;
 }
-.jz_row1 { 
+.jz_row1 {
 	background-color: <?php echo jz_row1; ?>;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
-.jz_row2 { 
-	background-color: <?php echo jz_row2; ?>; 
+.jz_row2 {
+	background-color: <?php echo jz_row2; ?>;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
@@ -254,14 +254,14 @@ a.jz_track_table_songs_href:hover {
 .jz_album_cover_picture {
 	border: 1px solid black;
 }
-.jz_album_cover_picture img { 
-	border: 1px solid black; 
+.jz_album_cover_picture img {
+	border: 1px solid black;
 }
 .full{
 	width: 100%
 }
-.jz_nj_block_body{ 
-		font-family: Arial, Helvetica, sans-serif; 
+.jz_nj_block_body{
+		font-family: Arial, Helvetica, sans-serif;
 		color:<?php echo jz_font_color; ?>;
 		border-left: <?php echo jz_default_border; ?>;
 		border-right: <?php echo jz_default_border; ?>;

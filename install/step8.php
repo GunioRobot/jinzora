@@ -2,16 +2,16 @@
 	// Let's figure out the path stuff so we'll know how/where to include from$form_action = "index.php?install=step8";
 	$form_action = setThisPage() . "install=step8";
 	$form_action2 = setThisPage() . "install=step9";
-	
+
 	// Ok, did they want to download the settings file?
 	if (isset($_POST['saveSettings'])){
 		createSettings($error);
 	}
-	
+
 	// Now let's create the functions to create the settings and users files
 	function createSettings($save = false){
-		global $word_written_success, $version, $include_path; 
-		
+		global $word_written_success, $version, $include_path;
+
 		// Now let's figure out the root dir
 		$rootArray = explode("/",$_SERVER['SCRIPT_NAME']);
 		$rootArray[count($rootArray)-1] = "";
@@ -20,13 +20,13 @@
 			if ($rootArray[$c] <> ""){
 				$root_dir .= "/". $rootArray[$c];
 			}
-		}		
+		}
 		$root_dir = $root_dir. "/". $include_path;
 		$root_dir = substr($root_dir,0,strlen($root_dir)-1);
 
 		// Now let's figure out the version
 		include_once($include_path. 'system.php');
-		
+
 		// Now let's create the dynamic variables from the installer
 		if ($_POST['cms_type'] <> "standalone"){
 			if ($_POST['frontend'] == "slick"){
@@ -41,17 +41,17 @@
 				$jinzora_skin = "sandstone";
 			}
 		}
-		
+
 		// Ok, now let's include all the defaults
 		include_once($include_path. 'install/defaults.php');
 		$content .= "?>";
-		
+
 		if ($save){
 			$filename = $include_path. 'settings.php';
 			$handle = fopen($filename, "w");
-			fwrite($handle,$content);	
+			fwrite($handle,$content);
 			fclose ($handle);
-			echo 'settings.php - <font color="green"><strong>'. $word_written_success. '</strong></font><br><br>';			
+			echo 'settings.php - <font color="green"><strong>'. $word_written_success. '</strong></font><br><br>';
 		} else {
 			header ("Content-Type: text/html");
 			header ('Content-Disposition: attachment; filename="settings.php"');
@@ -63,7 +63,7 @@
 	// Now let's include the left
 	include_once($include_path. 'install/leftnav.php');
 ?>
-      
+
 <div id="main">
 	<a href="http://www.jinzora.com" target="_blank"><img src="<?php echo $include_path; ?>install/logo.gif" border="0" align="right" vspace="5" hspace="0"></a>
 	<h1><?php echo $word_save_config; ?></h1>
@@ -102,14 +102,14 @@
 			<a class="helpbox2" href="javascript:void(0);" onmouseover="return overlib('<?php echo $word_settings_perm_error; ?>');" onmouseout="return nd();">?</a>
 			<?php
 			echo '<br><br>';
-		} else {		
-			// Ok, now let's write out the settings file				
+		} else {
+			// Ok, now let's write out the settings file
 			createSettings(true);
 		}
-		
+
 		// Now let's let them know
 		if (!$mainError){
-		
+
 		} else {
 			echo '<br><font color="red">'. $word_file_create_error. '</font>';
 			?>
@@ -121,7 +121,7 @@
 						echo '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($val) .'">'. "\n";
 					  }
 				   }
-				?>	
+				?>
 				<br><br><input type="submit" name="saveSettings" class="submit" value="<?php echo $word_download; ?> settings.php">
 				<br><br><font color="red"><?php echo $word_download_and_continue; ?></font>
 				<br><input type="submit" name="checkConfig" class="submit" value="<?php echo $word_check_config; ?>">
@@ -141,14 +141,14 @@
 									echo '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($val) .'">'. "\n";
 								  }
 							   }
-							?>	
+							?>
 							&nbsp; <input type="submit" name="submit_step8" class="submit" value="<?php echo $word_proceed_launch; ?>">
 						</form>
 					</span>
 				</div>
-			<?php   
+			<?php
 		}
-	?>	
+	?>
 	</div>
 <?php
 	// Now let's include the top

@@ -53,7 +53,7 @@
 					case "btnGenres": url = "default.php"; break;
 					case "btnArtists": url = "artists.php"; break;
 					case "btnAlbums": url = "albums.php"; break;
-					
+
 					case "btnGenreJazz": url = "default.php?genre=Jazz"; break;
 					case "btnGenreRock": url = "default.php?genre=Rock"; break;
 					case "btnGenreFunk": url = "default.php?genre=Funk"; break;

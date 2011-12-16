@@ -49,7 +49,7 @@
 				   $body = true;
 			}
 			fclose($fp);
-						
+
 			// Now let's get the specific changelog for this build
 			$needle = "<!-- ". $version. " -->";
 			$needle2 = "<!-- /". $version. " -->";

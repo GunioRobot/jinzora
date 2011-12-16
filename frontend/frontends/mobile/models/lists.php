@@ -6,7 +6,7 @@ function doTemplate($node) {
   $smarty = mobileSmarty();
   $smarty->assign('Play',word('Play'));
   $smarty->assign('Shuffle',word('Shuffle'));
-  
+
   /** Playlists **/
   $smarty->assign('Playlists',word('Playlists'));
 
@@ -70,9 +70,9 @@ function doTemplate($node) {
   $chart['entries'] = $entries;
   $charts[] = $chart;
 
-  
 
-  
+
+
   $smarty->assign('charts',$charts);
 
 

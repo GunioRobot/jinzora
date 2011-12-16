@@ -11,7 +11,7 @@
 **/
 global $jzUSER, $row_colors, $node;
 
-// Let's setup the object		
+// Let's setup the object
 $item = new jzMediaElement($node->getPath('String'));
 $track = new jzMediaTrack($node->getPath('String'));
 

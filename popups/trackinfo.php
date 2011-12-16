@@ -3,7 +3,7 @@
 
 /**
 * Shows track details
-* 
+*
 * @author Ross Carlson
 * @version 01/25/05
 * @since 01/25/05
@@ -359,8 +359,8 @@ if ($meta['lyrics']) {
 // We can only do this if they allow filesystem modify
 if ($allow_filesystem_modify == "true") {
 ?>
-						<input type=submit class="jz_submit" name="<?php echo jz_encode('createlowfi'); ?>" value="<?php echo word('Create Lo-Fi'); ?>">  
-						<input type=submit class="jz_submit" name="<?php echo jz_encode('createclip'); ?>" value="<?php echo word('Create Clip'); ?>"> 
+						<input type=submit class="jz_submit" name="<?php echo jz_encode('createlowfi'); ?>" value="<?php echo word('Create Lo-Fi'); ?>">
+						<input type=submit class="jz_submit" name="<?php echo jz_encode('createclip'); ?>" value="<?php echo word('Create Clip'); ?>">
 						<br><br>
 						<?php } ?>
 					<?php } ?>

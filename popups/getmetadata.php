@@ -2,7 +2,7 @@
 
 /**
 * Searches for meta data of the given node
-* 
+*
 * @author Ross Carlson
 * @version 01/18/05
 * @since 01/18/05
@@ -111,7 +111,7 @@ if (isset ($_POST['edit_meta_search_step'])) {
 
 flushdisplay();
 
-// Ok, they submitted the form, let's do what they wanted						
+// Ok, they submitted the form, let's do what they wanted
 echo word("Searching, please wait...") . "<br><br>";
 echo '<div id="artist"></div>';
 echo '<div id="arStatus"></div>';
@@ -148,7 +148,7 @@ foreach ($nodes as $item) {
 			// Ok, let's get data for this artist
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						ar.innerHTML = '<nobr><?php echo word("Artist"); ?>: <?php echo $item->getName(); ?></nobr>';					
+						ar.innerHTML = '<nobr><?php echo word("Artist"); ?>: <?php echo $item->getName(); ?></nobr>';
 						ars.innerHTML = '<?php echo word("Status: Searching..."); ?>';
 						-->
 					</SCRIPT>
@@ -164,7 +164,7 @@ foreach ($nodes as $item) {
 				if (($_POST['edit_search_images_miss'] == "always" or $item->getMainArt() == "") and $arr['image'] <> "") {
 ?>
 							<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-								i.innerHTML = '<br><center><?php echo word("Last Image Found"). "<br>". $item->getName();?><br><img src="<?php echo $arr["image"]; ?>"><center>';					
+								i.innerHTML = '<br><center><?php echo word("Last Image Found"). "<br>". $item->getName();?><br><img src="<?php echo $arr["image"]; ?>"><center>';
 								-->
 							</SCRIPT>
 							<?php
@@ -186,8 +186,8 @@ foreach ($nodes as $item) {
 		if ($_POST['edit_search_all_albums'] == "on") {
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						ar.innerHTML = '<nobr><?php echo word("Album"); ?>: <?php echo $item->getName(). "<br>". word("Artist"). ": ". $artist; ?></nobr>';			
-						ars.innerHTML = '<?php echo word("Status: Searching..."); ?>';					
+						ar.innerHTML = '<nobr><?php echo word("Album"); ?>: <?php echo $item->getName(). "<br>". word("Artist"). ": ". $artist; ?></nobr>';
+						ars.innerHTML = '<?php echo word("Status: Searching..."); ?>';
 						-->
 					</SCRIPT>
 					<?php
@@ -201,8 +201,8 @@ foreach ($nodes as $item) {
 			if (($_POST['edit_search_images_miss'] == "always" or $item->getMainArt() == "") and $arr['image'] <> "") {
 ?>
 						<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-							ars.innerHTML = '<?php echo word("Status: Writing image"); ?>';		
-							i.innerHTML = '<br><center><?php echo word("Last Image Found"). "<br>". $item->getName();?><br><img src="<?php echo $arr["image"]; ?>"></center>';			
+							ars.innerHTML = '<?php echo word("Status: Writing image"); ?>';
+							i.innerHTML = '<br><center><?php echo word("Last Image Found"). "<br>". $item->getName();?><br><img src="<?php echo $arr["image"]; ?>"></center>';
 							-->
 						</SCRIPT>
 						<?php
@@ -216,7 +216,7 @@ foreach ($nodes as $item) {
 			if (($_POST['edit_search_desc_miss'] == "always" or $item->getDescription() == "") and $arr['review'] <> "") {
 ?>
 						<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-							ars.innerHTML = '<?php echo word("Status: Writing review"); ?>';					
+							ars.innerHTML = '<?php echo word("Status: Writing review"); ?>';
 							-->
 						</SCRIPT>
 						<?php
@@ -236,7 +236,7 @@ foreach ($nodes as $item) {
 			if ($_POST['edit_search_rating_miss'] == "always" and $arr['rating'] <> "") {
 ?>
 						<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-							ars.innerHTML = '<?php echo word("Status: Writing rating"); ?>';					
+							ars.innerHTML = '<?php echo word("Status: Writing rating"); ?>';
 							-->
 						</SCRIPT>
 						<?php
@@ -250,7 +250,7 @@ foreach ($nodes as $item) {
 			if ($arr['id'] <> "" and $arr['id'] <> "NULL") {
 ?>
 						<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-							ars.innerHTML = '<?php echo word("Status: Updating Amazon ID"); ?>';					
+							ars.innerHTML = '<?php echo word("Status: Updating Amazon ID"); ?>';
 							-->
 						</SCRIPT>
 						<?php
@@ -268,7 +268,7 @@ foreach ($nodes as $item) {
 			if ($allow_id3_modify == "true" and (isset ($arr['year']) or isset ($arr['image']))) {
 ?>
 						<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-							ars.innerHTML = '<?php echo word("Status: Updating tracks..."); ?>';					
+							ars.innerHTML = '<?php echo word("Status: Updating tracks..."); ?>';
 							-->
 						</SCRIPT>
 						<?php
@@ -363,7 +363,7 @@ foreach ($nodes as $item) {
 			}
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						ars.innerHTML = '<?php echo word("Status: Complete!"); ?>';					
+						ars.innerHTML = '<?php echo word("Status: Complete!"); ?>';
 						-->
 					</SCRIPT>
 					<?php
@@ -376,7 +376,7 @@ foreach ($nodes as $item) {
 	$c++;
 ?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-				c.innerHTML = '<?php echo word("Progress: "). $c. "/". $total; ?>';					
+				c.innerHTML = '<?php echo word("Progress: "). $c. "/". $total; ?>';
 				-->
 			</SCRIPT>
 			<?php
@@ -387,10 +387,10 @@ foreach ($nodes as $item) {
 // Now let's purge the cache
 ?>
 		<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-			ars.innerHTML = '&nbsp;';					
-			c.innerHTML = '&nbsp;';					
-			ar.innerHTML = '<?php echo word("Purging cache"). "..."; ?>';			
-			i.innerHTML = '&nbsp;';					
+			ars.innerHTML = '&nbsp;';
+			c.innerHTML = '&nbsp;';
+			ar.innerHTML = '<?php echo word("Purging cache"). "..."; ?>';
+			i.innerHTML = '&nbsp;';
 			-->
 		</SCRIPT>
 		<?php
@@ -405,10 +405,10 @@ if ($node->getPType() == "artist") {
 }
 ?>
 		<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-			ars.innerHTML = '&nbsp;';					
-			c.innerHTML = '&nbsp;';					
-			ar.innerHTML = '<?php echo word("Complete!"); ?>';			
-			i.innerHTML = '&nbsp;';					
+			ars.innerHTML = '&nbsp;';
+			c.innerHTML = '&nbsp;';
+			ar.innerHTML = '<?php echo word("Complete!"); ?>';
+			i.innerHTML = '&nbsp;';
 			-->
 		</SCRIPT>
 		<?php

@@ -77,7 +77,7 @@ if (isset ($_POST['edit_dlformat'])) {
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
 					s = document.getElementById("status");
 					s2 = document.getElementById("status2");
-					s2.innerHTML = '<?php echo '<center><img src="'. $root_dir. '/style/images/progress-bar.gif" border="0"><br>'. word("Please Wait"). '</center>'; ?>';					
+					s2.innerHTML = '<?php echo '<center><img src="'. $root_dir. '/style/images/progress-bar.gif" border="0"><br>'. word("Please Wait"). '</center>'; ?>';
 					-->
 				</SCRIPT>
 				<?php
@@ -93,7 +93,7 @@ if (isset ($_POST['edit_dlformat'])) {
 			for ($i = 0; $i < count($tracks); $i++) {
 ?>
 						<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-							s.innerHTML = '<nobr><?php echo word("Transcoding"). ": ". $tracks[$i]->getName(); ?></nobr>';					
+							s.innerHTML = '<nobr><?php echo word("Transcoding"). ": ". $tracks[$i]->getName(); ?></nobr>';
 							-->
 						</SCRIPT>
 						<?php
@@ -114,8 +114,8 @@ if (isset ($_POST['edit_dlformat'])) {
 			// Now let's clean up
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						s.innerHTML = '&nbsp;';			
-						s2.innerHTML = '&nbsp;';					
+						s.innerHTML = '&nbsp;';
+						s2.innerHTML = '&nbsp;';
 						-->
 					</SCRIPT>
 					<?php
@@ -139,8 +139,8 @@ if (isset ($_POST['edit_dlformat'])) {
 			echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=' . urlize($dlarr) . '">';
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						s.innerHTML = '<?php echo $var; ?>';			
-						s2.innerHTML = '&nbsp;';					
+						s.innerHTML = '<?php echo $var; ?>';
+						s2.innerHTML = '&nbsp;';
 						-->
 					</SCRIPT>
 					<?php
@@ -171,8 +171,8 @@ if (isset ($_POST['edit_dlformat'])) {
 			echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL=' . urlize($dlarr) . '">';
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						s.innerHTML = '<?php echo $var; ?>';			
-						s2.innerHTML = '&nbsp;';					
+						s.innerHTML = '<?php echo $var; ?>';
+						s2.innerHTML = '&nbsp;';
 						-->
 					</SCRIPT>
 					<?php
@@ -303,7 +303,7 @@ if ($allow_resample == "true") {
 									<option value="mpc">Musepack</option>
 									<option value="wv">Wavpack</option>
 									<!--<option value="ogg">OGG</option>-->
-								</select>	
+								</select>
 							</td>
 						</tr>
 						<tr>
@@ -332,7 +332,7 @@ if ($allow_resample == "true") {
 	echo '<input type="hidden" name="edit_dlbitrate" value="native">';
 	echo '<body onLoad="document.dlForm.submit();"></body>';
 }
-?>			
+?>
 		</form>
 		<?php
 

@@ -5,7 +5,7 @@
 			{if $tracks[track].art <> false}
 				<a href="{$tracks[track].playlink}"><img src="{$tracks[track].art}" border="0"></a><br>
 			{/if}
-			<a href="{$tracks[track].playlink}">{$tracks[track].name}</a> ({$tracks[track].length})<br> 
+			<a href="{$tracks[track].playlink}">{$tracks[track].name}</a> ({$tracks[track].length})<br>
 			{$word_viewed}: {$tracks[track].playcount} time{if $tracks[track].playcount > 1}s{/if}{if $tracks[track].playcount == 0}s{/if}
 			<br>
 			<a href="{$tracks[track].playlink}">{$word_watch_now}</a> |

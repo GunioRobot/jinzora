@@ -12,22 +12,22 @@
 		text-decoration: none;
 		font-size: 11px;
 	}
-	a:link { 
+	a:link {
 		color: <<$jz_link_color>>;
 	}
-	a:visited { 
+	a:visited {
 		color: <<$jz_link_color>>;
 	}
 	a:hover {
 		color: <<$jz_link_hover_color>>;
 	}
-	.jz_row1 { 
+	.jz_row1 {
 		background-color: <<$jz_row1>>;
 		border-left: 1px solid black;
 		border-right: 1px solid black;
 	}
-	.jz_row2 { 
-		background-color: <<$jz_row2>>; 
+	.jz_row2 {
+		background-color: <<$jz_row2>>;
 		border-left: 1px solid black;
 		border-right: 1px solid black;
 	}

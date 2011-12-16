@@ -1,41 +1,41 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* These are the classes extended by the backend adaptors.
 	*
 	* @since 05.10.04
 	* @author Ben Dodson <bdodson@seas.upenn.edu>
 	*/
-	
+
 	class jzMediaNodeClass extends jzMediaElement {
 
 		var $natural_depth; // if the level before us is 'hidden'
-		
+
 		/**
 		* Constructor for a jzMediaNodeClass
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/14/04
 		* @since 5/14/04
-		*/	
+		*/
 		function jzMediaNodeClass($par = array(),$mode = "path") {
 			$this->_constructor($par,$mode);
 		}
@@ -46,7 +46,7 @@
 
 		/**
 		* Returns the type of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
@@ -54,43 +54,43 @@
 		function getType() {
 			return "jzMediaNode";
 		}
-		
+
 		/**
 		* Gets the 'natural depth' of this node.
-		* This has no real purpose outside of the class. 
+		* This has no real purpose outside of the class.
 		*
 		* @author Ben Dodson
 		* @version 5/21/04
 		* @since 5/21/04
-		*/	
+		*/
 		function getNaturalDepth() {
 			return $this->natural_depth;
 		}
-		
+
 		/**
 		* Sets the natural depth (for searching, counting etc.) of this node.
 		* Useful if the node is preceded by a hidden level.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/14/04
 		* @since 5/14/04
-		*/	
+		*/
 		function setNaturalDepth($n) {
 			$this->natural_depth = $n;
-		}		
+		}
 
 		/**
 		* Counts the number of subnodes $distance steps down of type $type.
 		* $distance = -1 means do it recursively.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/14/04
 		* @since 5/14/04
 		*/
 		function getSubNodeCount($type='both', $distance = false) {
-			
+
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
 
 			// alias:
@@ -105,26 +105,26 @@
 
 		/**
 		* Returns the subnodes as an array. A $distance of -1 means do it recursively.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/4/04
 		* @since 6/4/04
 		*/
 		function getSubNodes($type='nodes',$distance=false, $random=false, $limit=0, $hasArt = false) {
-		
+
 		  if ($distance === false) {
-		    $distance = $this->getNaturalDepth();	
+		    $distance = $this->getNaturalDepth();
 		  }
-		  
+
 		  // alias:
 		  if ($type == "tracks") {
 		    $type = "leaves";
 		  }
-		  
+
 		  // 2 cases:
 		  $search = array();
 		  $vals = array();
-		  
+
 		  // 1) recursive
 		  if ($distance <= 0) {
 			$node = $this;
@@ -135,7 +135,7 @@
 				if ($nodearray = $cache[7]) {
 					foreach ($nodearray as $name) {
 						$search[] = &new jzMediaNode($node->getPath("String") . "/" . $name);
-			
+
 						if ($type == "nodes" || $type == "both") {
 						$me = new jzMediaNode($node->getPath("String") . "/" . $name);
 						if ($hasArt) {
@@ -200,7 +200,7 @@
 				  }
 				}
 			}
-		    
+
 		  }
 		  if ($random === true) {
 		    srand((float)microtime() * 1000000);
@@ -224,21 +224,21 @@
 		    return $vals;
 		  }
 		}
-		
+
 
 		/**
 		* Returns the 'top' subnodes. $distance = -1 is recursive.
-		* 
+		*
 		* $top_type is one of:
 		* most-played, best-rated
 		*
-		* @author 
-		* @version 
-		* @since 
-		*/		
+		* @author
+		* @version
+		* @since
+		*/
 		function getTopSubNodes($type='nodes',$top_type='most-played', $distance=false, $limit=0) {
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
 			// alias:
 			if ($type == "tracks") {
@@ -246,21 +246,21 @@
 			}
 
 		}
-		
+
 		/**
 		* Returns the subnode named $name.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/16/04
 		* @since 5/16/04
-		*/		
+		*/
 		function getSubNode($name) {
 			$p = $this->path;
 			$p[] = $name;
 			// TODO: check for jzMediaTrack or jzMediaNode?
 			// I'm not sure how needed this function is anyways...
 			return jzMediaElement($p);
-			
+
 		}
 
 		/**
@@ -295,7 +295,7 @@
 		      $new_roots = $new_roots + $r->search($_POST['album'],"nodes",distanceTo("album",$r));
 		    }
 		    $roots = $new_roots;
-		  } 
+		  }
 
 		  // If nothing in their query is track-specifc, we are done.
 		  if (powerSearchType() != "tracks") {
@@ -307,7 +307,7 @@
 		  foreach ($roots as $r) {
 		    $results = $results + $r->search($_POST['song_title'],"tracks",-1,0,$_POST['operator'],$metasearch);
 		  }
-		  
+
 		  return $results;
 		}
 
@@ -332,11 +332,11 @@
 			if ($type == "tracks") {
 				$type = "leaves";
 			}
-			
+
 			if ($depth === false) {
 				$depth = $this->getNaturalDepth();
 			}
-			
+
 			// allow strings as well as arrays for searching:
 			if (is_string($searchArray2) && $op != "exact") {
 				if (stristr($searchArray2,"\"") === false) {
@@ -404,13 +404,13 @@
 			} else {
 				$excludeArray = $exclude;
 			}
-			
+
 			// Clean up:
 			$tmp = array();
 			if (is_array($searchArray)) {
 			  foreach ($searchArray as $term) {
 			    if (!($term == "" || $term == " ")) {
-			      $tmp[] = $term; 
+			      $tmp[] = $term;
 			    }
 			  }
 			  $searchArray = $tmp;
@@ -418,11 +418,11 @@
 			$tmp = array();
 			foreach ($excludeArray as $term) {
 			  if (!($term == "" || $term == " ")) {
-			    $tmp[] = $term; 
+			    $tmp[] = $term;
 			  }
 			}
 			$excludeArray = $tmp;
-			
+
 			// LYRICS SEARCHING: different kind of search.
 			if ($type == "lyrics") {
 			  $matches = array();
@@ -504,7 +504,7 @@
 
 
 
-			$kids = $this->getSubNodes($type,$depth,"leave",0); 
+			$kids = $this->getSubNodes($type,$depth,"leave",0);
 			// don't sort our nodes, because it takes time.
 			// but don't randomize either.
 			$matches = array();
@@ -595,16 +595,16 @@
 			}
 			return $matches;
 		}
-		
-		
+
+
 		/**
 		* Updates the cache using this node as a base.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 5/17/04
-		*/		
-		function updateCache($recursive = true, $root = false, $showStatus = false, $readID3 = true) {		
+		*/
+		function updateCache($recursive = true, $root = false, $showStatus = false, $readID3 = true) {
 
 			/* Serialized array:
 			 * nodes/path---to---node:
@@ -616,7 +616,7 @@
 			 $be = &new jzBackend();
 			 $be->setUpdated();
 		}
-		
+
 		function updateCacheHelper($recursive, $levelsLeft, $root, $showStatus, $readID3) {
 			global $audio_types, $video_types, $ext_graphic, $default_art, $backend,
 			$track_num_seperator, $hierarchy, $protocols;
@@ -631,18 +631,18 @@
 				}
 
 			$nodepath = $this->getPath("String");
-			
+
 			/* Echo out our current status, if they want it: */
 			if ($showStatus === true) {
 				showStatus($mediapath);
 			} else if ($showStatus == "cli") {
 			  echo word("Scanning: ") . $mediapath . "\n";
 			}
-			
+
 			// First add $this.
 			// Was I already cached?
 			$cache = $this->readCache();
-			
+
 			if ($cache[0] == "-") { $cache[0] = $nodepath; }
 			if ($cache[13] == "-") { $cache[13] = $mediapath; }
 			if ($cache[6] == "-") { $cache[6] = jz_filemtime($mediapath); }
@@ -652,13 +652,13 @@
 			}
 			$blankfilecache = blankCache("track");
 			// Recurse and add $this's media files.
-			if (!($handle = opendir($mediapath))) 
+			if (!($handle = opendir($mediapath)))
 				die("Could not access directory $mediapath");
-				
+
 			// scan for info while going through directory:
 			$trackcount = 0;
 			$new_nodes = $cache[7];
-			$new_tracks = $cache[8];	
+			$new_tracks = $cache[8];
 			$bestImage = "";
 			$bestDescription = "";
 			while ($file = readdir($handle)) {
@@ -682,7 +682,7 @@
 					}
 
 					if ($new_nodes != array()) {
-						$key = array_search($file,$new_nodes); 
+						$key = array_search($file,$new_nodes);
 						if (false === $key) {
 							$new_nodes[] = $file;
 							$next = &new jzMediaNode($childpath);
@@ -691,13 +691,13 @@
 						$new_nodes[] = $file;
 						$next = &new jzMediaNode($childpath);
 					}
-					
+
 				}
 				else {
 					if (preg_match("/\.(txt)$/i", $file)) {
 						// TODO: GET THE CORRECT DESCRIPTION IN $bestDescription
 						// $bestDescription = $fullchildpath;
-					
+
 					}
 					else if (preg_match("/\.($ext_graphic)$/i", $file) && !stristr($file,".thumb.")) {
 						// An image
@@ -713,19 +713,19 @@
 						//* * * A track * * * *//
 						// Add it to the track list.
 						if ($new_tracks != array()) {
-							$key = array_search($file,$new_tracks); 
+							$key = array_search($file,$new_tracks);
 							if (false === $key) {
 								$new_tracks[] = $file;
 							}
 						} else {
 							$new_tracks[] = $file;
 						}
-						
+
 						// And at it's details..
 						$childnode = &new jzMediaTrack($childpath);
 						if (($cache[2] == "-" || $cache[2] < date("U",jz_filemtime($fullchildpath))) || !$childnode->readCache()) {
 							// Add as a new/updated track.
-							
+
 							$filecache[$trackcount] = $childnode->readCache();
 
 							if ($filecache[$trackcount][0] == "-") {
@@ -736,7 +736,7 @@
 							 //////////
 							// META //
 						       //////////
-						       
+
 							$track = &new jzMediaTrack($childpath);
 							$track->playpath = $fullchildpath;
 							if ($readID3 === true) {
@@ -744,8 +744,8 @@
 							} else {
 							  $meta = array();
 							}
-							
-							
+
+
 							$filecache[$trackcount][7] = $meta['title'];
 							$filecache[$trackcount][8] = $meta['frequency'];
 							$filecache[$trackcount][9] = $meta['comment'];
@@ -759,7 +759,7 @@
 							$filecache[$trackcount][19] = $meta['lyrics'];
 							$filecache[$trackcount][20] = $meta['bitrate'];
 							$filecache[$trackcount][21] = $meta['number'];
-							
+
 							// Now let's see if there is a description file...
 							$desc_file = str_replace(".". $meta['type'],"",$fullchildpath). ".txt";
 							$long_description = "";
@@ -768,7 +768,7 @@
 								$handle2 = fopen($desc_file, "rb");
 								$filecache[$trackcount][10] = fread($handle2, filesize($desc_file));
 								fclose($handle2);
-							} else { 
+							} else {
 								$filecache[$trackcount][10] = "";
 							}
 							// Now let's see if there is a thumbnail for this track
@@ -778,7 +778,7 @@
 							//$filecache[$trackcount] = $childnode->readCache();
 						}
 						$trackcount++;
-						
+
 						// Let's track this
 						writeLogData('importer',"Importing track: ". $fullchildpath);
 						$_SESSION['jz_import_full_progress']++;
@@ -787,13 +787,13 @@
 			}
 
 			if ($new_nodes != array()) {
-          foreach ($new_nodes as $i => $my_path) { 
+          foreach ($new_nodes as $i => $my_path) {
 					$me = &new jzMediaNode($nodepath . "/" . $my_path);
 					if ($me->getFilePath() == "-") {
 						$arr = explode("/",$my_path);
 						$mfp = $this->getFilePath() . "/" . $arr[sizeof($arr)-1];
 					} else {
-						$mfp = $me->getFilePath(); 
+						$mfp = $me->getFilePath();
 					}
 					if (!is_dir($mfp)) {
 					  // TODO: The commented out part should check to see if there are 'permanent' subnodes.
@@ -806,14 +806,14 @@
 								$remove_me = false;
 								break;
 							}
-						} 
+						}
 
 						if ($remove_me) {
 							$me->deleteCache();
 							unset($new_nodes[$i]);
 					  }
 					}
-				}	
+				}
 			}
 			if ($new_tracks != array()) {
                                 foreach ($new_nodes as $i => $my_path) {
@@ -833,10 +833,10 @@
 							unset($new_tracks[$i]);
 						}
 					}
-				}	
+				}
 			}
-			
-			
+
+
 			// Update $this
 			if ($bestImage != "") {
 				$cache[1] = $bestImage;
@@ -859,7 +859,7 @@
 
 		/**
 		* Returns whether or not this is a leaf (which it isn't)
-		* 
+		*
 		* @author Laurent Perrin
 		* @version 5/10/04
 		* @since 5/10/04
@@ -873,16 +873,16 @@
 		* Returns the nodes starting with the specified letter.
 		* if $letter is "#" it returns nodes that don't start with a-z.
 		* if $letter is "*" it returns all nodes.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 6/4/04
 		* @since 5/11/04
 		*/
-		function getAlphabetical($letter, $type = "nodes", $depth = false) { 
+		function getAlphabetical($letter, $type = "nodes", $depth = false) {
 			if ($depth === false) {
-				$depth = $this->getNaturalDepth();	
+				$depth = $this->getNaturalDepth();
 			}
-			if ($depth == 0) { 
+			if ($depth == 0) {
 			 	$first = strtolower(substr($this->getName(),0,1));
 			 	$letter = strtolower($letter);
 			 	if ($letter == "#") {
@@ -898,7 +898,7 @@
 					}
 				}
 			}
-			else { 
+			else {
 				$array = array();
 				foreach ($this->getSubNodes() as $subnode) {
 					if (!$subnode->isLeaf()) {
@@ -913,10 +913,10 @@
 				return $array;
 			}
 		}
-		
+
 		/**
 		* Marks this node as 'featured.'
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
@@ -928,10 +928,10 @@
 			$cache[] = $this->getPath("String");
 			$root->writeCache($cache, "featured");
 		}
-		
+
 		/**
 		* Checks to see if this node is featured
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
@@ -947,11 +947,11 @@
 			}
 			return false;
 		}
-		
-		
+
+
 		/**
 		* Removes this node from the featured list.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
@@ -970,11 +970,11 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		* Returns featured nodes. Limit 0 means get them all.
 		* Order is random.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/8/04
 		* @since 6/8/04
@@ -986,21 +986,21 @@
 			$level = $this->getLevel();
 			$vals = array();
 			$i = 0;
-			
+
 			if ($distance === false) {
-				$distance = $this->getNaturalDepth();	
+				$distance = $this->getNaturalDepth();
 			}
-			
+
 			if (sizeof($cache) == 0) { return false; }
-			
+
 			srand((float) microtime() * 10000000);
 			$keys = array_rand($cache,sizeof($cache));
-			
+
 			if (!is_array($keys)) {
 				// only 1 key:
 				$keys = array($keys);
 			}
-			
+
 			foreach ($keys as $key) {
 				$temp = $cache[$key];
 				if ($path == "" || (strpos($temp, $path) == 0  && strpos($temp, $path) !== false && $temp != $path)) {
@@ -1015,14 +1015,14 @@
 				}
 			}
 			return $vals;
-			
+
 		}
-		
-		
+
+
 		/**
 		* Adds a request. $type is either 'request' or 'broken.'
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/1/04
 		* @since 9/1/04
@@ -1031,7 +1031,7 @@
 			// Just 1 cache: from the root node.
 			$root = &new jzMediaNode();
 			$cache = $root->readCache("request");
-			
+
 			$new = array();
 			$new['entry'] = $entry;
 			$new['comment'] = $comment;
@@ -1039,12 +1039,12 @@
 			$new['type'] = strtolower($type);
 			$new['id'] = md5($entry . $comment . $user . $type);
 			$new['path'] = $this->getPath("String");
-			
+
 			$cache[] = $new;
 			$root->writeCache($cache, "request");
 		}
-		
-		
+
+
 		/**
 		* Gets requests. Default is to do so recursively and return all types.
 		* Returns results as an array with the following fields:
@@ -1052,7 +1052,7 @@
 		*
 		* Path is the parent path for the request.
 		* Type is the type of the request, currently 'broken' or 'request'
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/1/04
 		* @since 9/1/04
@@ -1063,11 +1063,11 @@
 			$path = $this->getPath("String");
 			$level = $this->getLevel();
 			$results = array();
-			
+
 			if (sizeof($cache) == 0) { return false; }
-			
+
 			for ($i = 0; $i < sizeof($cache); $i++) {
-			
+
 				if (strtolower($type) == "all" || strtolower($type) == $cache[$i]['type']) {
 					$temp = $cache[$i]['path'];
 					$tnode = &new jzMediaNode($temp);
@@ -1083,12 +1083,12 @@
 			}
 			return $results;
 		}
-		
-		
+
+
 		/**
 		* Removes request with id $id. (from getRequests['id']).
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/1/04
 		* @since 9/1/04
@@ -1106,11 +1106,11 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		* Adds link to the given node.
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
@@ -1119,8 +1119,8 @@
 			$cache = $this->readCache();
 			$linkarray = $cache[14];
 			$count = sizeof($linkarray);
-			
-			
+
+
 			// let's not add it twice.
 			$path = $node->getPath("String");
 			$type = ($node->isLeaf()) ? 'leaf' : 'node';
@@ -1129,8 +1129,8 @@
 					return true;
 				}
 			}
-			
-			
+
+
 			$linkarray[$count]['path'] = $node->getPath("String");
 			if ($node->isLeaf()) {
 				$linkarray[$count]['type'] = 'leaf';
@@ -1141,11 +1141,11 @@
 			$cache[14] = $linkarray;
 			$this->writeCache($cache);
 		}
-		
+
 		/**
 		* Removes the link to the given node.
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
@@ -1155,10 +1155,10 @@
 			$linkarray = $cache[14];
 			$newlinkarray = array();
 			$count = sizeof($linkarray);
-			
+
 			$path = $node->getPath("String");
 			$type = ($node->isLeaf()) ? 'leaf' : 'node';
-			
+
 			for ($i = 0; $i < $count; $i++) {
 				if (!($linkarray[$i]['path'] == $path && $linkarray[$i]['type'] == $type)) {
 					$newlinkarray[] = $linkarray[$i];
@@ -1167,12 +1167,12 @@
 			$cache[14] = $newlinkarray;
 			$this->writeCache($cache);
 		}
-		
-		
+
+
 		/**
 		* Gets the node's links.
-		* 
-		* 
+		*
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
@@ -1185,38 +1185,38 @@
 			if ($type == "tracks") {
 				$type = "leaves";
 			}
-			
+
 			for ($i = 0; $i < sizeof($linkarray); $i++) {
 				if ($linkarray[$i]['type'] == 'node') {
 					if ($type == 'both' || $type == 'nodes') {
-						$return[] = &new jzMediaNode($linkarray[$i]['path']);	
+						$return[] = &new jzMediaNode($linkarray[$i]['path']);
 					}
 				}
 				if ($linkarray[$i]['type'] == 'leaf') {
 					if ($type == 'both' || $type == 'leaves') {
-						$return[] = &new jzMediaTrack($linkarray[$i]['path']);	
+						$return[] = &new jzMediaTrack($linkarray[$i]['path']);
 					}
 				}
 			}
-			
-			return $return;			
-		}		
-	
-		
+
+			return $return;
+		}
+
+
 		/**
 		 *  Injects a leaf or a node into $this.
 		 * Updated parameters for Jinzora 3.0.
-		 * 
+		 *
 		 * $pathArray can set the following fields:
 		 * genre, subgenre, artist, album, disk, track
 		 * If anything is not set, this function will try and pull
 		 * the information from $this.
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @since version - Jul 28, 2006
 		 */
 		function inject($pathArray, $filename, $meta = false) {
-			
+
 			if (!isset($pathArray['genre']) && false !== ($info = getInformation($this, "genre"))) {
 				$pathArray['genre'] = $info;
 			}
@@ -1245,10 +1245,10 @@
 			}
 			return $res;
 		}
-	
+
 		/*
 		 * Adds tracks in bulk to Jinzora.
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @since 9/5/04
 		 */
@@ -1259,16 +1259,16 @@
 		 	}
 		 	return $results;
 		 }
-	
+
 		/**
 		* Injects a leaf or a node into $this.
 		* If sizeof($path) > 1, does so 'recursively'
 		* If the element path is found, do nothing and return false.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/14/04
 		* @since 10/14/04
-		*/	
+		*/
 		function oldInject($path, $filepath, $type = "leaf") {
 			global $hierarchy;
 
@@ -1292,21 +1292,21 @@
 				$nexttrack = &new jzMediaTrack($nextpath);
 				$nexttrack->playpath = $filepath;
 				$nextnode = &new jzMediaNode($nextpath);
-				
+
 				if (file_exists($filepath)) {
 					$date = jz_filemtime($filepath);
 				} else {
 					$date = 0;
-				}	
+				}
 				// add $next to cache, add its child, and continue.
-				
+
 				$cache = $this->readCache("nodes");
-				
+
 				if ($cache[15] == "-") {
 					$ptype = findPType($this);
 					$cache[15] = $ptype;
 				}
-				
+
 				if (sizeof($path) == 0 && $type == "leaf") {
 					$found = false;
 					foreach ($cache[8] as $el) {
@@ -1336,24 +1336,24 @@
 					natcasesort($cache[7]);
 				}
 				$this->writeCache($cache,"nodes");
-				
+
 				if (sizeof($path) == 0) { // gets its own cache.
 					if ($type == "leaf") {
 						$cache = $nexttrack->readCache();
-						
+
 						$cache[6] = $date;
 						$cache[0] = $filepath;
 						$cache[2] = $rawhead;
-						
+
 						$nexttrack->playpath = $filepath;
 						$nexttrack->writeCache($cache);
 						return $nexttrack;
-						
+
 					}
 					else {
 						$cache = $nextnode->readCache();
 						$cache[6] = ($cache[6] < $date) ? $date : $cache[6];
-						
+
 						// Don't need filepath. Writing to filesystem in id3 mode is stupid-
 						// everything will go in the data_dir.
 						$nextnode->writeCache($cache);
@@ -1365,29 +1365,29 @@
 				}
 			}
 		}
-		
-		
+
+
 		/**
 		* Gets the ptype for this node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
-		*/		
+		*/
 		function getPType() {
 			if ($this->getLevel() == 0) return "root";
 			$cache = $this->readCache();
 			return $cache[15];
 		}
-		
-		
+
+
 		/**
 		* Sets the ptype for this node.
-		
+
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
-		*/				
+		*/
 		function setPType($type) {
 			$cache = $this->readCache();
 			$cache[15] = $type;
@@ -1410,14 +1410,14 @@
 			$display = new jzDisplay();
 			$display->purgeCachedPage($this);
 		}
-		
+
 		/**
 		* Imports media in the specified format.
-		
+
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
-		*/				
+		*/
 		function mediaImport($type, $file) {
 			switch ($type) {
 			case "jzLibrary":
@@ -1446,7 +1446,7 @@
 				break;
 			}
 		}
-	
+
 		/**
 		* Gathers all of our statistics as an array with
 		* the following keys:
@@ -1479,10 +1479,10 @@
 				return $data[$return];
 			}
 		}
-		
+
 		/**
 		* Creates all of our statistics.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/16/04
 		* @since 11/16/04
@@ -1490,10 +1490,10 @@
 		*/
 		function generateStats($return = false) {
 			$stats = array();
-			
+
 			// have to do it...
 			$elements = $this->getSubNodes("tracks",-1);
-			
+
 			$length = $size = $bitrate = $year = $yearc = $lengthc = $brc = $sizec = $tracks = 0;
 			foreach ($elements as $track) {
 				$tracks++;
@@ -1502,78 +1502,78 @@
 					$length += $meta['length'];
 					$lengthc++;
 				}
-					
+
 				if ($meta['size'] != '-' && $meta['size'] > 0) {
 					$size += $meta['size'];
 					$sizec++;
 				}
-					
-				if ($meta['year'] != '-' && $meta['year'] > 1000) {	
+
+				if ($meta['year'] != '-' && $meta['year'] > 1000) {
 					$year += $meta['year'];
 					$yearc++;
 				}
-					
-				if ($meta['bitrate'] != '-' && $meta['bitrate'] > 0) {	
+
+				if ($meta['bitrate'] != '-' && $meta['bitrate'] > 0) {
 					$bitrate += $meta['bitrate'];
 					$brc++;
 				}
 			}
 
 			if ($tracks == 0) return false;
-			
+
 			$stats['total_size'] = $size;
 			$stats['total_length'] = $length;
-			$stats['total_tracks'] = $tracks;			
+			$stats['total_tracks'] = $tracks;
 			$stats['avg_bitrate'] = @round($bitrate / $brc,2);
 			$stats['avg_length'] = @round($length / $lengthc,0);
 			$stats['avg_size'] = @round($size / $sizec,2);
 			$stats['avg_year'] = @round($year / $yearc,2);
-			
+
 			$str = "";
 			// stringize stuff:
 			$stats['avg_length_str'] = stringize_time($stats['avg_length']);
 			$stats['total_length_str'] = stringize_time($stats['total_length']);
 			$stats['total_size_str'] = stringize_size($stats['total_size']);
-			
+
 			// Now did we want to return something specific
 			if ($return){
 				return $stats[$return];
 			}
-			
+
 			if (($d = distanceTo('genre',$this)) !== false)
 				$stats['total_genres'] = $this->getSubNodeCount('nodes',$d);
 			else
 				$stats['total_genres'] = 0;
-			
+
 			if (($d = distanceTo('artist',$this)) !== false)
 				$stats['total_artists'] = $this->getSubNodeCount('nodes',$d);
 			else
 				$stats['total_artists'] = 0;
-				
+
 			if (($d = distanceTo('album',$this)) !== false)
 				$stats['total_albums'] = $this->getSubNodeCount('nodes',$d);
 			else
 				$stats['total_albums'] = 0;
-				
+
 			// nodes at track level are disks.
 			if (($d = distanceTo('track',$this)) !== false)
 				$stats['total_disks'] = $this->getSubNodeCount('nodes',$d);
 			else
 				$stats['total_disks'] = 0;
-			
+
 			$this->stats = $stats;
 		}
 
 	  /**
 	   * Removes media from the cache.
-	   * 
+	   *
 	   * @author Ben Dodson
 	   * @version 11/16/04
 	   * @since 11/16/04
 	   */
 	  function removeMedia($element) {
 	    $parent = $element->getParent();
-	    
+
 	    if ($element->isLeaf()) {
 	      // Delete parent references to $element:
 	      $nodecache = $parent->readCache("nodes");
@@ -1640,10 +1640,10 @@
 	    } else {
 	      return false;
 	    }
-	    
+
 	    if ($type == "node") { return false; }
-	    
-	    
+
+
 	    $pc = $element->getPlayCount();
 	    $dc = $element->getDownloadCount();
 	    $vc = $element->getViewCount();
@@ -1659,10 +1659,10 @@
 
 	    // TODO:
 	    // This does not work correctly with nodes yet.
-	    // You should pull the above data, then recursively move children, 
+	    // You should pull the above data, then recursively move children,
 	    // then remove me, and finally set the data as below.
 	    // I did not do this yet (8/11/05) because I would not have been
-	    // able to test it. (for things like collisions, 
+	    // able to test it. (for things like collisions,
 	    // and also how to handle the filesystem)
 
 	    // If the backend has a lookup file, update it.
@@ -1704,35 +1704,35 @@
 			return $new;
 	    }
 	  }
-		
+
 
 
 	  function getMostDownloaded($type = "nodes", $distance = false, $limit = 10) {
 	    return array();
 	  }
-	  
+
 	  function getMostPlayed($type = "nodes", $distance = false, $limit = 10) {
 	    return array();
 	  }
-	  
+
 	  function getMostViewed($type = "nodes", $distance = false, $limit = 10) {
 	    return array();
 	  }
-	  
+
 	  function getRecentlyAdded($type = "nodes", $distance = false, $limit = 10) {
 	    return array();
 	  }
-	  
+
 	  function getRecentlyPlayed($type = "nodes", $distance = false, $limit = 10) {
 	    return array();
 	  }
-	  
+
 	  function getTopRated($type = "nodes", $distance = false, $limit = 10) {
 	    return array();
 	  }
-	  
-}		
-	
-	
+
+}
+
+
 
 ?>

@@ -25,7 +25,7 @@
 		$display = new jzDisplay();
 		$simArray = $jzSERVICES->getSimilar($element);
 		$simArray = seperateSimilar($simArray);
-		
+
 		if (!$onlyMatches && sizeof($simArray['matches']) > 0){
 			echo "<strong>". word("Available"). "</strong><br>";
 		}

@@ -16,7 +16,7 @@ String.prototype.format = function() {
 
 yShout.prototype = {
 	initialize: function() { },
-	
+
 	doInit: function(initVars) {
 
 		if ($('yshout') == null) return;
@@ -25,7 +25,7 @@ yShout.prototype = {
 		var pars =
 			'reqType=init' +
 			'&yPath=' + yS.yPath;
-			
+
 		yS.Ajax (pars, yS.initialLoadDone);
 	},
 
@@ -33,12 +33,12 @@ yShout.prototype = {
 
 		// Set to true to enable debug messages
 		yS.doDebug = false;
-		
+
 		var dVars = {
 			yPath: 'yshout/',
 			fileIndex: 1
 		};
-		
+
 		initVars = Object.extend(dVars, initVars || {});
 
 		yS.yPath = initVars.yPath;
@@ -54,7 +54,7 @@ yShout.prototype = {
 	initRefresh: function() {
 		new PeriodicalExecuter(yS.refresh, yS.refreshInterval / 1000);
 	},
-	
+
 	sendShout: function() {
 		if (yS.fcActive) return;
 		if (!yS.formValidate()) return;
@@ -112,7 +112,7 @@ yShout.prototype = {
 
 	Ajax: function(pars, func) {
 		pars = pars + '&file=' + yS.shoutFile;
-		
+
 		new Ajax.Request (yS.yShoutPHP, {
 			method: 'post',
 			parameters: pars,
@@ -123,7 +123,7 @@ yShout.prototype = {
 	parseShouts: function(request) {
 		var reqText = request.responseText;
 		if (reqText == null) return;
-		
+
 		yS.a('parseShouts: ' + reqText);
 		var jData = yS.parseJSON(reqText);
 		jData.shouts.each (
@@ -166,17 +166,17 @@ yShout.prototype = {
 			elInfo.style.display = 'none';
 		}
 	},
-	
+
 	parseMessage: function(shout) {
 		yS.messageID++;
 		yS.numShouts++;
-		
+
 		var container = $('yshout-shouts');
 		var nicknameJS = '', userinfo = '', messageTimestamp = '';
 
 		if (shout.showuserinfo) {
 			nicknameJS = 'onclick="javascript:yS.toggleInfo(\'' + yS.messageID + '\');"';
-			userinfo = 'Hello! I sent this message on {0}, at {1}. My IP is {2}, and I\'d love to be banned. You can <a href="javascript:yS.setShoutText(\'/ban {2}\');">ban me</a>, or <a href="javascript:yS.setShoutText(\'/unban {2}\');">unban me</a> if I have already been banned! You can also <a href="javascript:yS.toggleInfo({3})">return to the message</a>. Thanks!'.format(shout.date, shout.time, shout.ipaddress, yS.messageID); 
+			userinfo = 'Hello! I sent this message on {0}, at {1}. My IP is {2}, and I\'d love to be banned. You can <a href="javascript:yS.setShoutText(\'/ban {2}\');">ban me</a>, or <a href="javascript:yS.setShoutText(\'/unban {2}\');">unban me</a> if I have already been banned! You can also <a href="javascript:yS.toggleInfo({3})">return to the message</a>. Thanks!'.format(shout.date, shout.time, shout.ipaddress, yS.messageID);
 		}
 
 		userinfo = '<span class="yshout-messageinfo" id="yshout-messageinfo{0}">{1}</span>'.format(yS.messageID, userinfo);
@@ -188,15 +188,15 @@ yShout.prototype = {
 				//messageTimestamp = messageTimestamp.replace(' pm', '');
 				//messageTimestamp = '<span class="yshout-message-timestamp">[' + messageTimestamp + ']</span> ';
 		}
-		
+
 		var message = '<span class="yshout-message" id="yshout-message{0}" style="font-size:9px;">{1}</span>'.format(yS.messageID,  shout.message);
-	
-		var shoutHTML = 
-			messageTimestamp 
+
+		var shoutHTML =
+			messageTimestamp
 			+ nickname
 			+ message
 			+ userinfo;
-			
+
 		var objShoutDiv = document.createElement('div');
 
 
@@ -211,14 +211,14 @@ yShout.prototype = {
 			case 'user':
 				break;
 		}
-		
+
 		objShoutDiv.setAttribute('id', 'yshout-shout' + yS.messageID);
 		objShoutDiv.innerHTML = shoutHTML;
-		
+
 		container.appendChild(objShoutDiv);
-		
+
 		$('yshout-messageinfo' + yS.messageID).style.display = 'none';
-		
+
 	},
 
 	removeShouts: function(howMany) {
@@ -292,7 +292,7 @@ yShout.prototype = {
 		if (key == 13 || key == 3) {
 			yS.sendShout();
 			return false;
-		}	
+		}
 	},
 
 	onF: function(e) {
@@ -306,7 +306,7 @@ yShout.prototype = {
 		Element.removeClassName(el, 'yshout-before-focus');
 		Element.addClassName(el, 'yshout-after-focus');
 	},
-	
+
 	initEvtHandlers: function() {
 		$('yshout-form').onsubmit = function(){ return false; };
 		yS.onFObserver = yS.onF.bindAsEventListener(yS);
@@ -320,7 +320,7 @@ yShout.prototype = {
 
 	a: function(toSay) {
 		if (!yS.doDebug) return;
-		
+
 		var objDebug = $('debug');
 		 $('debug').style.display = "block";
 		var objDebugP = document.createElement('p');

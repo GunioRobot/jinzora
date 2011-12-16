@@ -27,7 +27,7 @@
 
   // ----- Constants
   define( 'PCLZIP_READ_BLOCK_SIZE', 2048 );
-  
+
   // ----- File list separator
   // In version 1.x of PclZip, the separator for file list is a space
   // (which is not a very smart choice, specifically for windows paths !).
@@ -994,7 +994,7 @@
   function deleteByIndex($p_index)
   {
     //--(MAGIC-PclTrace)--//PclTraceFctStart(__FILE__, __LINE__, "PclZip::deleteByIndex", "index='$p_index'");
-    
+
     $p_list = $this->delete(PCLZIP_OPT_BY_INDEX, $p_index);
 
     // ----- Return
@@ -1535,7 +1535,7 @@
             //--(MAGIC-PclTrace)--//PclTraceFctEnd(__FILE__, __LINE__, PclZip::errorCode(), PclZip::errorInfo());
             return PclZip::errorCode();
           }
-          
+
           // ----- Reduce the index list
           // each index item in the list must be a couple with a start and
           // an end value : [0,3], [5-5], [8-10], ...
@@ -1546,10 +1546,10 @@
               // ----- Explode the item
               $v_item_list = explode("-", $v_work_list[$j]);
               $v_size_item_list = sizeof($v_item_list);
-              
+
               // ----- TBC : Here we might check that each item is a
               // real integer ...
-              
+
               // ----- Look for single value
               if ($v_size_item_list == 1) {
                   // ----- Set the option value
@@ -1587,7 +1587,7 @@
               }
               $v_sort_value = $v_result_list[$p_options_list[$i]][$j]['start'];
           }
-          
+
           // ----- Sort the items
           if ($v_sort_flag) {
               // TBC : To Be Completed
@@ -2334,7 +2334,7 @@
     if ($p_header['stored_filename'] == "") {
       $p_header['status'] = "filtered";
     }
-    
+
     // ----- Check the path length
     if (strlen($p_header['stored_filename']) > 0xFF) {
       $p_header['status'] = 'filename_too_long';
@@ -2385,7 +2385,7 @@
         // ----- Write the compressed content
         $v_binary_data = pack('a'.$p_header['compressed_size'], $v_content_compressed);
         @fwrite($this->zip_fd, $v_binary_data, $p_header['compressed_size']);
-        
+
         // ----- Close the file
         @fclose($v_file);
       }
@@ -2843,7 +2843,7 @@
       else if (   (isset($p_options[PCLZIP_OPT_BY_INDEX]))
                && ($p_options[PCLZIP_OPT_BY_INDEX] != 0)) {
           //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Extract with rule 'ByIndex'");
-          
+
           // ----- Look if the index is in the list
           for ($j=$j_start; ($j<sizeof($p_options[PCLZIP_OPT_BY_INDEX])) && (!$v_extract); $j++) {
               //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Look if index '$i' is in [".$p_options[PCLZIP_OPT_BY_INDEX][$j]['start'].",".$p_options[PCLZIP_OPT_BY_INDEX][$j]['end']."]");
@@ -2869,7 +2869,7 @@
           //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 3, "Extract with no rule (extract all)");
           $v_extract = true;
       }
-      
+
 
       // ----- Look for real extraction
       if ($v_extract)
@@ -2920,7 +2920,7 @@
 
           // ----- Next extracted file
           $v_nb_extracted++;
-          
+
           // ----- Look for user callback abort
           if ($v_result1 == 2) {
           	break;
@@ -3070,7 +3070,7 @@
         $p_entry['status'] = "skipped";
         $v_result = 1;
       }
-      
+
       // ----- Look for abort result
       if ($v_result == 2) {
         //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "User callback abort the extraction");
@@ -3255,7 +3255,7 @@
 	if ($p_entry['status'] == "aborted") {
       $p_entry['status'] = "skipped";
 	}
-	
+
     // ----- Look for post-extract callback
     elseif (isset($p_options[PCLZIP_CB_POST_EXTRACT])) {
       //--(MAGIC-PclTrace)--//PclTraceFctMessage(__FILE__, __LINE__, 2, "A post-callback '".$p_options[PCLZIP_CB_POST_EXTRACT]."()') is defined for the extraction");
@@ -3362,7 +3362,7 @@
 
           // ----- Read the compressed file in a buffer (one shot)
           $v_buffer = @fread($this->zip_fd, $p_entry['compressed_size']);
-          
+
           // ----- Decompress the file
           $v_file_content = gzinflate($v_buffer);
           unset($v_buffer);
@@ -3453,7 +3453,7 @@
 
         // ----- Reading the file
         $v_data = fread($this->zip_fd, $p_entry['compressed_size']);
-        
+
         // ----- Decompress the file
         $p_string = gzinflate($v_data);
       }
@@ -4223,11 +4223,11 @@
         // TBC : I should test the result ...
         //@rename($v_zip_temp_name, $this->zipname);
         PclZipUtilRename($v_zip_temp_name, $this->zipname);
-    
+
         // ----- Destroy the temporary archive
         unset($v_temp_zip);
     }
-    
+
     // ----- Remove every files : reset the file
     else if ($v_central_dir['entries'] != 0) {
         $this->privCloseFd();

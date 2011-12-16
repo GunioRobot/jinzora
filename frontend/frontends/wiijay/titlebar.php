@@ -1,5 +1,5 @@
-<?php 
-global $fe; 
+<?php
+global $fe;
 $display = new jzDisplay();
 $display->preheader(false,'100%','left',false);
 ?>

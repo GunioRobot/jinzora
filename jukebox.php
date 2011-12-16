@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - This page handles the jukebox display and controls
 	*
@@ -41,13 +41,13 @@
 	// Let's setup the classes
 	$blocks = new jzBlocks();
 	$display = new jzDisplay();
-	
+
 	// Now let's start displaying stuff
 	$display->preheader(false,false,"left",true,true,false);
-	
+
 	// Now we have to manually add the right javascript - the hover javascript breaks our pretty progress bar
 	echo '<script type="text/javascript" src="'. $root_dir. '/lib/jinzora.js"></script>';
-	
+
 	// Now let's include the jukebox settings
 	$blocks->jukeboxBlock($node);
 ?>

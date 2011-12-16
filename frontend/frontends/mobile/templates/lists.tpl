@@ -43,7 +43,7 @@ width:auto;
       </td>
       <td align="right">
         {$playlists[playlist].openPlayTag}>{$Play}</a>
-	{if $playlists[playlist].isStatic } 
+	{if $playlists[playlist].isStatic }
         | {$playlists[playlist].openShuffleTag}>{$Shuffle}</a>
 	{/if}
       </td>
@@ -52,7 +52,7 @@ width:auto;
   {/section}
 
   {section name=chart loop=$charts}
-  <a name="chart_{$smarty.section.chart.index}"/>	
+  <a name="chart_{$smarty.section.chart.index}"/>
   <h1>{$charts[chart].title}</h1>
     {section name=entry loop=$charts[chart].entries}
     {if $smarty.section.entry.index is even}

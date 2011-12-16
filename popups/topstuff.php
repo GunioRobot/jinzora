@@ -2,7 +2,7 @@
 
 /**
 * Displays the full top played list
-* 
+*
 * @author Ross Carlson
 * @version 01/27/05
 * @since 01/27/05
@@ -147,7 +147,7 @@ for ($i = 0; $i < count($recent); $i++) {
 	$innerOver = str_replace('"', "", $innerOver);
 	$innerOver = str_replace("'", "", $innerOver);
 
-	// Now let's return our tooltip													
+	// Now let's return our tooltip
 	$capTitle = $artist . " - " . $album;
 	$overCode = $display->returnToolTip($innerOver, $capTitle);
 	echo ' <a onClick="opener.location.href=\'' . urlize($albumArr) . '\';window.close();" ' . $overCode . 'href="javascript:void()">' . $albumTitle;

@@ -2,13 +2,13 @@
 	global $jz_path;
 	$blocks = new jzBlocks();
 	$node = new jzMediaNode($jz_path);
-	
+
 	$featuredArtists = $node->getFeatured(distanceTo("artist",$node));
 	$featuredAlbums = $node->getFeatured(distanceTo("album",$node));
 	$featCtr=0;
 	if (count($featuredAlbums) <> 0){ $featCtr++; }
 	if (count($featuredArtists) <> 0){ $featCtr++; }
-			
+
 	if ($featCtr == 0){
 		return;
 	}

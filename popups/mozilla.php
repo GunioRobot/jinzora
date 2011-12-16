@@ -2,14 +2,14 @@
 
 /**
 * Displays the configuration system
-* 
+*
 * @author Ben Dodson
 * @version 09/15/04
 * @since 09/15/04
 */
 global $web_root, $root_dir, $site_title;
 
-// Let's display the top of our page	
+// Let's display the top of our page
 $this->displayPageTop();
 
 // Now let's execute the plugin creation

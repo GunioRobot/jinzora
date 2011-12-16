@@ -1,20 +1,20 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *    
-	* JINZORA | Web-based Media Streamer  
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	* JINZORA | Web-based Media Streamer
 	*
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
-	* or integrated into any PHP website.  It is released under the GNU GPL. 
-	* 
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
+	* or integrated into any PHP website.  It is released under the GNU GPL.
+	*
 	* Jinzora Author:
-	* Ross Carlson: ross@jasbone.com 
+	* Ross Carlson: ross@jasbone.com
 	* http://www.jinzora.org
-	* Documentation: http://www.jinzora.org/docs	
+	* Documentation: http://www.jinzora.org/docs
 	* Support: http://www.jinzora.org/forum
 	* Downloads: http://www.jinzora.org/downloads
 	* License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* Contributors:
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
 	*
@@ -23,20 +23,20 @@
 	*
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
- 	// This function displays all the Genres or Artists 
+ 	// This function displays all the Genres or Artists
 	function drawPage(&$node){
-		global $media_dir, $jinzora_skin, $hierarchy, $album_name_truncate, $row_colors, 
-		       $img_download, $img_more, $img_email, $img_play, $img_random_play, $img_rate, $img_discuss, 
+		global $media_dir, $jinzora_skin, $hierarchy, $album_name_truncate, $row_colors,
+		       $img_download, $img_more, $img_email, $img_play, $img_random_play, $img_rate, $img_discuss,
 			   $num_other_albums, $root_dir, $enable_ratings, $short_date, $jzUSER, $img_play_dis, $img_random_play_dis,
-			   $img_download_dis, $show_similar, $show_radio, $jzSERVICES, $show_album_art, $this_page;					
-							
+			   $img_download_dis, $show_similar, $show_radio, $jzSERVICES, $show_album_art, $this_page;
+
 		// Let's setup the new display object
 		$display = &new jzDisplay();
 		$blocks = &new jzBlocks();
 		$fe = &new jzFrontend();
 		$parent = $node->getAncestor("artist");
-		
-		?>			
+
+		?>
 		<table width="100%" cellpadding="5" cellspacing="0" border="0">
 			<tr>
 				<td>
@@ -48,14 +48,14 @@
 						</tr>
 						<tr>
 							<?php
-								if (($art = $node->getMainArt("100x100")) !== false) {					
+								if (($art = $node->getMainArt("100x100")) !== false) {
 									echo '<td width="1%" class="jz_nj_block_body" align="center" rowspan="2">';
-									
+
 									$display->playLink($node,$display->returnImage($art,$node->getName(),100,100,"fit"));
-									
+
 
 									echo '</td>';
-								}			
+								}
 							?>
 							<td width="33%" class="jz_nj_block_body" align="center">
 								<?php
@@ -83,7 +83,7 @@
 							</td>
 							<td width="25%" class="jz_nj_block_body" align="center">
 									<a onClick="document.tracklist.randomize.value = 'false'; <?php echo $display->embeddedFormHandler('tracklist'); ?> document.tracklist.submit();" href="javascript:void()"><?php echo word('Play'); ?></a>
-									 | 
+									 |
 									<a onClick="document.tracklist.randomize.value = 'true';  <?php echo $display->embeddedFormHandler('tracklist'); ?> document.tracklist.submit();" href="javascript:void()"><?php echo word('Randomize'); ?></a>
 							</td>
 						</tr>
@@ -91,23 +91,23 @@
 				</td>
 			</tr>
 		</table>
-		
+
 		<table width="100%" cellpadding="5" cellspacing="0" border="0">
 			<tr>
 				<td>
 					<table width="100%" cellpadding="5" cellspacing="0" border="0">
 						<tr>
 							<td width="25%" class="jz_nj_block_body" style="border-top: 1px solid black;">&nbsp;
-							
+
 							</td>
 							<td width="25%" align="center" class="jz_nj_block_body" style="border-top: 1px solid black;">
 								<a href="#pageBottom">To Bottom</a>
 							</td>
 							<td width="25%" class="jz_nj_block_body" style="border-top: 1px solid black;">&nbsp;
-								
+
 							</td>
 							<td width="25%" class="jz_nj_block_body" style="border-top: 1px solid black;">&nbsp;
-							
+
 							</td>
 						</tr>
 					</table>
@@ -142,7 +142,7 @@
 								<strong>Genre</strong>
 							</td>
 						</tr>
-						
+
 						<form name="tracklist" method="POST" action="<?php echo urlize(array()); ?>">
 						<input type="hidden" name="<?php echo jz_encode("action"); ?>" value="<?php echo jz_encode("mediaAction"); ?>">
 						<input type="hidden" name="<?php echo jz_encode("jz_path"); ?>" value="<?php echo htmlentities(jz_encode($node->getPath("String"))); ?>">
@@ -158,17 +158,17 @@
 								$display->playButton($track);
 								echo " ";
 								$display->downloadButton($track);
-								
-								
-								
+
+
+
 								echo '</td><td class="jz_nj_block_body" >';
 								$display->playLink($track, $track->getName(), "Play ". $track->getName());
-								
-								
+
+
 								echo '</td><td width="1%" class="jz_nj_block_body" align="center">';
 								echo convertSecMins($meta['length']);
-								
-								
+
+
 								echo '</td><td class="jz_nj_block_body" >';
 								$artist = $track->getAncestor("artist");
 								if ($artist){
@@ -179,8 +179,8 @@
 									$display->link($artist,$artist->getName());
 								} else {
 								  echo $meta['artist'];
-								} 
-								
+								}
+
 								echo '</td><td class="jz_nj_block_body" >';
 								$display->playButton($node);
 								echo " ";
@@ -189,11 +189,11 @@
 								$display->downloadButton($node);
 								echo " ";
 								$display->link($node,$node->getName());
-								
+
 								echo '</td><td nowrap width="1%" align="center" class="jz_nj_block_body" >';
 								echo $meta['number'];
-								
-								
+
+
 								echo '</td><td class="jz_nj_block_body" >';
 								if ($artist === false) {
 								  $genre = false;
@@ -212,7 +212,7 @@
 								  } else {
 								    echo '&nbsp;';
 								  }
-								} 								
+								}
 								echo '</td></tr>';
 							}
 						?>
@@ -228,16 +228,16 @@
 					<table width="100%" cellpadding="5" cellspacing="0" border="0">
 						<tr>
 							<td width="25%" class="jz_nj_block_body" style="border-top: 1px solid black;">&nbsp;
-							
+
 							</td>
 							<td width="25%" align="center" class="jz_nj_block_body" style="border-top: 1px solid black;">
 								<a href="#pageTop">To Top</a>
 							</td>
 							<td width="25%" class="jz_nj_block_body" style="border-top: 1px solid black;">&nbsp;
-								
+
 							</td>
 							<td width="25%" class="jz_nj_block_body" style="border-top: 1px solid black;">&nbsp;
-							
+
 							</td>
 						</tr>
 					</table>

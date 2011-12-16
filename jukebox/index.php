@@ -1,24 +1,24 @@
 <?php
 define ('JZ_SECURE_ACCESS','true');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Builds a zero-configuration jukebox
 	*
@@ -63,7 +63,7 @@ if (isset($_REQUEST['update']) && !isset($_REQUEST['update_pos'])) {
   if (isset($box['command'])) {
     $obj['command'] = $box['command'];
     $obj['time'] = $box['command_time'];
-  
+
 
     if ($box['command'] == 'playlist') {
       $obj['playlist'] = $box['playlist'];
@@ -76,7 +76,7 @@ if (isset($_REQUEST['update']) && !isset($_REQUEST['update_pos'])) {
   }
 
   $json = new Services_JSON();
-  
+
 
   print $json->encode($obj);
   return;
@@ -172,7 +172,7 @@ function loadJukebox() {
 	switch (data.command) {
 	case "playlist":
 	  qb.playlist = data.playlist;
-	  
+
 	  state = qb.np.getState();
 
 	  if (data.addtype == 'replace') {
@@ -216,10 +216,10 @@ function loadJukebox() {
 
       }
     });
-  
-  
-  
-  
+
+
+
+
   setTimeout('updateJukebox()',<?php echo $POLL_TIME*1000; ?>);
 }
 </script>
@@ -229,11 +229,11 @@ function loadJukebox() {
   loadJukebox();
   </script>
   <div>
-  I am not just a boring webpage. I am a jukebox, and my id is 
+  I am not just a boring webpage. I am a jukebox, and my id is
   <em><?php echo $id; ?></em>.
   </div>
   <div id="qrcode">
-    <?php 
+    <?php
 
 	$host='http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
 	$host = str_replace("/jukebox/index.php","/api.php",$host);
@@ -243,13 +243,13 @@ function loadJukebox() {
 	$barcode = '{host:"'.htmlentities($host).'",'.
 		    'jb_id:"'.htmlentities($id).'",'.
 		    'username:"'.htmlentities($user).'",'.
-		    'password:"'.htmlentities($pass).'"}'; 	 
+		    'password:"'.htmlentities($pass).'"}';
     ?>
   <img src="jukeboxes/quickbox/qr/php/qr_img.php?s=5&d=<?php echo urlencode($barcode) ?>"/>
   </div>
 <div id="box" style="position:absolute;top:0px;left:-200px">
 <?php
-$nifty = 'jukeboxes/quickbox/niftyplayer.swf?as=0'; 
+$nifty = 'jukeboxes/quickbox/niftyplayer.swf?as=0';
 ?>
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="165" height="38" id="np" align="">
   <param name=movie value="<?php echo $nifty; ?>">
@@ -263,9 +263,9 @@ $nifty = 'jukeboxes/quickbox/niftyplayer.swf?as=0';
 <!--  <a href="javascript:niftyplayer('np').playToggle()">Play/Pause</a>
 -->
 
-    
+
     <?php
-    /* 
+    /*
     require_once(dirname(__FILE__).'/class.php');
 $jbArr = jzJukebox::getJbArr();
 foreach ($jbArr as $jid=>$jb) {
@@ -275,8 +275,8 @@ foreach ($jbArr as $jid=>$jb) {
     break;
   }
 }
-    
-    require_once(dirname(__FILE__).'/../jukebox.php'); 
+
+    require_once(dirname(__FILE__).'/../jukebox.php');
     */
 ?>
 

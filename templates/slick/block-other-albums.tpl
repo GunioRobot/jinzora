@@ -21,17 +21,17 @@
 		<tr>
 		{php}
 			$node = new jzMediaNode($_GET['jz_path']);
-			$parent = $node->getNaturalParent(); 
+			$parent = $node->getNaturalParent();
 			$nodes = $parent->getSubNodes("nodes",false,true,$num_other_albums * 2,true); // randomized, only with art.
 			$display = new jzDisplay();
 			$jzUSER = new jzUser();
-			
+
 			global $num_other_albums, $album_name_truncate;
-			
-			// Now let's get some other random images											
+
+			// Now let's get some other random images
 			$ctr=0;
 			foreach ($nodes as $child) {
-				if ($child->getName() <> $node->getName()){	
+				if ($child->getName() <> $node->getName()){
 					$year = $child->getYear();
 					if ($year <> "-"){ $dispYear = " (". $year. ")"; } else { $dispYear = ""; }
 					echo '<td align="center"><center>';
@@ -43,7 +43,7 @@
 						$display->playLink($child,word("Play"), word("Play"), "");
 						echo " - ";
 						$display->playLink($child,word("Play Random"), word("Play Random"), "",false,true);
-					}														
+					}
 					echo '</center></td>';
 					$ctr++;
 				}

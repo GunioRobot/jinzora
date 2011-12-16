@@ -9,17 +9,17 @@
 	*
 	**/
 	global $node;
-		$track = new jzMediaTrack($node->getPath('String'));		
+		$track = new jzMediaTrack($node->getPath('String'));
 		$meta = $track->getMeta();
-	
+
 		$this->displayPageTop("",word("Lyrics for:"). " ". $meta['title']);
 		$this->openBlock();
-		
+
 		echo nl2br($meta['lyrics']);
-		
+
 		echo '<br><br><center>';
 		$this->closeButton();
-		
+
 		$this->closeBlock();
-	
+
 ?>

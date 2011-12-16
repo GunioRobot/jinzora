@@ -14,22 +14,22 @@ a {
 	text-decoration: none;
         font-size: <?php echo $fontsize; ?>px;
 }
-a:link { 
+a:link {
 	color: <?php echo jz_link_color; ?>;
 }
-a:visited { 
+a:visited {
 	color: <?php echo jz_link_color; ?>;
 }
 a:hover {
 	color: <?php echo jz_link_hover_color; ?>;
 }
-.jz_row1 { 
+.jz_row1 {
 	background-color: <?php echo jz_row1; ?>;
         border:0;
 	font-size:<?php echo $fontsize; ?>px;
 }
-.jz_row2 { 
-	background-color: <?php echo jz_row2; ?>; 
+.jz_row2 {
+	background-color: <?php echo jz_row2; ?>;
         border:0;
 	font-size:<?php echo $fontsize; ?>px;
 }

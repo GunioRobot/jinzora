@@ -3,7 +3,7 @@
 
 /**
 * Searches for lyrics of the given node
-* 
+*
 * @author Ross Carlson
 * @version 01/18/05
 * @since 01/18/05
@@ -50,7 +50,7 @@ echo '<div id="progress"></div>';
 			a = document.getElementById("album");
 			ar = document.getElementById("artist");
 			p = document.getElementById("progress");
-			c.innerHTML = '<?php echo word("Please wait while we load the track data..."); ?>';					
+			c.innerHTML = '<?php echo word("Please wait while we load the track data..."); ?>';
 			-->
 		</SCRIPT>
 		<?php
@@ -91,8 +91,8 @@ foreach ($tracks as $track) {
 	$artist = str_replace("'", "", $gparent->getName());
 ?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-				c.innerHTML = '<?php echo word("Track"); ?>: <?php echo $track->getName(); ?>';					
-				a.innerHTML = '<nobr><?php echo word("Item"); ?>: <?php echo $album; ?> - <?php echo $artist; ?></nobr>';					
+				c.innerHTML = '<?php echo word("Track"); ?>: <?php echo $track->getName(); ?>';
+				a.innerHTML = '<nobr><?php echo word("Item"); ?>: <?php echo $album; ?> - <?php echo $artist; ?></nobr>';
 				-->
 			</SCRIPT>
 			<?php
@@ -166,8 +166,8 @@ if (count($allTracks) < $_SESSION['jz_retag_group']) {
 				a.innerHTML = '&nbsp;';
 				gr.innerHTML = '&nbsp;';
 				ar.innerHTML = '&nbsp;';
-				s.innerHTML = '&nbsp;';	
-				p.innerHTML = '&nbsp;';	
+				s.innerHTML = '&nbsp;';
+				p.innerHTML = '&nbsp;';
 			</SCRIPT>
 			<?php
 
@@ -184,8 +184,8 @@ if (count($allTracks) < $_SESSION['jz_retag_group']) {
 				a.innerHTML = '&nbsp;';
 				gr.innerHTML = '&nbsp;';
 				ar.innerHTML = '&nbsp;';
-				s.innerHTML = '&nbsp;';	
-				p.innerHTML = '&nbsp;';		
+				s.innerHTML = '&nbsp;';
+				p.innerHTML = '&nbsp;';
 				-->
 			</SCRIPT>
 			<?php

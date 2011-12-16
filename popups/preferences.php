@@ -76,8 +76,8 @@ echo '<form action="' . urlize($url_array) . '" method="POST">';
 				<input name="email" class="jz_input" value="<?php echo $jzUSER->getSetting('email'); ?>">
 			</td>
 		</tr>
-		
-		
+
+
 		<?php
 
 // Did they enable audioscrobbler?
@@ -103,8 +103,8 @@ if ($enable_audioscrobbler == "true" and ($as_override_user == "" or $as_overrid
 
 }
 ?>
-		
-		
+
+
 		<tr>
 			<td width="30%" valign="top" align="right">
 				<?php echo word("Interface"); ?>:
@@ -196,7 +196,7 @@ foreach ($list as $p => $desc) {
 	</table>
 	<br><center>
 		<input type="submit" name="update_settings" value="<?php echo word("Update Settings"); ?>" class="jz_submit">
-		<?php $this->closeButton(); ?> 
+		<?php $this->closeButton(); ?>
 	</center>
 	<br>
 	</form>

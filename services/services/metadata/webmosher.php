@@ -2,15 +2,15 @@
 /**
  * Custom Metadata Service
  *
- * This service retrieves data from two distinct sources: Amazon for album 
+ * This service retrieves data from two distinct sources: Amazon for album
  * data and Yahoo! Music for artist information. The Amazon retrieval method
- * is the most complex and feature filled. 
+ * is the most complex and feature filled.
  *-------------------------------------------------------------------------
  * FEATURES
  * Amazon Album Retrieval
- *   o 
+ *   o
  *-------------------------------------------------------------------------
- * TODO: 
+ * TODO:
  *   o Retrieve customer images from Amazon when no album image exists.
  *   o Allow [COUNTRY] meta tag to allow lookup on different Amazon servers.
  */
@@ -77,20 +77,20 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       // that is assigned to this meta data request. This is done to try and
       // simplify the data before it is sent off to Amazon, but also maintain
       // the original so that matching can be correlated correctly.
-      
-      // Setup the incoming Album/Artist information 
+
+      // Setup the incoming Album/Artist information
       $album = trim($node->getName());
       $orig_album = $album;
       $artist = trim($parent->getName());
       $orig_artist = $artist;
-   
+
       //Strip down the album a bit
       $album = preg_replace('/[\(\[][^\)\]]+[\)\]]/', '', $album);      // Remove text in parenthesis & brackets
       $album = preg_replace('/[-_,]/', ' ', $album);                    // Convert - and _ to space
       $album = preg_replace('/([A-Z])/', " $1", $album);                // Pad a space before capitol letters
       $album = preg_replace('/\s+/', ' ', $album);                      // Remove extra space
-   
-      // Stop word filtering removes extra words that may not be found in the 
+
+      // Stop word filtering removes extra words that may not be found in the
       // result and will cause a lower correlation value.
       $stopwords = array('the', 'a','and');
       foreach ($stopwords as $word) {
@@ -98,19 +98,19 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       }
       $album = preg_replace('/[^\w\s]/u', '', utf8_decode($album));     // Remove non-word characters & UTF8 handling
       $album = trim($album);
-   
-      // We utilize the idea of "Meta-tagging" in the album names to allow 
-      // better search results. Amazon uses a similar system to mark album 
+
+      // We utilize the idea of "Meta-tagging" in the album names to allow
+      // better search results. Amazon uses a similar system to mark album
       // entries, so it fits well with their system. Essentially, if any album
-      // has a tag enclosed in [] that matches the items below, the artist 
-      // value is modified to improve searching. This is most effective for 
-      // soundtracks & compilations. 
+      // has a tag enclosed in [] that matches the items below, the artist
+      // value is modified to improve searching. This is most effective for
+      // soundtracks & compilations.
       $various = array('Soundtrack' => array('orig_artist' => 'Soundtrack', 'artist' => 'Various'),
       	'Various' => array('orig_artist' => 'Various Artists', 'artist' => 'Various'),
    	'Compilation' => array('orig_artist' => 'Various Artists', 'artist' => 'Various'),
    	'Single' => array('orig_artist' => $orig_artist, 'artist' => $artist));
-      
-      // We want to keep track of the postfixes in case they can be matched to 
+
+      // We want to keep track of the postfixes in case they can be matched to
       // the search.
       $postfix = '';
       foreach ($various as $key => $val) {
@@ -121,8 +121,8 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
             $postfix .= $key . ' ';
          }
       }
-      
-      // Some artists seem to like to release multiple albums with the same 
+
+      // Some artists seem to like to release multiple albums with the same
       // name, but in different years. Using the year value in a meta tag will
       // allow the search to add more correlation for that release year.
       if (preg_match('/\[(\d\d\d\d)\]$/', $orig_album, $match)) {
@@ -131,7 +131,7 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       } else {
          $exact_year = false;
       }
-   
+
       // Now, we do the same thing to the artist.
       $artist = preg_replace('/\s*[\(\[][^\)\]]+[\)\]]/', '', $artist); // Remove text in parenthesis & brackets
       $artist = preg_replace('/[-_,]/', ' ', $artist);                  // Convert - and _ to space
@@ -141,19 +141,19 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       }
       $artist = preg_replace('/[^\w\s\']/u', '', utf8_decode($artist)); // Remove non-word characters & UTF8 handling
       $artist = trim($artist);
-      // Lastly, we attempt to normalize any unicode in the artist text and if 
+      // Lastly, we attempt to normalize any unicode in the artist text and if
       // its different, we will flag this as an additional search.
       // TODO
-   
+
       // Configure a standard ordered search list
-      $searches = array(); 
-      // A fully exact search is the default. If this one matches something, we 
+      $searches = array();
+      // A fully exact search is the default. If this one matches something, we
       // usually ignore the rest.
       $searches[] = array( name => "All Exact", artist => $orig_artist, album => $orig_album, exact_artist => true, exact_album => true, exact_year => $exact_year, postfix => $postfix);
       $searches[] = array( name => "General Album", artist => '', album => $album, exact_artist => false, exact_album => false, exact_year => $exact_year, threshhold => 4800,postfix => $postfix);
       $searches[] = array( name => "General Artist", artist => $artist, album => '', exact_artist => false, exact_album => false, exact_year => $exact_year, threshhold => 8400,postfix => $postfix);
 
-      // We attempt to normalize any unicode in the album/artist text and if 
+      // We attempt to normalize any unicode in the album/artist text and if
       // its different, we will flag this as an additional search.
       include_once($include_path . "lib/utfnormal/UtfNormal.php");
       $utffix = new UTFNormal();
@@ -166,12 +166,12 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       } elseif ($album != $albumUTFNormal) {
          $searches[] = array( name => "Normalized Album", artist => $artist, album => $albumUTFNormal, exact_artist => false, exact_album => false, exact_year => $exact_year, postfix => $postfix);
       }
-      
+
       // Album & artist were modified, so we need to add a general search.
       if ($orig_album != $album && $orig_artist != $artist) {
          $searches[] = array( name => "All General", artist => $artist, album => $album, exact_artist => false, exact_album => false, exact_year => $exact_year,postfix => $postfix);
       }
-      
+
       if ($orig_album != $album) {
          $searches[] = array( name => "Exact Artist", artist => $orig_artist, album => $album, exact_artist => true, exact_album => false, exact_year => $exact_year,postfix => $postfix);
       }
@@ -194,7 +194,7 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
                          (($exact_year) ? 80 : 0) ; // We pro-rate a bit more if we need an exact year.
       $maxPages = 3;
       $searchItem = '';
-      
+
       $fix_jz_path = urlencode(implode('/', $node->getPath()));
       print "<form action=\"popup.php?action=popup&ptype=getmetadata&jz_path=$fix_jz_path\" method=\"post\">\n";
       print "<input type=\"hidden\" name=\"edit_search_all_albums\" value=\"on\"/>\n";
@@ -202,19 +202,19 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       print "<input type=\"hidden\" name=\"metaSearchSubmit\" value=\"Search\"/>\n";
       print "<input type=\"hidden\" name=\"edit_search_images_miss\" value=\"always\"/>\n";
       print "<input type=\"hidden\" name=\"edit_search_desc_miss\" value=\"always\"/>\n";
-      
+
       while (list($key,$search) = each($searches)) {
          $currentPage = 1;
          $totalPages = 1;
          $weight = 1;
-   
+
          // We don't bother with the following searches:
          if ($search[artist] == 'Various' && $search[album] == '') {
             continue;
          } elseif (isset($search[threshhold]) && $search[threshhold] < $lastSearchWeight) {
             continue;
          }
-   
+
          print '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
          print "<tr><td>Searching for $search[name]...</td></tr>\n";
          $currentSearch = 'Title=' . urlencode($search[album]) . '&Artist=' . urlencode($search[artist]);
@@ -225,9 +225,9 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
                print "No content received from Amazon, please retry.";
                break;
             }
-   
+
             $totalPages = (xml_data($xml->Items->TotalPages) <= $maxPages) ? xml_data($xml->Items->TotalPages) : $maxPages;
-   
+
             // Did we just get one match, or more than one?
             if (xml_data($xml->Items->TotalResults) == 1) {
                $item = $xml->Items->Item;
@@ -244,7 +244,7 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
                // If we found multiple results, we need to look through them all.
                foreach ($xml->Items->Item as $item) {
             	   $weight = weightMatch($search, $item);
-            	   
+
                   // Check the weighting values
                   if ($weight >= $maxSearchWeight) {
                      $searchItem = $item;
@@ -261,14 +261,14 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
                break;
             }
             sleep(1);  // Prevent "SPAMMING" Amazon?
-         } 
+         }
          print "</table>\n";
          if ($weight >= $maxSearchWeight) {
             break;
          }
          flushdisplay();
-      } 
-      
+      }
+
       if (empty($searchItem)) {
          print "Match result not found. You may override the result by selecting override items above.<br\>\n";
          unset ($item);
@@ -284,7 +284,7 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       flushdisplay();
 
       print "<div align=\"center\"><input type=\"submit\" value=\"Override Default\" class=\"jz_submit\"/></div>";
-   // Here, we start an override of the original retrieval. 
+   // Here, we start an override of the original retrieval.
    } else {
       $item = albumOverride();
    }
@@ -311,7 +311,7 @@ function SERVICE_GETALBUMMETADATA_webmosher($node, $displayOutput = true, $retur
       foreach ($item->Tracks->Disc->Track as $track) {
          $tracks[] = sprintf(xml_data($track));
       }
-   } 
+   }
 
    if (!$return){
       writeAlbumMetaData($node, $year, $image, $tracks, $review, $rating, $ListPrice, $genre, true);
@@ -350,8 +350,8 @@ function weightMatch ($search, $item) {
    $link_url = 'http://www.amazon.com/dp/';
    $amazon_key = '19B1FW4R5ABSKBWNV582';
    $link_xml = 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&ResponseGroup=Large&Operation=ItemLookup&AWSAccessKeyId=' . $amazon_key . '&ItemId=';
-   $colors = array(0 => '#A00000', 
-      1 => '#008000', 
+   $colors = array(0 => '#A00000',
+      1 => '#008000',
       2 => '#FFFF00',
       3 => '#FFDD44',
       4 => '#FF9900');
@@ -361,7 +361,7 @@ function weightMatch ($search, $item) {
       'descr' => $colors[0],
       'rating' => $colors[0],
       'year' => $colors[0]);
-   
+
    // Let's see if our one match got us good results:
    $search_album = xml_data($item->ItemAttributes->Title);
 
@@ -380,11 +380,11 @@ function weightMatch ($search, $item) {
          $postfix_match = '--';
       }
    }
-   
+
    // Remove text in parenthesis & brackets
-   $search_album = preg_replace('/\s*\[[^\]]+\]/', '', $search_album);      
-   $search_album = preg_replace('/\s*\([^\)]+\)/', '', $search_album);      
-   
+   $search_album = preg_replace('/\s*\[[^\]]+\]/', '', $search_album);
+   $search_album = preg_replace('/\s*\([^\)]+\)/', '', $search_album);
+
    // File names cannot contain these characters, so we remove them from the search as well
    $search_album = preg_replace('/[:?\/\\\"*<>|]/', '', $search_album);
    $search_album = preg_replace('/\.$/', '', $search_album);
@@ -427,7 +427,7 @@ function weightMatch ($search, $item) {
    $search_artist= preg_replace('/[:?\/\\\"*<>|]/', '', $search_artist);
    $search_artist = preg_replace('/\s*\[[^\]]+\]/', '', $search_artist); // Remove text in parenthesis & brackets
    $search_artist = preg_replace('/\s*\([^\)]+\)/', '', $search_artist); // Remove text in parenthesis & brackets
-   
+
    // File names always trim the last period from a name.
    $search_artist = preg_replace('/\.$/', '', $search_artist);
 
@@ -451,8 +451,8 @@ function weightMatch ($search, $item) {
       $album_weight += $matchAlbumWeight['album']['general'];
       $artist_multiplier = 4;
       $states['album'] = $colors[2];
-   } elseif ($search[album] != '' && 
-      (preg_match('/'. addcslashes($search_album, "&()[].+^$(){}=!'") . '/i', $search[album]) || 
+   } elseif ($search[album] != '' &&
+      (preg_match('/'. addcslashes($search_album, "&()[].+^$(){}=!'") . '/i', $search[album]) ||
       preg_match('/' . addcslashes($search[album], "&()[].+^$(){}=!'") . '/i', $search_album))) {
       $album_weight += $matchAlbumWeight['album']['regex'];
       $artist_multiplier = 3;
@@ -479,8 +479,8 @@ function weightMatch ($search, $item) {
       $album_multiplier = 4;
       $states['artist'] = $colors[2];
    // Then we look for a general pattern match
-   } elseif ($search[artist] != '' && 
-      (preg_match('/' . addcslashes($search_artist, "&()[].+^$(){}=!'") . '/i', $search[artist]) || 
+   } elseif ($search[artist] != '' &&
+      (preg_match('/' . addcslashes($search_artist, "&()[].+^$(){}=!'") . '/i', $search[artist]) ||
       preg_match('/' . addcslashes($search[artist], "&()[].+^$(){}=!'") . '/i', $search_artist))) {
       $artist_weight += $matchAlbumWeight['artist']['regex'];
       $album_multiplier = 2;
@@ -503,7 +503,7 @@ function weightMatch ($search, $item) {
    }
 
    $weight = ($album_weight * $album_multiplier) + ($artist_weight * $artist_multiplier);
-   
+
    if ($search[exact_year] && substr(xml_data($item->ItemAttributes->ReleaseDate),0,4) == $search[exact_year]) {
       $weight += $matchAlbumWeight['year']['exact'];
       $states['year'] = $colors[1];
@@ -515,7 +515,7 @@ function weightMatch ($search, $item) {
    } else {
       $states['year'] = '#c0c0c0';
    }
-   
+
    // Add some weightings for various data we really are looking for:
    $display_img = 'style/slick/clear.gif';
    $display_desc = 'Not available';
@@ -537,13 +537,13 @@ function weightMatch ($search, $item) {
       $weight += $matchAlbumWeight['rating']['exact'] ; // Has ratings
       $states['rating'] = $colors[1];
    }
-      	    
+
    print '<tr><td><table width="100%" border="1" cellspacing="0" cellpadding="5" id="'. xml_data($item->ASIN) .'">';
    print '<tr><td align="right" width="160px" bgcolor="' . $states['artist'] . '"><b>Artist:</b></td><td width="100%"> ' . $search_artist . '</td>';
    print "<td rowspan=\"2\" align=\"center\" nowrap=\"nowrap\"><a href=\"$link_url" . xml_data($item->ASIN) . "\" target=\"_blank\">View Amazon</a><br>\n";
    print "[<a href=\"$link_xml" . xml_data($item->ASIN) . "\" target=\"_blank\">XML View</a>]</td></tr>\n";
    print '<tr><td align="right" width="160px" bgcolor="' . $states['album'] . '"><b>Album:</b></td><td width="100%"> ' . $search_album . ' ' . $postfix_match . '</td></tr>';
-   
+
    print '<tr><td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="5"><tr>';
    print '<td width="160px" height="160" align="center" valign="middle" bgcolor="' . $states['image'] . '"><img src="' . $display_img . '" height="150" width="150"><br></td>';
    print '<td valign="top" bgcolor="' . $states['descr'] . '">' . $display_desc . '</td>';
@@ -551,7 +551,7 @@ function weightMatch ($search, $item) {
    print '<td><input type="radio" name="imgOVERRIDE" value="'. xml_data($item->ASIN) .'"/>Override</td>';
    print '<td><input type="radio" name="descOVERRIDE" value="'. xml_data($item->ASIN) .'"/>Override</td>';
    print '</tr></table></td></tr></table></td></tr>';
-   
+
    return $weight;
 }
 
@@ -622,7 +622,7 @@ function albumOverride() {
    print '<tr><td align="right" width="160px" bgcolor="' . $states['artist'] . '"><b>Artist:</b></td><td width="100%"> ' . xml_data($item->ItemAttributes->Artist) . '</td>';
    print "<td rowspan=\"2\" align=\"right\"><a href=\"$link_url" . xml_data($item->ASIN) . "\" target=\"_blank\">View Amazon</a></td></tr>\n";
    print '<tr><td align="right" width="160px" bgcolor="' . $states['album'] . '"><b>Album:</b></td><td width="100%"> ' . xml_data($item->ItemAttributes->Title) . '</td></tr>';
-   
+
    print '<tr><td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="5"><tr>';
    print '<td width="160px" height="160" align="center" valign="middle" bgcolor="' . $states['image'] . '"><img src="' . $display_img . '" height="150" width="150"><br></td>';
    print '<td valign="top" bgcolor="' . $states['descr'] . '">' . $display_desc . '</td>';
@@ -693,11 +693,11 @@ function getXMLData($search, $exact = false) {
 
 function xml_data($data) {
    global $test_php4;
-   if (!$test_php4 && extension_loaded('simplexml')) { 
+   if (!$test_php4 && extension_loaded('simplexml')) {
       return $data;
    } else {
-      if (isset($data)) { 
-         return $data->CDATA(); 
+      if (isset($data)) {
+         return $data->CDATA();
       } else {
          return "";
       }
@@ -725,11 +725,11 @@ function SERVICE_GETARTISTMETADATA_webmosher($node = false, $return = false, $ar
       $artist = $node->getName();
    } else {
 		$artist = $node['artist'];
-   }	
+   }
    $artist = preg_replace("/\&/", 'and', $artist);
 
    $items = array();
-   
+
    // Normally, we are probably not overriding our values, so just procede.
    if(empty($_POST[descOVERRIDE]) && empty($_POST[imgOVERRIDE])) {
       $fix_jz_path = urlencode(implode('/', $node->getPath()));
@@ -744,7 +744,7 @@ function SERVICE_GETARTISTMETADATA_webmosher($node = false, $return = false, $ar
       $yahoo_search = "http://search.music.yahoo.com/search/?m=artist&x=0&y=0&p=". $search_artist;
       $content_y = getHTMLData($yahoo_search);
       $items['yahoo'] = parseYahooArtist($content_y, $artist);
-      
+
       print "<h2>YAHOO!</h2>\n";
       print "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"2\" border=\"0\">\n";
       print "<tr>\n";
@@ -760,7 +760,7 @@ function SERVICE_GETARTISTMETADATA_webmosher($node = false, $return = false, $ar
       $rhaps_search = "http://www.rhapsody.com/" . strtolower(preg_replace('/[^\w]/', '', $search_artist)) . "/more.html";
       $content_r = getHTMLData($rhaps_search,$artist);
       $items['rhaps'] = parseRhapsodyArtist($content_r, $artist);
-      
+
       print "<h2>Rhapsody</h2>\n";
       print "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"2\" border=\"0\">\n";
       print "<tr>\n";
@@ -770,7 +770,7 @@ function SERVICE_GETARTISTMETADATA_webmosher($node = false, $return = false, $ar
       print "<td width=\"50%\" align=\"center\"><input type=\"radio\" name=\"imgOVERRIDE\" value=\"". $items['rhaps']['image'] ."\">Override Image</td>\n";
       print "<td width=\"50%\" align=\"center\"><input type=\"radio\" name=\"descOVERRIDE\" value=\"". $items['rhaps']['bio'] ."\">Override Bio</td>\n";
       print "</table><hr/>\n";
-      
+
       if (isset($items['yahoo']['bio']) && $items['yahoo']['bio'] != 'Not available.') {
          $bio = $items['yahoo']['bio'];
       } elseif (isset($items['rhaps']['bio']) && $items['rhaps']['bio'] != 'Not available.') {
@@ -800,13 +800,13 @@ function SERVICE_GETARTISTMETADATA_webmosher($node = false, $return = false, $ar
       print "</table><hr/>\n";
 
    }
-   
+
    // Now let's write the data
    if ($return){
       if ($return == "array"){
          if (empty($retArr['bio'])) {
             $retArr['bio'] = $bio;
-         } 
+         }
          if (empty($retArr['image'])) {
             $retArr['image'] = $image;
          }
@@ -824,7 +824,7 @@ function SERVICE_GETARTISTMETADATA_webmosher($node = false, $return = false, $ar
 function parseYahooArtist($contents,$artist) {
    $utffix = new UTFNormal();
    $artist_alternate = preg_replace('/[^\w\s]/', '', $utffix->toNFKD($artist));
-   
+
    // Ok, now let's see if we got a direct hit or a link
    if (stristr($contents,$artist) || stristr($contents,$artist_alternate)){
       // Now let's see if we can get the right link
@@ -835,7 +835,7 @@ function parseYahooArtist($contents,$artist) {
       $contents = substr($contents,strpos($contents,$artist_search) + 9);
       $link = trim(substr($contents,0,strpos($contents,"\">")));
       $link_bio = str_replace("---","-bio--",$link);
-   
+
       // Now let's get the bio back
       $contents = getHTMLData($link_bio);
 
@@ -851,11 +851,11 @@ function parseYahooArtist($contents,$artist) {
          $bio = "Not available.";
       	$contents = getHTMLData($link);
       }
-   
+
       // Now let's get the artist image
       $image = substr($contents,strpos($contents,'<td width="300"><img src="http://')+26);
       $image = substr($image,0,strpos($image,'"'));
-   
+
       if (!stristr($image,".jpg") or !stristr($image,"http://")){
          $image = "";
       }}
@@ -888,7 +888,7 @@ function parseRhapsodyArtist($contents, $artist) {
       } else {
          $bio = "Not available.";
       }
-   // TODO search for the Rhapsody content if the main page did not load. 
+   // TODO search for the Rhapsody content if the main page did not load.
    //} elseif (empty ($contents) || $contents == '') {
       //$utffix = new UTFNormal();
       //$search_artist = urlencode(strtolower(preg_replace('/[^\w\s]/', '', $utffix->toNFKD($artist))));

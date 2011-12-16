@@ -1,11 +1,11 @@
 -- Database: `jinzora3`
--- 
+--
 
--- 
+--
 -- Table structure for table `jz_discussions`
--- 
+--
 
-CREATE TABLE 
+CREATE TABLE
 	jz_discussions
 		(
 			  my_id int NOT NULL default 0,
@@ -16,11 +16,11 @@ CREATE TABLE
 			  PRIMARY KEY  (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_links`
--- 
+--
 
-CREATE TABLE 
+CREATE TABLE
 	jz_links
 		(
 			  my_id int NOT NULL default 0,
@@ -30,11 +30,11 @@ CREATE TABLE
 			  PRIMARY KEY  (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_nodes`
--- 
+--
 
-CREATE TABLE 
+CREATE TABLE
 	jz_nodes
 		(
 			my_id varchar(20) NOT NULL default '',
@@ -65,11 +65,11 @@ CREATE TABLE
 			UNIQUE (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_requests`
--- 
+--
 
-CREATE TABLE 
+CREATE TABLE
 	jz_requests
 		(
 			my_id int NOT NULL default 0,
@@ -81,10 +81,10 @@ CREATE TABLE
 			PRIMARY KEY  (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_tracks`
--- 
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_tracks
 		(
 			my_id varchar(20) NOT NULL default '',
@@ -136,11 +136,11 @@ CREATE TABLE
 			date datetime default NULL
 		);
 
--- 
+--
 -- Table structure for table `jz_genres`
--- 
+--
 
-CREATE TABLE 
+CREATE TABLE
 	jz_genres
 		(
 			my_id varchar(20) NOT NULL default '',
@@ -166,10 +166,10 @@ CREATE TABLE
 		);
 
 
--- 
+--
 -- Table structure for table `jz_subgenres`
--- 
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_subgenres
 		(
 			my_id varchar(20) NOT NULL default '',
@@ -194,10 +194,10 @@ CREATE TABLE
 			PRIMARY KEY  (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_artists`
--- 
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_artists
 		(
 			my_id varchar(20) NOT NULL default '',
@@ -222,10 +222,10 @@ CREATE TABLE
 			PRIMARY KEY  (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_albums`
--- 
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_albums
 		(
 			my_id varchar(20) NOT NULL default '',
@@ -251,10 +251,10 @@ CREATE TABLE
 			PRIMARY KEY  (my_id)
 		);
 
--- 
+--
 -- Table structure for table `jz_track_map`
--- 
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_track_map
 		(
 		track_id varchar(20) NOT NULL,
@@ -265,10 +265,10 @@ CREATE TABLE
 		genre_id varchar(20) NOT NULL
 		);
 
--- 
+--
 -- Table structure for table `jz_album_map`
--- 		
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_album_map
 		(
 		album_id varchar(20) NOT NULL,
@@ -277,10 +277,10 @@ CREATE TABLE
 		genre_id varchar(20) NOT NULL
 		);
 
--- 
+--
 -- Table structure for table `jz_artist_map`
--- 				
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_artist_map
 		(
 		artist_id varchar(20) NOT NULL,
@@ -288,19 +288,19 @@ CREATE TABLE
 		genre_id varchar(20) NOT NULL
 		);
 
--- 
+--
 -- Table structure for table `jz_subgenre_map`
--- 		
-CREATE TABLE 
+--
+CREATE TABLE
 	jz_subgenre_map
 		(
 		subgenre_id varchar(20) NOT NULL,
 		genre_id varchar(20) NOT NULL
 		);
-		
--- 
+
+--
 -- Table structure for table `jz_featured`
--- 				
+--
 CREATE TABLE
 	jz_featured
 		(
@@ -335,9 +335,9 @@ CREATE INDEX node_art on jz_nodes(main_art);
 CREATE INDEX user_playcounts on jz_playcounts(user,date);
 
 
-	
+
 --GETTING ALL INFO FOR A TRACK:
---SELECT jz_genres.name as genre, 
+--SELECT jz_genres.name as genre,
 --       jz_subgenres.name as subgenre,
 --       jz_artists.name as artist,
 --       jz_albums.name as album,

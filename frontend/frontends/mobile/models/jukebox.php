@@ -19,7 +19,7 @@ function doTemplate($node) {
   $smarty->assign('Previous',word('Previous'));
   $smarty->assign('Next',word('Next'));
   $smarty->assign('Shuffle',word('Shuffle'));
-  $smarty->assign('Clear',word('Clear'));  
+  $smarty->assign('Clear',word('Clear'));
 
 
   /* buttons */

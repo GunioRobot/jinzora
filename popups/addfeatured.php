@@ -2,7 +2,7 @@
 
 /**
 * Adds the selected node to the featured list
-* 
+*
 * @author Ross Carlson
 * @version 01/19/05
 * @since 01/19/05

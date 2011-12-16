@@ -24,11 +24,11 @@
 				<tr>
 					{php}
 						global  $show_album_art, $random_albums, $random_per_slot, $random_rate, $jz_path;
-						
+
 						// Now let's get a random amount of albums with album art
 						$node = new jzMediaNode($jz_path);
 						$artArray = $node->getSubNodes("nodes",distanceTo("album",$node),true,$random_albums*$random_per_slot,true);
-			
+
 						// Now let's figure out how wide to make the colums
 						if (($random_albums * $random_per_slot) > count($artArray)){
 							// Now we've got to figure out how many we've got

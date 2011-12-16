@@ -1,6 +1,6 @@
 {literal}
 <style>
-	td{ 
+	td{
 		background-color: #000000;
 		font-family: Verdana;
 		font-size: 10px;
@@ -13,7 +13,7 @@
 		font-family: Verdana;
 		font-size: 10px;
 	}
-	
+
 </style>
 {/literal}
 <body>
@@ -22,12 +22,12 @@
 			<td valign="top">
 				<strong>
 					{if $trackNum <> ""}
-						{$trackNum}/{$totalTracks} - 
+						{$trackNum}/{$totalTracks} -
 					{/if}
 					{$trackName}<br />
 					{$artistName}
 					{if $artistName <> ""}
-					- 
+					-
 					{/if}
 					{$albumName}
 				</strong>

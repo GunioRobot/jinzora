@@ -1,6 +1,6 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 include_once('settings.php');
-include_once('system.php'); 
+include_once('system.php');
 
 function makePlugin() {
 	global $root_dir, $site_title, $_SERVER;
@@ -21,7 +21,7 @@ function makePlugin() {
    updateIcon=\"$weblink/data/jinzora.gif\"
    updateCheckDays=\"99999\"
 >
- 
+
 <input name=\"song_title\" user>
 <input name=\"sourceid\" value=\"mozilla-search\">
 <input name=\"doSearch\" value=\"true\">
@@ -47,7 +47,7 @@ $code .= "
 
 
 	if (is_writable($file)) {
-		$handle = fopen($file,"w");	
+		$handle = fopen($file,"w");
 	}
 	else {
 		if (!@touch($file)) {

@@ -6,10 +6,10 @@
 
 Initial Words
 ****************************
-I, Ross Carlson (ross@jasbone.com), the author of this 
-Add-on know very little about Movable Type outside of 
-using it for my personal blog. If I've done something 
-stupid please just let me know and I'll be happy to 
+I, Ross Carlson (ross@jasbone.com), the author of this
+Add-on know very little about Movable Type outside of
+using it for my personal blog. If I've done something
+stupid please just let me know and I'll be happy to
 make it better.
 
 
@@ -17,7 +17,7 @@ Support
 ****************************
 This add on is not supported officially in any way.  However
 you are welcome to post in the Jinzora forums at
-http://www.jinzora.org 
+http://www.jinzora.org
 and I'll do my best to help out.  Please do not email
 me with issues related to this, rather post in our
 forums.
@@ -33,7 +33,7 @@ Prerequisites
 - A fully working installation of Jinzora 1.1PR2 or higher
 - A general knowledge of Movable Type and Jinzora
 - The ability to edit Movable Type templates
-- Knowledge about Jinzora, namely the username you use to 
+- Knowledge about Jinzora, namely the username you use to
   log into Jinzora
 
 

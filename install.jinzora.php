@@ -1,4 +1,4 @@
-<?php 
+<?php
 function com_install() {
 global $database;
 

@@ -5,7 +5,7 @@
     body {background: #1a6fcc}
 
 /* generic TD style */
-    td {position: relative}    
+    td {position: relative}
 
 /* Medium-width button */
     .button1 {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); BACKGROUND: #aaaaaa; WIDTH: 251px; HEIGHT: 51px; FONT-WEIGHT: bold; FONT-SIZE: 20pt; font-family: arial; padding-left: 10; color: #f2f2f2; padding-top: 9}
@@ -26,12 +26,12 @@
 /* input text boxes */
     .inputbox {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid silver; width: 200; height: 45; font: bold 22pt arial; color: #222222}
     .inputbox_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid orange; width: 200; height: 45; font: bold 22pt arial; color: #222222}
-    
+
 /* input text boxes associated with Media Center text entry control */
     .inputboxWithControl {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid silver; width: 280; height: 45; font: bold 25pt arial; color: #222222; background: #f2f2f2}
     .inputboxWithControl_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid orange; width: 280; height: 45; font: bold 25pt arial; color: #222222; background: #f2f2f2}
 
-/* text input ActiveX control */ 
+/* text input ActiveX control */
     .textControl {behavior:url(/jinzora2/templates/mediacenter/TextInput.htc);}
     .textControlSpan {border: 6 solid #bbbbbb; overflow: hidden}
     .textControlSpan_hilite {border: 6 solid orange; overflow: hidden}
@@ -44,13 +44,13 @@
     .radioBtn{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); font-family: wingdings; font-size: 60px; color: #aaaaaa; width: 50;}
     .radioBtn_hilite{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); font-family: wingdings; font-size: 60px; color: orange; width: 50;}
     .radioBtnWhiteDot{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); font-family: wingdings; font-size: 31px; color: #f2f2f2}
-    
+
 /* Check Box */
     .checkbox {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid #999999; background-color: #dddddd; WIDTH: 46; HEIGHT: 46;}
     .checkbox_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid orange; background-color: #dddddd; WIDTH: 46; HEIGHT: 46;}
     .checkbox_checked {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid #999999; background-color: #dddddd; WIDTH: 46; HEIGHT: 46; background-image: url(/jinzora2/templates/mediacenter/checkmark.gif)}
     .checkbox_checked_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid orange; background-color: #dddddd; WIDTH: 46; HEIGHT: 46; background-image: url(/jinzora2/templates/mediacenter/checkmark.gif)}
-    
+
 /* iFrame for scrollable text content */
     .ContentIFrame {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid #aaaaaa}
     .ContentIFrame_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); ; border: 6 solid orange}
@@ -58,15 +58,15 @@
 /* HTML-style text link */
     .textLink{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); color: #00ccff; height: 18px}
     .textLink_hilite{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); color: #444444; background: orange; height: 18px}
-    
+
 /* Image with highlightable border */
     .imageBox{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid #999999;}
     .imageBox_hilite{behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid orange;}
-    
+
 /*  Media Art (use this for box shots, photos, etc. */
     .photoTD {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid #666666;}
     .photoTD_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 6 solid orange;}
-    
+
 /* Checkbox */
     .checkbox {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid #999999; background-color: #dddddd; WIDTH: 46; HEIGHT: 46;}
     .checkbox_hilite {behavior:url(/jinzora2/templates/mediacenter/Hilite.htc); border: 4 solid orange; background-color: #dddddd; WIDTH: 46; HEIGHT: 46;}

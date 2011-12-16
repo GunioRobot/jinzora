@@ -34,7 +34,7 @@ foreach ($tracks as $track) {
 	if ($ctr % 10 == 0) {
 ?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					s.innerHTML = '<nobr><?php echo word("Analyzed"); ?>: <?php echo $ctr; ?></nobr>';					
+					s.innerHTML = '<nobr><?php echo word("Analyzed"); ?>: <?php echo $ctr; ?></nobr>';
 					-->
 				</SCRIPT>
 				<?php

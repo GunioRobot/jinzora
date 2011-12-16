@@ -11,18 +11,18 @@ body {
 }
 
 /* This is for The forms */
-form { 
+form {
 	display:inline;
 /* This is for The link color */
 a {
 	text-decoration: none;
 	font-size: 10px;
 }
-a:link { 
+a:link {
 	text-decoration: none;
 	color: black;
 }
-a:visited { 
+a:visited {
 	color: black;
 }
 a:hover {
@@ -36,10 +36,10 @@ a {
 
 	font-size: 10px;
 }
-a:link { 
+a:link {
 	color: black;
 }
-a:visited { 
+a:visited {
 	color: black;
 }
 a:hover {
@@ -172,13 +172,13 @@ a:hover {
 
 
 /* THese are the alternating row colors */
-.jz_row1 { 
+.jz_row1 {
 	background-color:#E5E9FF;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
-.jz_row2 { 
-	background-color:#C3C6D9; 
+.jz_row2 {
+	background-color:#C3C6D9;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }

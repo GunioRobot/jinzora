@@ -1,5 +1,5 @@
-English disclaimer 
-This is an unofficial translation of the GNU General 
+English disclaimer
+This is an unofficial translation of the GNU General
 Public License into Dutch. It was not published by the Free Software
 Foundation, and does not legally state the distribution terms for software
 that uses the GNU GPL--only the original English text of the GNU GPL does
@@ -52,7 +52,7 @@ tonen zodat ze hun rechten kennen.
  We beschermen uw rechten met twee stappen
 (1) de software wordt auteursrechtelijk beschermd, en
 (2) we bieden U deze licentie die U de legale toestemming geeft om de software
-te kopiëren, te verspreiden en/of te wijzigen. 
+te kopiëren, te verspreiden en/of te wijzigen.
 
 Alsook willen we voor de
 bescherming van de auteur en onszelf iedereen ervan verzekeren dat er geen
@@ -82,11 +82,11 @@ het Programma of eender welk ander afgeleid werk onder de wet van het
 auteursrecht: dit wil zeggen, een werk dat het Programma of een deel ervan
 bevat, letterlijk oftewel gewijzigd en/of vertaald naar een andere taal.
 (Hierna vallen vertalingen zonder beperking onder de term "wijziging".)
-Elke licentiehouder wordt geadresseerd als "u". 
+Elke licentiehouder wordt geadresseerd als "u".
 
 Andere handelingen dan kopiëren,
 verspreiden en wijzigen zijn niet gedekt door deze licentie; hiervoor is deze
-licentie niet bedoeld. De handeling om het Programma uit te voeren is niet 
+licentie niet bedoeld. De handeling om het Programma uit te voeren is niet
 gelimiteerd, en de uitvoer van het Programma is enkel gedekt als de inhoud
 bestaat uit een werk gebaseerd op het Programma (onafhankelijk of deze uitvoer
 gemaakt is door het Programma uit te voeren). Of dit waar is hangt af van wat
@@ -104,22 +104,22 @@ kopie, en U mag indien U dat wenst een garantie bescherming bieden voor een
 honorarium.
 
 2.  U mag uw kopie of kopijen van het Programma, of een deel van het Programma,
-wijzigen, daarbij een werk gebaseerd op het Programma vormend. U mag deze 
+wijzigen, daarbij een werk gebaseerd op het Programma vormend. U mag deze
 wijzigingen kopiëren en verspreiden onder de bepalingen van Paragraaf 1
 hierboven, indien U ook aan al deze voorwaarden voldoet:
 
-a) U moet in de gewijzigde bestanden duidelijk vermelden dat U het bestand 
+a) U moet in de gewijzigde bestanden duidelijk vermelden dat U het bestand
 gewijzigd hebt en de datum waarop U dat gedaan hebt.
 
-b) U moet elk werk dat U publiceert of verspreidt en dat volledig of 
+b) U moet elk werk dat U publiceert of verspreidt en dat volledig of
 gedeeltelijk bestaat uit het Programma, of daarvan een afgeleid werk is,
 als een geheel in licentie geven, zonder kosten, aan alle derde partijen onder
 de bepalingen van deze Licentie.
 
 c) Indien het gewijzigde Programma normaal gezien interactief parameters
-inleest, dan moet U er voor zorgen dat wanneer het Programma zonder deze 
-parameters gestart wordt, het een boodschap weergeeft met een gepast 
-auteursrechtbericht en een mededeling dat er geen garantie is (of anders, dat 
+inleest, dan moet U er voor zorgen dat wanneer het Programma zonder deze
+parameters gestart wordt, het een boodschap weergeeft met een gepast
+auteursrechtbericht en een mededeling dat er geen garantie is (of anders, dat
 U een garantie voorziet) en dat gebruikers het Programma mogen verspreiden onder
 deze voorwaarden. De boodschap moet de gebruiker ook duidelijk maken hoe hij een
 kopij van deze Licentie kan bekijken. (Uitzondering : als het Programma zelf
@@ -136,7 +136,7 @@ bepalingen van deze licentie geschieden, dewelke's vergunningen voor andere
 licentiehouders zich uitbreiden tot het volledige geheel, en dus tot elke deel
 van het werk, onafhankelijk van wie het geschreven heeft.
 
-Dus, het is niet de bedoeling van deze sectie om uw rechten op te eisen of te 
+Dus, het is niet de bedoeling van deze sectie om uw rechten op te eisen of te
 wedijveren om uw rechten op werk dat geheel door uzelf geschreven is, het is
 eerder de bedoeling het recht controle uit te oefenen mogelijk te maken op de
 verspreiding van afgeleide of collectieve werken gebaseerd op het Programma.
@@ -203,7 +203,7 @@ onderworpen aan deze bepalingen en voorwaarden. U mag de ontvanger geen
 beperkingen opleggen om de rechten uit te oefenen die hierin bepaald zijn.
 
 7.  Als door gevolg van een rechterlijke uitspraak of beweringen van
-patentenschending of door eender welke andere reden (niet beperkt tot 
+patentenschending of door eender welke andere reden (niet beperkt tot
 patentenproblemen) U bepalingen worden opgelegd (door rechterlijk bevel,
 overeenkomst, of op andere wijze) die in tegenspraak zijn met bepalingen in deze
 licentie, dan sluit dat U niet uit om aan de voorwaarden van deze licentie te
@@ -212,8 +212,8 @@ de bepalingen van deze licentie als aan andere relevante verplichtingen kan
 voldoen, dan mag U als gevolg daarvan het Programma helemaal niet verspreiden.
 Bijvoorbeeld, als een patent licentieovereenkomst niet zou toestaan dat het
 programma zonder het betalen van royalty's vrij verspreid mag worden door zij
-die het Programma direct van U verkrijgen en zij die het indirect door U 
-verkrijgen, dan is de enige manier om zowel daaraan als aan deze licentie te 
+die het Programma direct van U verkrijgen en zij die het indirect door U
+verkrijgen, dan is de enige manier om zowel daaraan als aan deze licentie te
 voldoen dat U zich compleet onthoudt van het verspreiden van het Programma.
 
 Als een deel van dit artikel ongeldig wordt geacht, of het kan niet afgedwongen
@@ -221,14 +221,14 @@ worden onder bepaalde omstandigheden dan is het de bedoeling dat het overwicht
 van dit artikel van toepassing is. In andere omstandigheden geldt dit artikel
 volledig.
 
-Het is niet het doel van dit artikel om u er toe aan te zetten om patenten, 
-of andere aanspraken van bezit, te schenden of de geldigheid van zulke 
-aanspraken aan te vechten. Het enige doel van dit artikel is om de integriteit 
-te beschermen van het vrije software verspreidingssysteem, dat wordt 
+Het is niet het doel van dit artikel om u er toe aan te zetten om patenten,
+of andere aanspraken van bezit, te schenden of de geldigheid van zulke
+aanspraken aan te vechten. Het enige doel van dit artikel is om de integriteit
+te beschermen van het vrije software verspreidingssysteem, dat wordt
 toegepast door middel van Publieke Licentie praktijken. Veel mensen hebben
 royale bijdragen geleverd aan het systeem van vrije software rekenend op
-de betrouwbaarheid van zijn toepassing. Het is aan de auteur/donor om te 
-bepalen of hij of zij bereidt is om software te verspreiden door middel 
+de betrouwbaarheid van zijn toepassing. Het is aan de auteur/donor om te
+bepalen of hij of zij bereidt is om software te verspreiden door middel
 van een ander systeem en een gelicensieerde kan die keuze niet afdwingen.
 
 Dit artikel is bedoeld om zeer duidelijk te maken wat geloofd wordt een gevolg
@@ -251,12 +251,12 @@ een versie van deze licentie specificeert waarop het van toepassing is en "elke
 volgende versie", dan hebt U de keuze om de bepalingen en voorwaarden van die
 licentie te volgen, of van eender welke versie die later uitgegeven werd door de
 Free Software Foundation. Als het programma geen versie nummer van de licentie
-specificeert, dan mag U de bepalingen en voorwaarden volgen van eender welke 
+specificeert, dan mag U de bepalingen en voorwaarden volgen van eender welke
 versie ooit uitgegeven door de Free Software Foundation.
 
-10.  Indien U delen van het Programma wil invoegen in andere vrije Programma's 
-dewelke's verspreidingsvoorwaarden anders zijn, dan moet U de auteur van dat 
-programma om toestemming vragen. Voor software waarvan het auteursrecht bij 
+10.  Indien U delen van het Programma wil invoegen in andere vrije Programma's
+dewelke's verspreidingsvoorwaarden anders zijn, dan moet U de auteur van dat
+programma om toestemming vragen. Voor software waarvan het auteursrecht bij
 de Free Software Foundation rust, schrijf naar de Free Software Foundation; we
 maken hier soms uitzonderingen op. Onze beslissing zal geleid worden door onze
 twee hoofddoelen om de vrije status van de afgeleiden van onze vrije software te
@@ -290,12 +290,12 @@ EINDE VAN DE BEPALINGEN EN VOORWAARDEN
 Hoe deze bepalingen op uw nieuwe Programma's toepassen.
 
 Als U een nieuw Programma ontwikkelt en U wenst dat het van het grootst mogelijk
-nut is voor iedereen, dan is de beste manier om dit te bereiken door het 
-Programma vrije software te maken dewelke iedereen kan verspreiden en wijzigen 
+nut is voor iedereen, dan is de beste manier om dit te bereiken door het
+Programma vrije software te maken dewelke iedereen kan verspreiden en wijzigen
 onder deze bepalingen.
 Om dit te doen, voeg volgende boodschap toe aan het Programma. Het is het
-veiligst om ze in te voegen aan het begin van elk bronbestand, dit om het 
-ontbreken van garantie duidelijk te maken; en elk bestand zou minstens de 
+veiligst om ze in te voegen aan het begin van elk bronbestand, dit om het
+ontbreken van garantie duidelijk te maken; en elk bestand zou minstens de
 "auteursrecht" lijn en een directief naar waar de volledige boodschap gevonden
 kan worden moeten bevatten.
 
@@ -304,9 +304,9 @@ Auteursrecht (C) <jaar> <naam van de Auteur>
 Dit Programma is vrije software; U kan het verspreiden en/of wijzigen onder de
 bepalingen van de GNU Algemene Publieke Licentie, zoals uitgegeven door de Free
 Software Foundation; oftewel versie 2 van de Licentie,of (naar vrije keuze) een
-latere versie. 
-Dit Programma is verspreid met de hoop dat het nuttig zal zijn maar 
-ZONDER EENDER WELKE GARANTIE; zelfs zonder de impliciete garantie van 
+latere versie.
+Dit Programma is verspreid met de hoop dat het nuttig zal zijn maar
+ZONDER EENDER WELKE GARANTIE; zelfs zonder de impliciete garantie van
 VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de GNU Algemene
 Publieke Licentie voor meer details.
 U zou een kopie van de GNU Algemene Publieke Licentie ontvangen moeten
@@ -318,23 +318,23 @@ Voeg ook informatie bij hoe men U kan contacteren via e-mail en gewone post.
 Als het Programma interactief is, laat het een korte boodschap tonen zoals
 deze wanneer het in interactieve modus start:
 
-Fiscus versie 69, Auteursrecht (C) <jaar> <naam v/d auteur> 
+Fiscus versie 69, Auteursrecht (C) <jaar> <naam v/d auteur>
 Fiscus komt met ABSULUUT GEEN GARANTIE; voor details typ 'toon w'. Dit is
 vrije software en het is U toegestaan deze te verspreiden onder
 bepaalde voorwaarden;typ 'toon c' voor meer details.
 
 U zou ook uw werkgever (indien U als programmeur werkt) of uw school, indien die
-er is, om een "auteursrecht afwijzing" te laten tekenen voor het Programma, 
+er is, om een "auteursrecht afwijzing" te laten tekenen voor het Programma,
 indien nodig. Hier is een voorbeeld; wijzig de namen:
 
-Yoyodyne, NV., verwerpt hier alle auteursrechtlijk interesses in het Programma 
-Fiscus (dat belastingsaangiften invult) geschreven door James Hacker. 
+Yoyodyne, NV., verwerpt hier alle auteursrechtlijk interesses in het Programma
+Fiscus (dat belastingsaangiften invult) geschreven door James Hacker.
 <handtekening van Ty Coon>, 21 April 1984 Ty Coon, Vice voorzitter.
 
-Deze Algemene Publieke Licentie laat niet toe dat het Programma verwerkt wordt 
+Deze Algemene Publieke Licentie laat niet toe dat het Programma verwerkt wordt
 in een commercieel programma. Als uw Programma een subroutine bibliotheek is,
-dan kan U het misschien nuttige beschouwen om toe te staan dat uw Programma 
-gelinkt word met commerciële programma's. Als dat is wat U wil doen, 
+dan kan U het misschien nuttige beschouwen om toe te staan dat uw Programma
+gelinkt word met commerciële programma's. Als dat is wat U wil doen,
 dan moet U de GNU Algemene Minder Publieke Licentie gebruiken in plaats van
 deze licentie.
 

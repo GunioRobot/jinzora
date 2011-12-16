@@ -1,45 +1,45 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Contains the Winamp httpQ plugin functions
 	*
 	* @since 12/04/08
 	* @author Ben Dodson <bjdodson@gmail.com>
 	*/
-	
+
 	/*
-	
+
 	NOTES FOR THIS JUKEBOX
-	
+
 	This is a zero-configuration jukebox.
 	Simply point a browser to [yoursite]/jukebox to have it work.
-	*/	
-	
-	
-	
-	
+	*/
+
+
+
+
 
 	/**
 	* The installer function for this jukebox
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -47,10 +47,10 @@
 	*/
 	function jbInstall($step){
 	}
-	
+
 	/**
 	* Returns the stats of the jukebox
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -58,20 +58,20 @@
 	*/
 	function retJBStats(){
 		global $jbArr;
-		
+
 		return;
-	}	
-	
+	}
+
 	/**
 	* Returns a keyed array showing all the functions that this jukebox supports
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
 	* @param return Returns a keyed array of the jukeboxe's abilities
 	*/
 	function returnJBAbilities(){
-		
+
 		$retArray['playbutton'] = true;
 		$retArray['pausebutton'] = true;
 		$retArray['stopbutton'] = true;
@@ -95,10 +95,10 @@
 
 		return $retArray;
 	}
-	
+
 	/**
 	* Returns the connection status of the player true or false
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -107,11 +107,11 @@
 	function playerConnect(){
 	  return true;
 	}
-	
-	
+
+
 	/**
 	* Returns Addon tools for quickbox
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -123,11 +123,11 @@
 	  $url .= 'jukebox/?id='.urlencode(Quickbox::getID());
 	  return ' - <a href="'.htmlentities($url).'" target="_BLANK"> [Click to join]</a>';
 	}
-	
-	
+
+
 	/**
 	* Returns the currently playing tracks path so we can get the node
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -139,10 +139,10 @@
 	    return $box['playlist'][$box['pos']];
 	  }
 	}
-	
+
 	/**
 	* Returns the currently playing track number
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -154,10 +154,10 @@
 	    return $box['pos'];
 	  }
 	}
-		
+
 	/**
 	* Returns the currently playing playlist
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -183,13 +183,13 @@
 				    }
 				}
 			}
-		}		
+		}
 		return $retArray;
 	}
 
 	/**
 	* Passes a playlist to the jukebox player
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -197,7 +197,7 @@
 	*/
 	function playlist($playlist){
 		global $include_path, $jbArr, $media_dirs,$jzSERVICES;
-		
+
 		$addtype = $_SESSION['jb-addtype'];
 		$box = Quickbox::load();
 		// todo: current, begin
@@ -215,20 +215,20 @@
 		  $list[] = $track->getFileName("user")."\n";
 		}
 
-		
+
 		$box['command']='playlist';
 		$box['command_time']=time();
 		$box['playlist']=$list;
 		$box['addtype']=$addtype;
-		
+
 		Quickbox::store($box);
-		
+
 		exit();
 	}
-		
+
 	/**
 	* Passes a command to the jukebox player
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -298,7 +298,7 @@
 			    $box['playlist'][$items[$i]-1]=$box['playlist'][$items[$i]];
 			    $box['playlist'][$items[$i]]=$tmp;
 
-			    // does not currently correct the 
+			    // does not currently correct the
 			    // value of $box['pos'].
 
 			    // update for displaying the list:
@@ -338,10 +338,10 @@
 		<?php
 		    }
 	}
-	
+
 	/**
 	* Returns the players current status
-	* Can get the following statuses: playback|repeat 
+	* Can get the following statuses: playback|repeat
 	*
 	* @author Ben Dodson
 	* @version 12/04/08
@@ -349,13 +349,13 @@
 	*/
 	function getStatus($type = "playback"){
 		global $jbArr;
-		
+
 		return "";
 	}
-	
+
 	/**
 	* Returns the current playing track
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/04/08
 	* @since 12/04/08
@@ -377,10 +377,10 @@
 	  }
 
 	}
-	
+
 	/**
 	* Returns how long is left in the current track (in seconds)
-	* 
+	*
 	* @author Ben Dodson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -388,10 +388,10 @@
 	*/
 	function getCurTrackRemaining(){
 	}
-	
+
 	/**
 	* Gets the length of the current track
-	* 
+	*
 	* @author Ben Dodson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -399,10 +399,10 @@
 	*/
 	function getCurTrackLength(){
 	}
-	
+
 	/**
 	* Returns how long is left in the current track (in seconds)
-	* 
+	*
 	* @author Ben Dodson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -410,10 +410,10 @@
 	*/
 	function getCurTrackLocation(){
 	}
-	
+
    /**
 	* Updates the database
-	* 
+	*
 	* @author Ben Dodson
 	* @version 12/08/06
 	* @since 12/08/06
@@ -425,7 +425,7 @@ class Quickbox {
   static $backend = null;
   static $jbid = null;
   static $boxes = bull;
-  
+
   static function init() {
     global $jbArr;
     if (null != Quickbox::$backend) return;
@@ -440,7 +440,7 @@ class Quickbox {
     $box = Quickbox::$boxes[$id];
     return $box;
   }
-  
+
   static function store($box,$id=false) {
     Quickbox::init();
     if ($id === false) $id = Quickbox::$jbid;

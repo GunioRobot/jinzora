@@ -10,5 +10,5 @@
 			$smarty->assign('jukebox_display', "full");
 		}
 		jzTemplate($smarty, "jukebox-wrapper");
-	}	
+	}
 ?>

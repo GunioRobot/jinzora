@@ -4,15 +4,15 @@ global $jukebox;
 	$display = new jzDisplay();
 	$blocks = new jzBlocks();
 	$smarty = smartySetup();
-	
-	if (!is_object($node)) $node = new jzMediaNode();			
-	
+
+	if (!is_object($node)) $node = new jzMediaNode();
+
 	// Let's include the settings file
 	include_once($include_path. 'frontend/frontends/andro/settings.php');
-	
+
 	// TO DO - SMARTY!!!
-	$display->preHeader();	
-	
+	$display->preHeader();
+
 	$smarty->assign('this_page', $this_page);
 	$smarty->assign('img_home', $img_home);
 	$smarty->assign('cms_mode', $cms_mode);
@@ -32,10 +32,10 @@ if ($jukebox == "true" && !defined('NO_AJAX_JUKEBOX')) {
 			  $smarty->assign('searchOnSubmit', "");
 			}
 
-	$formFields="";	
-	foreach (getURLVars($this_page) as $key => $val) { 
-		$formFields .= '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($val) . '">'; 
-	} 
+	$formFields="";
+	foreach (getURLVars($this_page) as $key => $val) {
+		$formFields .= '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($val) . '">';
+	}
 	$smarty->assign('formFields', $formFields);
 	$formFields="";
 	if (distanceTo("artist") !== false){
@@ -45,7 +45,7 @@ if ($jukebox == "true" && !defined('NO_AJAX_JUKEBOX')) {
 		$searchFields .= '<option value="albums">' . word("Albums"). '</option>'. "\n";
 	}
 	$smarty->assign('optionFields', $formFields);
-	$smarty->assign('searchFields', $searchFields);			
+	$smarty->assign('searchFields', $searchFields);
 	$smarty->assign('word_tracks', word('Tracks'));
 	$smarty->assign('word_lyrics', word('Lyrics'));
 	$smarty->assign('login_link', $display->loginLink(false, false, true, false, true));
@@ -54,8 +54,8 @@ if ($jukebox == "true" && !defined('NO_AJAX_JUKEBOX')) {
 	} else {
 		$smarty->assign('prefs_link', "");
 	}
-	
+
 	$smarty->assign('randomizer',$blocks->randomGenerateSelector($node,word("Play:") . ' ',true));
-	
+
 	jzTemplate($smarty, "page-header");
 ?>

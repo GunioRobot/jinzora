@@ -18,13 +18,13 @@
 			</script>
 			{/literal}
 		{/if}
-	</head>	
-	
+	</head>
+
 	{php} $display = new jzDisplay(); echo returnJavascript(); {/php}
 	<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
-	
+
 	<link rel="stylesheet" title="{$skin}" type="text/css" media="screen" href="{$css}">
-	
+
 	<table width="100%" cellspacing="0" cellpadding="0" align="left" border="0">
 		<tr>
 			<td>

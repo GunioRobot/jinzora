@@ -6,7 +6,7 @@
 global $this_page;
 global $row_colors, $web_root, $root_dir;
 
-// Let's display the top of our page	
+// Let's display the top of our page
 $this->displayPageTop("", word("All Genres"));
 $this->openBlock();
 

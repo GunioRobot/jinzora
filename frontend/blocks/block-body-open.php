@@ -4,6 +4,6 @@
 	}
 	$smarty = smartySetup();
 	$smarty->assign('width',$width);
-	
+
 	jzTemplate($smarty, "block-body-open");
 ?>

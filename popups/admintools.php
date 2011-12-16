@@ -95,7 +95,7 @@ foreach ($valArr as $item) {
 }
 echo '</table></div>';
 ?>
-		
+
 		<div id="panel2" class="panel">
 			<table width="90%" cellpadding="5" cellspacing="0" border="0">
 				<tr>
@@ -111,17 +111,17 @@ echo '</table></div>';
 				</tr>
 				<tr>
 					<td>
-						<?php $url_array['ptype'] = "autorenumber";  echo '<a href="'. urlize($url_array). '">'. word("Auto Renumber"). '</a>'; ?>		
+						<?php $url_array['ptype'] = "autorenumber";  echo '<a href="'. urlize($url_array). '">'. word("Auto Renumber"). '</a>'; ?>
 					</td>
 					<td>
-						<?php $url_array['ptype'] = "iteminfo";  echo '<a href="'. urlize($url_array). '">'. word("Item Information"). '</a>'; ?>		
+						<?php $url_array['ptype'] = "iteminfo";  echo '<a href="'. urlize($url_array). '">'. word("Item Information"). '</a>'; ?>
 					</td>
 					<td>
-						<?php $url_array['ptype'] = "retagger";  echo '<a href="'. urlize($url_array). '">'. word("Retag Tracks"). '</a>'; ?>		
+						<?php $url_array['ptype'] = "retagger";  echo '<a href="'. urlize($url_array). '">'. word("Retag Tracks"). '</a>'; ?>
 					</td>
 				</tr>
 			</table>
-		</div>   
+		</div>
 		<div id="panel3" class="panel">
 			<table width="90%" cellpadding="5" cellspacing="0" border="0">
 				<tr>
@@ -158,7 +158,7 @@ echo '</table></div>';
 					</td>
 				</tr>
 			</table>
-		</div>   
+		</div>
 		<?php
 
 $this->closeBlock();

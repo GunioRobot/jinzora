@@ -9,19 +9,19 @@
 			$this->_constructor($arg,$mode);
 		}
 	}
-	
-	
-if (!class_exists("jzUser")) { 
+
+
+if (!class_exists("jzUser")) {
  	class jzUser extends jzRawUser {
   		function jzUser($login = true, $uid = false) {
     		$this->_constructor($login,$uid);
   		}
 	}
  }
-	
-	
+
+
 // TODO: Make this an abstract interface and recode for each DB.
-// Same with the function below it.	
+// Same with the function below it.
 class sqlTable {
 	var $data;
 	var $rows;
@@ -38,7 +38,7 @@ class sqlTable {
 		$this->rows++;
 	}
 }
-	
+
 function jz_db_cache($type, $sql, $val = false) {
 	global $enable_query_cache;
 	static $jz_query_cache = array();
@@ -55,7 +55,7 @@ function jz_db_cache($type, $sql, $val = false) {
 		}
 	} else {
 		if ( (false !== stripos($sql,"select")) && (false === stripos($sql,jz_db_rand_function()))) {
-			$jz_query_cache[$type][$sql] = $val; 
+			$jz_query_cache[$type][$sql] = $val;
 		}
 	}
 }

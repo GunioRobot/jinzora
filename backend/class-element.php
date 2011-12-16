@@ -1,59 +1,59 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* These are the classes extended by the backend adaptors.
 	*
 	* @since 05.10.04
 	* @author Ben Dodson <bdodson@seas.upenn.edu>
 	*/
-	
+
 	class jzMediaElement {
 
 		var $name;
 		var $path;
 		var $data_dir;
-	
+
 		// If you want to add specifics to the constructor, call _constructor() as well.
-		
+
 		/**
 		* Constructor wrapper for a jzMediaElement
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/13/04
 		* @since 5/13/04
 		*/
-		
+
 		function jzMediaElement($par = array(),$mode="path") {
 			$this->_constructor($par,$mode);
 		}
-		
-		
+
+
 		/**
 		* Universal Constructor for a jzMediaElement
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/13/04
 		* @since 5/13/04
-		*/	
-		
+		*/
+
 		function _constructor($arg = array(),$mode) {
 			global $backend, $include_path, $jzUSER;
 
@@ -65,20 +65,20 @@
 			}
 
 			$this->data_dir = $include_path. "data/${backend}";
-			
+
 			if ($mode == "filename") {
 			  $arg = $this->filenameToPath($arg);
 			} else if ($mode != "path") {
 			  $arg = $this->idToPath($arg);
 			}
-			
+
 			if (is_string($arg)) {
 				// make sure it's well formatted.
 			  if ($arg != "") {
 			    if ($arg[0] == "/") {
 			      $arg = substr($arg,1);
 			    }
-			    if ($arg[strlen($arg)-1] == "/") { 
+			    if ($arg[strlen($arg)-1] == "/") {
 			      $arg = substr($arg,0,strlen($arg)-1);
 			    }
 			  }
@@ -88,7 +88,7 @@
 				  if ($dir === false || $jzUSER->getSetting('home_read') === false) {
 				    $this->path = array();
 				    $this->name = "";
-				  } else { 
+				  } else {
 				    $this->path = explode("/",$dir);
 				    $this->name = $this->path[sizeof($this->path)-1];
 				  }
@@ -119,12 +119,12 @@
 			  unset($jzUSER);
 			}
 		}
-	  
+
 	  /**
 	   * Reconstructs an element.
 	   * This is needed for if an element is moved
 	   * and must be internally updated.
-	   * 
+	   *
 	   * @author Ben Dodson
 	   * @since 8/11/05
 	   * @version 8/11/05
@@ -144,7 +144,7 @@
 
 		/**
 		* Returns the name of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/13/04
 		* @since 5/13/04
@@ -223,7 +223,7 @@
 
 		/**
 		* Returns the type of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
@@ -234,24 +234,24 @@
 
 		/**
 		* Returns the depth of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/14/04
 		* @since 5/14/04
-		*/		
+		*/
 		function getLevel() {
 			return ($this->path == array()) ? 0 : sizeof($this->path);
 		}
-		
+
 		/**
 		* Gets the node's parent (self if root)
 		* This function is depricated.
 		* Please use getAncestor() instead.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/3/04
 		* @since 11/3/04
-		*/		
+		*/
 		function getParent() {
 		  global $jzUSER;
 			if ($this->getLevel() == 0 || $this->getPath("String") == $jzUSER->getSetting("home_dir")) return $this;
@@ -260,15 +260,15 @@
 			$node = &new jzMediaNode($newpath);
 			return $node;
 		}
-		
+
 		/**
 		* Gets the node's natural parent (self if root)
 		* This is the 'inverse' of the naturalDepth.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
-		*/		
+		*/
 		function getNaturalParent() {
 		  global $jzUSER;
 			if ($this->getLevel() == 0 || $this->getPath("String") == $jzUSER->getSetting("home_dir")) return $this;
@@ -279,7 +279,7 @@
 				return $node->getNaturalParent();
 			return $node;
 		}
-		
+
 
 		/**
 		 * Returns an ancestor node
@@ -293,13 +293,13 @@
 		 **/
 		function getAncestor($type) {
 		  global $hierarchy;
-		  
+
 		  $path = $this->getPath();
 		  $retpath = array();
-		  
+
 		  if (is_string($hierarchy))
 		    $hierarchy = explode("/",$hierarchy);
-		  
+
 
 		  if ($type == "disk") {
 		    $parent = $this->getParent();
@@ -324,11 +324,11 @@
 		  }
 		  return false;
 		}
-		
+
 
 		/**
 		* Returns the full path to the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 5/16/04
 		* @since 5/13/04
@@ -347,14 +347,14 @@
 		* Returns a string that points to the location
 		* where this node's non-jinzora-specific data should be stored
 		* (album art, text, etc.)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/18/04
 		* @since 9/18/04
 		*/
 		function getDataPath() {
 			global $data_in_filesystem;
-			
+
 			if ($this->isLeaf()) {
 				$temp = $this->getParent();
 				return $temp->getDataPath();
@@ -369,10 +369,10 @@
 				}
 			}
 		}
-		
+
 		/**
 		* Returns the physical path for our element.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/12/04
 		* @since 11/12/04
@@ -385,10 +385,10 @@
 		    return $cache[13];
 		  }
 		}
-		
+
 		/*
 		 * Sets this object's filepath.
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @since 8/5/06
 		 */
@@ -401,10 +401,10 @@
 		  }
 		  $this->writeCache($cache);
 		}
-		
+
 		/**
 		* Returns the date the node was added.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
@@ -418,7 +418,7 @@
 
 		/**
 		* Returns the number of times the node has been played.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
@@ -427,12 +427,12 @@
 			$cache = $this->readCache();
 			return $cache[3];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's playcount, as well
 		* as the playcount of its parents.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
@@ -451,7 +451,7 @@
 
 		/**
 		* Sets this element's playcount directly.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
@@ -465,7 +465,7 @@
 
 		/**
 		* Returns the number of times the node has been downloaded.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/12/04
 		* @since 9/12/04
@@ -474,12 +474,12 @@
 			$cache = $this->readCache();
 			return $cache[12];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's download count, as well
 		* as the download count of its parents.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/12/04
 		* @since 9/12/04
@@ -497,7 +497,7 @@
 
 		/**
 		* Sets this element's download count directly.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/12/04
 		* @since 9/12/04
@@ -511,7 +511,7 @@
 
 		/**
 		* Returns the number of times the node has been viewed
-		* 
+		*
 		* @author Ben Dodson
 		* @version 3/15/05
 		* @since 3/15/05
@@ -520,12 +520,12 @@
 			$cache = $this->readCache();
 			return $cache[25];
 		}
-		
-		
+
+
 		/**
 		* Increments the node's download count, as well
 		* as the download count of its parents.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 3/15/05
 		* @since 3/15/05
@@ -561,7 +561,7 @@
 
 			if (isset($this->artpath) && ($this->artpath !== false)) {
 			 	$artpath = $this->artpath;
-			} else {				
+			} else {
 				$cache = $this->readCache();
 				$artpath = $cache[1];
 			}
@@ -581,7 +581,7 @@
 				}
 				// Now let's make create the resized art IF needed
 			}
-			
+
 			if ($dimensions && $artpath != "-"){
 				// Now lets check or create or image and return the resized one
 				$retVal = $jzSERVICES->resizeImage($artpath, $dimensions, false, $imageType);
@@ -602,11 +602,11 @@
 				return false;
 			}
 		}
-		
-		
+
+
 		/**
 		* Sets the node's main art
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
@@ -621,20 +621,20 @@
 
 		/**
 		* Returns the miscellaneous artwork attached to the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function getRandomArt() {}
-		
-		
+
+
 		/**
 		* Adds misc. artwork to the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function addRandomArt($image) {}
 
@@ -642,20 +642,20 @@
 
 		/**
 		* Returns a brief description for the node.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function getShortDescription() {
 			$cache = $this->readCache();
 			return ($cache[9] == "-") ? false : $cache[9];
 		}
-		
-		
+
+
 		/**
 		* Adds a brief description.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
@@ -669,7 +669,7 @@
 
 		/**
 		* Returns the description of the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
@@ -678,15 +678,15 @@
 			$cache = $this->readCache();
 			return ($cache[10] == "-") ? false : $cache[10];
 		}
-		
-		
+
+
 		/**
 		* Adds a description.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
-		*/		
+		*/
 		function addDescription($text) {
 			$cache = $this->readCache();
 			$cache[10] = $text;
@@ -695,42 +695,42 @@
 
 		/**
 		* Gets the number of people who have rated this element.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/11/04
 		* @since 6/11/04
 		*/
 		function getRatingCount() {
 			$cache = $this->readCache();
-			
+
 			return $cache[5];
 		}
 
 
 		/**
 		* Gets the overall rating for the node.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
 		*/
 		function getRating() {
 			$cache = $this->readCache();
-			
+
 			return ($cache[5] == 0) ? 0 : estimateRating($cache[4] / $cache[5]);
 		}
-		
-		
+
+
 		/**
 		* Returns the date the node was added.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/5/04
 		* @since 6/5/04
-		*/		
+		*/
 		function addRating($rating, $weight = false) {
 			global $rating_weight, $jzUSER;
-			
+
 			if ($weight === false) {
 			  $weight = $jzUSER->getSetting('ratingweight');
 			}
@@ -738,9 +738,9 @@
 			$cache = $this->readCache();
 			$cache[4] = $cache[4] + $rating * $weight;
 			$cache[5] = $cache[5] + $weight;
-			
+
 			$this->writeCache($cache);
-			
+
 			if ($rating_weight > 0 && $this->getLevel() > 0) {
 				$next = $this->getParent();
 				$next->addRating($rating, $weight * $rating_weight);
@@ -750,7 +750,7 @@
 
 		/**
 		* Returns the node's discussion
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
@@ -759,17 +759,17 @@
 			$disc = $this->readCache("discussions");
 			return ($disc == array()) ? false : $disc;
 		}
-		
-		
-		
-		
+
+
+
+
 		/**
 		* Adds a blurb to the node's discussion
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6/7/04
-		*/		
+		*/
 		function addDiscussion($text,$username) {
 			$discussion = $this->readCache("discussions");
 			$i = sizeof($discussion);
@@ -780,7 +780,7 @@
 			$this->writeCache($discussion,"discussions");
 		}
 
-	        /** 
+	        /**
 		 * Adds a previously created discussion
 		 * to this element.
 		 * The input is a discussion array from
@@ -799,25 +799,25 @@
 		* if it is a leaf, returns the info from getMeta[year]
 		* else, returns the average of the result from its children.
 		* Entry is '-' for no year.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 6/7/04
 		* @since 6//704
-		*/		
+		*/
 		function getYear() {
 			$cache = $this->readCache();
-			
+
 			return $cache[11];
 		}
-		
+
 		/**
 		* Exports the given media so it can
 		* be used for something else.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/20/04
 		* @since 11/20/04
-		*/		
+		*/
 		function mediaExport($type, $options = array()) {
 			switch ($type) {
 			// TODO: get artwork and other stuff.
@@ -841,7 +841,7 @@
 					$output[$i]['meta'] = $track->getMeta();
 					$i++;
 				}
-				
+
 				if (isset($options['header'])) {
 					// send with header?
 					header("Content-Type: text/plain");
@@ -851,11 +851,11 @@
 				break;
 			}
 		}
-		
-		
+
+
 		/**
 		* Hides the element.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
@@ -865,34 +865,34 @@
 			$cache[22] = 'true';
 			$this->writeCache($cache);
 		}
-		
-		
+
+
 		/**
 		* Unhides the element
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
-		*/		
+		*/
 		function unhide() {
 			$cache = $this->readCache();
 			$cache[22] = 'false';
 			$this->writeCache($cache);
 		}
-		
-		
+
+
 		/**
 		* Returns whether or not this element is a leaf.
-		* 
-		* @author 
-		* @version 
-		* @since 
+		*
+		* @author
+		* @version
+		* @since
 		*/
 		function isLeaf() {}
 
 
 
-		
+
 		/**
 		* Returns the cache as an array formatted as specified in updateCache().
 		* If the cache does not exist, returns false.
@@ -919,12 +919,12 @@
 					$type = "nodes";
 				}
 			}
-			
+
 			$type = strtolower($type);
-			
+
 			if ($this->getLevel() == 0) {
 				$cachename = "jzroot";
-				
+
 			}
 			// To avoid 20000+ entries in data/tracks...
 			else if ($this->isLeaf() && $type == "tracks") {
@@ -937,7 +937,7 @@
 			}
 			$be = &new jzBackend();
 			$datapath = $be->getDataDir();
-			
+
 			if (!is_file($datapath . "/$type/" . $cachename)) {
 				// Give an empty cache.
 				// Note that there are different 'empty caches'.
@@ -951,7 +951,7 @@
 					return array();
 				}
 			}
-			
+
 			if ($this->isLeaf() && $type == "tracks") {
 				$temp = $this->getPath();
 				$name = $temp[sizeof($temp)-1];
@@ -979,7 +979,7 @@
 
 		/**
 		* Writes the cache.
-		* 
+		*
 		* @access private
 		* @author Ben Dodson
 		* @version 6/4/04
@@ -987,7 +987,7 @@
 		*/
 		function writeCache($cache, $type = false) {
 			global $backend;
-			
+
 			if ($type == "track" || $type == "leaf" || $type == "leaves") {
 				$type = "tracks";
 			}
@@ -1003,10 +1003,10 @@
 				}
 			}
 			$type = strtolower($type);
-			
+
 			if ($this->getLevel() == 0) {
 				$cachename = "jzroot";
-				
+
 			}
 			else if ($this->isLeaf() && $type == "tracks") {
 				$temp = $this->getPath();
@@ -1019,7 +1019,7 @@
 			$be = &new jzBackend();
 			$datapath = $be->getDataDir();
 			$filename = $datapath . "/$type/" . $cachename;
-			
+
 			if ($this->isLeaf() && $type == "tracks") {
 				$temp = $this->getPath();
 				$name = $temp[sizeof($temp)-1];
@@ -1027,7 +1027,7 @@
 				if (!$handle = @fopen($filename,"w")) {
 					return false;
 				}
-				
+
 				if ($block === false) {
 					$block = array();
 					$block[] = $cache;
@@ -1057,7 +1057,7 @@
 				fwrite($handle,serialize($block));
 				fclose($handle);
 				return true;
-				
+
 			} else {
 				if (!$handle = @fopen($filename,"w")) {
 					touch($filename);
@@ -1073,7 +1073,7 @@
 
 		/**
 		* Removes the caches found for the node.
-		* 
+		*
 		* @access private
 		* @author Ben Dodson
 		* @version 6/7/04
@@ -1081,15 +1081,15 @@
 		*/
 		function deleteCache() {
 			global $backend;
-			
+
 			if ($this->isLeaf()) {
 				return false;
 				// This is not used right now, but it could be written.
 			}
-			
+
 			if ($this->getLevel() == 0) {
 				$cachename = "jzroot";
-				
+
 			}
 			else {
 				$cachename = implode("---",$this->getPath());
@@ -1098,7 +1098,7 @@
 			@unlink($filename);
 			$filename = $this->data_dir . "/tracks/${cachename}";
 			@unlink($filename);
-			
+
 			// Let's keep discussions for now, since they can't be gotten back...
 			// $filename = $this->data_dir "/discussions/${cachename}";
 			// unlink($filename);
@@ -1114,7 +1114,7 @@
 		  // do they have permissions or should we just do text?
 		  if (!checkPermission($jzUSER,"play",$this->getPath("String"))) {
 		    return null;
-		  } 
+		  }
 		  $clips=false;
 
 		  $arr = array();
@@ -1160,7 +1160,7 @@
 		    $arr['type'] = 'track';
 		  } else {
 		    $arr['type'] = 'node';
-		  } 
+		  }
 		  if (isset($_REQUEST['user'])) {
 		    $arr['user'] = $_REQUEST['user'];
 		  }

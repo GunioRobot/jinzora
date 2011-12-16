@@ -1,7 +1,7 @@
 {php}
 	$display = new jzDisplay();
 {/php}
-<div id="slickMainBlockBody">		
+<div id="slickMainBlockBody">
 	<table width="95%" cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td width="50%" valign="middle">
@@ -19,7 +19,7 @@
 				<nobr>
 				&nbsp; &nbsp;
 				{php}
-					$display->addListButton(); 
+					$display->addListButton();
 					echo "&nbsp;";
 					$display->playlistSelect(115,false,"all");
 				{/php}

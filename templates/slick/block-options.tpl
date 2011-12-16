@@ -16,21 +16,21 @@
 		{php}
 			$display = new jzDisplay();
 		{/php}
-		{if $allow_lang_choice == "true"}	
+		{if $allow_lang_choice == "true"}
 			{php}
 			$display->languageDropdown();
 			{/php}
-		{/if}		
-		{if $allow_interface_choice == "true"}	
+		{/if}
+		{if $allow_interface_choice == "true"}
 			{php}
 			$display->interfaceDropdown();
 			{/php}
-		{/if}		
-		{if $allow_style_choice == "true"}	
-			{php} 
+		{/if}
+		{if $allow_style_choice == "true"}
+			{php}
 			$display->styleDropdown();
 			{/php}
-		{/if}		
-	</div>	
+		{/if}
+	</div>
 </div>
 <div id="slickLeftBlockSpace"></div>

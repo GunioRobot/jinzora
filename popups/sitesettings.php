@@ -9,11 +9,11 @@
 	 *
 	 **/
 	  global $include_path,$jzUSER,$my_frontend;
-	  
+
 	  if ($jzUSER->getSetting('admin') !== true) {
 	    exit();
 	  }
-	  
+
 	  $display = new jzDisplay();
 	  $page_array = array();
 	  $page_array['action'] = 'popup';
@@ -30,34 +30,34 @@
 	  if (isset($_POST['set_fe'])) {
 	    $page_array['set_fe'] = $_POST['set_fe'];
 	  }
-	  
+
 	  $this->displayPageTop("",word('Site Settings'));
 	  $this->openBlock();
-	  
+
 	  // Index page:
 	  if (!isset($_GET['subpage'])) {
 	    echo "<table><tr><td>";
 	    $page_array['subpage'] =  "main";
 	    echo '<a href="'.urlize($page_array).'">'. word('Main Settings'). '</a>';
 	    echo "</td></tr><tr><td>";
-	    
+
 	    $page_array['subpage'] =  "services";
 	    echo '<tr><td><a href="'.urlize($page_array).'">'. word('Services'). '</a>';
 	    echo "</td></tr><tr><td>";
-	    
+
 	    $page_array['subpage'] =  "frontend";
 	    echo '<tr><td> <a href="'.urlize($page_array).'">'. word('Frontend Settings'). '</a>';
 	    echo "</td></tr></table>";
-	    
+
 	    //unset($page_array['subpage']);
-	    
+
 	    $this->closeBlock();
 	    return;
 	  }
 	  if ($_GET['subpage'] == "frontend" && !isset($page_array['set_fe'])) {
   ?>
  <form method="POST" action="<?php echo urlize($page_array); ?>">
-    <select class="jz_select" name="<?php echo jz_encode('set_fe');?>">Frontend: 
+    <select class="jz_select" name="<?php echo jz_encode('set_fe');?>">Frontend:
    <?php
     $arr = readDirInfo($include_path.'frontend/frontends',"dir");
  foreach ($arr as $a) {
@@ -72,16 +72,16 @@
    ?>
    </select>
        &nbsp;<input type="submit" class="jz_submit" value="<?php echo word('Go'); ?>">
-		<?php 
+		<?php
 		$this->closeBlock();
  return;
 	  }
 	  if (isset($_POST['update_postsettings']) && $_GET['subpage'] != "main") {
 	    echo word('Settings Updated.'). "<br><br>";
 	  }
-	  
+
 	  $display->openSettingsTable(urlize($page_array));
-	  
+
 	  if ($_GET['subpage'] == "main") {
 	    $settings_file = $include_path.'settings.php';
 	    $settings_array = settingsToArray($settings_file);
@@ -166,28 +166,28 @@
 	      $display->settingsTextbox("quick_list_truncate","quick_list_truncate",$settings_array);
 	      $display->settingsTextbox("album_name_truncate","album_name_truncate",$settings_array);
 	      $display->settingsDropdown("sort_by_year","sort_by_year",array("true","false"),$settings_array);
-	      $display->settingsTextbox("num_other_albums","num_other_albums",$settings_array);	      
+	      $display->settingsTextbox("num_other_albums","num_other_albums",$settings_array);
 	      $display->settingsDropdown("header_drops","header_drops",array("true","false"),$settings_array);
 	      $display->settingsDropdown("genre_drop","genre_drop",array("true","false","popup"),$settings_array);
 	      $display->settingsDropdown("artist_drop","artist_drop",array("true","false","popup"),$settings_array);
 	      $display->settingsDropdown("album_drop","album_drop",array("true","false","popup"),$settings_array);
 	      $display->settingsDropdown("song_drop","song_drop",array("true","false","popup"),$settings_array);
 	      $display->settingsDropdown("quick_drop","quick_drop",array("true","false"),$settings_array);
-	      $display->settingsTextbox("days_for_new","days_for_new",$settings_array);	      
-	      $display->settingsTextbox("hide_id3_comments","hide_id3_comments",$settings_array);	      
-	      $display->settingsTextbox("show_all_checkboxes","show_all_checkboxes",$settings_array);	      
-	      $display->settingsTextbox("status_blocks_refresh","status_blocks_refresh",$settings_array);	
-	      $display->settingsDropdown("compare_ignores_the","compare_ignores_the",array("true","false"),$settings_array);      
-	      $display->settingsDropdown("handle_compilations","handle_compilations",array("true","false"),$settings_array);      
-	      $display->settingsTextbox("embedded_header","embedded_header",$settings_array);	      
-	      $display->settingsTextbox("embedded_footer","embedded_footer",$settings_array);	      
+	      $display->settingsTextbox("days_for_new","days_for_new",$settings_array);
+	      $display->settingsTextbox("hide_id3_comments","hide_id3_comments",$settings_array);
+	      $display->settingsTextbox("show_all_checkboxes","show_all_checkboxes",$settings_array);
+	      $display->settingsTextbox("status_blocks_refresh","status_blocks_refresh",$settings_array);
+	      $display->settingsDropdown("compare_ignores_the","compare_ignores_the",array("true","false"),$settings_array);
+	      $display->settingsDropdown("handle_compilations","handle_compilations",array("true","false"),$settings_array);
+	      $display->settingsTextbox("embedded_header","embedded_header",$settings_array);
+	      $display->settingsTextbox("embedded_footer","embedded_footer",$settings_array);
 	      break;
 	    case "image":
 	      $display->settingsDropdown("resize_images","resize_images",array("true","false"),$settings_array);
 	      $display->settingsDropdown("keep_porportions","keep_porportions",array("true","false"),$settings_array);
 	      $display->settingsDropdown("auto_search_art","auto_search_art",array("true","false"),$settings_array);
 	      $display->settingsDropdown("create_blank_art","create_blank_art",array("true","false"),$settings_array);
-	      //$display->settingsTextbox("default_art","default_art",$settings_array);	
+	      //$display->settingsTextbox("default_art","default_art",$settings_array);
 	      break;
 	    case "groupware":
 	      $display->settingsDropdown("enable_discussions","enable_discussions",array("true","false"),$settings_array);
@@ -299,12 +299,12 @@
 	    //$display->settingsDropdownDirectory(word("ID3 Tagging"), "service_tagdata", $include_path.'services/services/tagdata','file',$settings_array);
 	  } else if ($_GET['subpage'] == "frontend") {
 	    $settings_file = $include_path."frontend/frontends/".$page_array['set_fe']."/settings.php";
-	    $settings_array = settingsToArray($settings_file);      
+	    $settings_array = settingsToArray($settings_file);
 	    foreach ($settings_array as $key => $val) {
-	      $display->settingsTextbox($key,$key,$settings_array);      
+	      $display->settingsTextbox($key,$key,$settings_array);
 	    }
 	  }
-	  
+
 	  $display->closeSettingsTable(is_writeable($settings_file));
 	  //echo "&nbsp;";
 	  //$this->closeButton();

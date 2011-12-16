@@ -1,7 +1,7 @@
 <table width="100%" cellspacing="0" cellpadding="2"><tr><td colspan="4" class="jz_block_td">
 <table width="100%" cellpadding="5" cellspacing="0" border="0">
 	<tr>
-		<td width="20%" align="right">			
+		<td width="20%" align="right">
 		</td>
 		<td width="60%" align="center">
 			<center>

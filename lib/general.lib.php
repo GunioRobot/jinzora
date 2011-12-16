@@ -1,20 +1,20 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *    
-	* JINZORA | Web-based Media Streamer   
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	* JINZORA | Web-based Media Streamer
 	*
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* Jinzora Author:
 	* Ross Carlson: ross@jasbone.com
 	* http://www.jinzora.org
-	* Documentation: http://www.jinzora.org/docs	
+	* Documentation: http://www.jinzora.org/docs
 	* Support: http://www.jinzora.org/forum
 	* Downloads: http://www.jinzora.org/downloads
 	* License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* Contributors:
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
 	*
@@ -22,10 +22,10 @@
 	* Created: 9.24.03 by Ross Carlson
 	*
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	
-	
-	
-	/** 
+
+
+
+	/**
 	* Setup the Smarty template system
 	*
 	* @author Ross Carlson
@@ -34,10 +34,10 @@
 	**/
 	function smartySetup(){
       global $web_root, $root_dir, $include_path;
-      
+
       $d = dirname(__FILE__);
       $root = substr($d, 0, strlen($d)-4) . "/";
-      
+
       define('SMARTY_DIR', $root. 'lib/smarty/');
       define('SMARTY_ROOT', $root);
       require_once(SMARTY_DIR . 'Smarty.class.php');
@@ -48,13 +48,13 @@
 
       return $smarty;
    }
-	
-	
-/* 
+
+
+/*
  * Gets a global variable without
  * having to declare global.
  * Useful for settings.
- * 
+ *
  * @author Ben Dodson
  * @since 1/30/07
  */
@@ -66,9 +66,9 @@
     	return null;
   	}
   }
-	
-	
-	/** 
+
+
+	/**
 	* Verifies that a directory exists and if not creates it
 	*
 	* @author Ross Carlson
@@ -86,8 +86,8 @@
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	* Cleans a potential filename of back characters
 	*
 	* @author Ross Carlson
@@ -97,14 +97,14 @@
 	*
 	**/
 	function cleanFileName($name){
-		$badArray = explode(";",';?;";/;\;|;*;<;>;:');	
+		$badArray = explode(";",';?;";/;\;|;*;<;>;:');
 		for ($e=0;$e<count($badArray);$e++){
 			$name = str_replace($badArray[$e],"",$name);
 		}
 		return $name;
 	}
-	
-	/** 
+
+	/**
 	* Grabs the data that was parsed from a Podcast
 	*
 	* @author Ross Carlson
@@ -116,37 +116,37 @@
 	**/
 	function getPodcastData($item, $folder){
 		global $include_path, $podcast_folder;
-		
+
 		if ($item['file'] == ""){return false;}
-		
+
 		$be = new jzBackend();
 		$display = new jzDisplay();
-		
+
 		// Let's clean the new folder name
 		$folder = trim(cleanFileName($folder));
-		
+
 		// Let's grab the file and save it to disk
 		$ext = substr($item['file'],strlen($item['file'])-3,3);
 		$track = trim(cleanFileName($item['title']. ".". $ext));
-		
+
 		if (substr($podcast_folder,0,1) <> "/"){
 			$dir = str_replace("\\","/",getcwd()). "/". $podcast_folder. "/". $folder;
 		} else {
 			$dir = $podcast_folder. "/". $folder;
 		}
 		$track = $dir. "/". $track;
-		
+
 		// Now let's create the directory we need
 		makedir($dir);
-		
+
 		// Now let's see if the file already exists
 		if (!is_file($track)){
 			?>
 			<script language="javascript">
-				t.innerHTML = '<?php echo word("Downloading"). ": ". $display->returnShortName($item['title'],45); ?>';									
+				t.innerHTML = '<?php echo word("Downloading"). ": ". $display->returnShortName($item['title'],45); ?>';
 				-->
 			</SCRIPT>
-			<?php 							
+			<?php
 			flushdisplay();
 			// Now let's grab the file and write it out
 			$fName = str_replace("&amp;","&",$item['file']);
@@ -156,25 +156,25 @@
 			fclose ($handle);
 			?>
 			<script language="javascript">
-				t.innerHTML = '<?php echo word("Download Complete!"); ?>';									
+				t.innerHTML = '<?php echo word("Download Complete!"); ?>';
 				-->
 			</SCRIPT>
-			<?php 							
+			<?php
 			flushdisplay();
 		} else {
 			?>
 			<script language="javascript">
-				t.innerHTML = '<?php echo word("Exists - moving to next track..."); ?>';									
+				t.innerHTML = '<?php echo word("Exists - moving to next track..."); ?>';
 				-->
 			</SCRIPT>
-			<?php 							
+			<?php
 			flushdisplay();
 		}
-		
+
 		return $track;
 	}
-	
-	/** 
+
+	/**
 	* Parses a given Podcast URL to retrieve all the enclosures
 	*
 	* @author Ross Carlson
@@ -184,16 +184,16 @@
 	*
 	**/
 	function parsePodcastXML($url){
-		
+
 		// Let's get the data from the URL
 		$data = file_get_contents($url);
 		$c=0;
-		
+
 		// Now let's parse out the basics about the feed
 		$title = substr($data,strpos($data,"<title>")+strlen("<title>"));
-		$title = substr($title,0,strpos($title,"</title>"));		
+		$title = substr($title,0,strpos($title,"</title>"));
 		$desc = substr($data,strpos($data,"<description>")+strlen("<description>"));
-		$desc = substr($desc,0,strpos($desc,"</description>"));		
+		$desc = substr($desc,0,strpos($desc,"</description>"));
 		$pubDate = substr($data,strpos($data,"<pubDate>")+strlen("<pubDate>"));
 		$pubDate = substr($pubDate,0,strpos($pubDate,"</pubDate>"));
 		$image = "";
@@ -202,34 +202,34 @@
 			$image = substr($image,strpos($image,'href="')+6);
 			$image = substr($image,0,strpos($image,'"'));
 		}
-		
+
 		// Now let's set the array
 		$retArray['title'] = $title;
 		$retArray['desc'] = $desc;
 		$retArray['pubDate'] = $pubDate;
-		$retArray['image'] = $image;		
+		$retArray['image'] = $image;
 		$c++;
-		
+
 		// Now let's get the individual items
 		$items = substr($data,strpos($data,"<item>"));
-		$iArr = explode("</item>",$items);		
+		$iArr = explode("</item>",$items);
 		// Now let's loop
 		foreach ($iArr as $item){
 			// Now let's parse that out
 			$title = substr($item,strpos($item,"<title>")+strlen("<title>"));
-			$title = substr($title,0,strpos($title,"</title>"));	
+			$title = substr($title,0,strpos($title,"</title>"));
 			$desc = substr($item,strpos($item,"<description>")+strlen("<description>"));
-			$desc = substr($desc,0,strpos($desc,"</description>"));	
+			$desc = substr($desc,0,strpos($desc,"</description>"));
 			$desc = str_replace("]]>","",str_replace("<![CDATA[","",$desc));
 			$link = substr($item,strpos($item,"<link>")+strlen("<link>"));
-			$link = substr($link,0,strpos($link,"</link>"));	
+			$link = substr($link,0,strpos($link,"</link>"));
 			$pubDate = substr($item,strpos($item,"<pubDate>")+strlen("<pubDate>"));
-			$pubDate = substr($pubDate,0,strpos($pubDate,"</pubDate>"));	
+			$pubDate = substr($pubDate,0,strpos($pubDate,"</pubDate>"));
 			$file = substr($item,strpos($item,'url="')+strlen('url="'));
 			$file = substr($file,0,strpos($file,'"'));
 			$length = substr($item,strpos($item,'length="')+strlen('length="'));
 			$length = substr($length,0,strpos($length,'"'));
-			
+
 			// Now let's set the return array
 			$retArray[$c]['title'] = $title;
 			$retArray[$c]['link'] = $link;
@@ -239,15 +239,15 @@
 			$retArray[$c]['length'] = $length;
 			$c++;
 		}
-		
-		// Now let's return 
+
+		// Now let's return
 		return $retArray;
 	}
-	
-	
+
+
 	/*
 	 * Fallback function for stripos
-	 * 
+	 *
 	 * @author Ben Dodson, from PHP.net
 	 * @since 8/31/06
 	 */
@@ -256,10 +256,10 @@
      		return strpos(strtolower($str),strtolower($needle),$offset);
   		}
 	}
-	
-	
-	
-	/** 
+
+
+
+	/**
 	* Allows you to write 1 setting to a settings file
 	*
 	* @author Ross Carlson
@@ -271,13 +271,13 @@
 	*
 	**/
 	function writeSetting($setting, $val, $file){
-	
+
 		// Now let's open the file and read it in
 		$fArr = file($file);
-		
+
 		// Let's start our new file
 		$newFile = "";
-		
+
 		// Now let's loop through and find the setting
 		foreach($fArr as $line){
 			// Now does this line have the setting we want?
@@ -289,7 +289,7 @@
 				$newFile .= $line;
 			}
 		}
-		
+
 		// Now we need to write the file back out
 		if (is_writable($file)){
 			$handle = fopen($file, "w");
@@ -298,10 +298,10 @@
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	}
 
-	/** 
+	/**
 	* Checks the site's general security.
 	*
 	* @author Ben Dodson
@@ -314,7 +314,7 @@
 		 return;
 	 }
 
-	/** 
+	/**
 	* Makes sure a file is safe to include.
 	*
 	* @author Ben Dodson
@@ -323,15 +323,15 @@
 	**/
 	function includeable_file($fname, $dir = false) {
 		global $include_path;
-		
+
 		if (stristr($fname,'/') !== false) {
 			return false;
 		}
-		
+
 		if (stristr($fname,"\\") !== false) {
 			return false;
 		}
-		
+
 		if ($dir !== false) {
 			$dir = $include_path . $dir;
 			// make sure it's in $dir.
@@ -346,39 +346,39 @@
 			}
 			return false;
 		}
-		
+
 		return true;
 	}
 
 
-	
+
 	/**
-	* 
+	*
 	* Sets a global variable.
 	*
 	* @author Ben Dodson
 	* @since 6/7/05
-	* 
+	*
 	**/
 	function setGlobal($var,$val) {
 			$GLOBALS[$var] = $val;
-		} 
+		}
 
   /**
-	* 
+	*
 	* Gets a global variable.
 	*
 	* @author Ben Dodson
 	* @since 6/7/05
-	* 
+	*
 	**/
 	function getGlobal($var) {
 		return isset($GLOBALS[$var]) ? $GLOBALS[$var] : false;
 	}
 
-	
+
 	/**
-	* 
+	*
 	* Takes binary data and writes it to a file
 	*
 	* @author Ross Carlson
@@ -386,15 +386,15 @@
 	* @param $file the name of the file (the full path)
 	* @param $data the binary data to write to the file
 	* @param return returns true or false (bolean)
-	* 
+	*
 	**/
 	function writeImage($file, $data){
 		global $bad_chars;
-		
+
 		foreach ($bad_chars as $item){
 			str_replace($item,"",$file);
 		}
-		
+
 		if (is_file($file)){ unlink($file); }
 		$handle = fopen($file, "w");
 		if (fwrite($handle,$data)){
@@ -404,7 +404,7 @@
 			fclose ($handle);
 			return false;
 		}
-			
+
 	}
 
 	/**
@@ -419,21 +419,21 @@
         function xmlentities($string) {
 	  return str_replace ( array ( '&', '"', "'", '<', '>', '�' ), array ( '&amp;' , '&quot;', '&apos;' , '&lt;' , '&gt;', '&apos;' ), $string );
         }
-	
+
 	/**
 	 * @author Ben Dodson
-	 * 
+	 *
 	 **/
 	function sendFileBundle($myfiles, $name) {
 	  global $multiple_download_mode, $download_speed;
-	
+
 		$files = array();
 		foreach ($myfiles as $file) {
 			if ($file != '' && is_file($file)) {
 				$files[] = $file;
 			}
 		}
-	
+
 	  if ($files == array()) {
 		exit();
 	  }
@@ -447,9 +447,9 @@
 			header ('Content-Type: application/zip');
 			header ('Content-Disposition: attachment; filename="' . $name . '.zip"');
 	  }
-	  
 
-	  
+
+
 	  // content length header if supported
 	  if (($size = $reader->FinalSize()) != 0) {
 	  	$range = getContentRange($size);
@@ -460,12 +460,12 @@
 			$range_from = 0;
 			$range_to = $size-1;
 		}
-		
+
 		// BJD 6/30/06:
 		// HACK: range_to is not supported- only resuming and requesting entire
 		// remains of file
 		$range_to = $size-1;
-		
+
 		if ($range === false) {
 		  // Content length has already been sent
 		  header("Content-length: ".(string)$size);
@@ -479,11 +479,11 @@
 	  	$range = false;
 	  	$range_from = $range_to = 0;
 	  }
-	  
+
 	  // caching headers
 	  header("Cache-control: private");
 	  header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H") + 8, date("i"), date("s"), date("m"), date("d"), date("Y"))) . " GMT");
-	  
+
 	  //header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	  $lastmod = 0;
 	  foreach ($files as $f) {
@@ -491,16 +491,16 @@
 	  		$lastmod = $t;
 	  	}
 	  }
-	  
+
 	  header("Last-Modified: " . gmdate("D, d M Y H:i:s", $lastmod) . " GMT");
 	  header("Pragma: no-cache");
-	  
+
 	  // Let's up the max_execution_time
 	  //ini_set('max_execution_time','6000');
 	  @set_time_limit(0);
 	  // open reader
 	  $reader->Open();
-	 
+
 	  // Are we resuming?
 	  if ($range_from > 0) {
 	  	$reader->Read($range_from);
@@ -526,10 +526,10 @@
 		  }
 		}
 	  }
-	  
+
 	  // close reader
-	  $reader->Close(); 
-	
+	  $reader->Close();
+
 	  @set_time_limit(30);
 	  //write the result in log
 	  if (connection_status() == 0) {
@@ -538,32 +538,32 @@
 	  else {
 		writeLogData('download','download of '.$name.' failed');
 	  }
-	
+
 	}
-	
-		
+
+
 	/**
 	 * Displays the image in a browser.
-	 * 
-	 *  
+	 *
+	 *
 	 * @author Ben Dodson
 	 * @version 11/10/04
 	 * @since 11/10/04
-	 */	
+	 */
 	function showImage ($path) {
 		global $include_path;
-		
+
 		// Now let's see if this is an ID3 image or not
 		if (stristr($path,"ID3:")){
 			// Now let's get the data we need
 			include_once($include_path. 'services/class.php');
 			$jzSERVICES = new jzServices();
 			$jzSERVICES->loadStandardServices();
-			
+
 			// Now let's fix the path
 			$path = substr($path,4);
 			$meta = $jzSERVICES->getTagData($path);
-			
+
 			// Now let's set the header
 			header("Content-Type: ". $meta['pic_mime']);
 			sendID3Image($path, $meta['pic_name'],$meta['pic_data']);
@@ -572,28 +572,28 @@
 			if (sizeof($arr > 0))
 				$name = $arr[sizeof($arr)-1];
 			else
-				$name = $path;	
-			
+				$name = $path;
+
 			if (substr($path, -3) == "jpg" || substr($path, -4) == "jpeg" || substr($path, -3) == "jpe")
 				header("Content-Type: image/jpeg");
-			
-			else if (substr($path, -3) == "gif")	
+
+			else if (substr($path, -3) == "gif")
 				header("Content-Type: image/gif");
-			
+
 			else if (substr($path, -3) == "png")
 				header("Content-Type: image/png");
-			
+
 			else if (substr($path, -3) == "bmp")
 				header("Content-Type: image/bmp");
 		}
-		
+
 		// TODO: GD stuff; synchronize args with jzDisplay::image.
 		// images are small, so don't worry about handling stream stuff.
 		streamFile($path,$name);
 	}
 
 
-   /** 
+   /**
 	 * Sends the content-type header
 	 *
 	 * @author Ben Dodson
@@ -629,7 +629,7 @@
 	    break;
 	  case "mpg":
 	  case "mpeg":
-	    header("Content-Type: video/x-mpeg");		
+	    header("Content-Type: video/x-mpeg");
 	    break;
 	  case "asf":
 	  case "asx":
@@ -657,11 +657,11 @@
 
 	/**
 	 * Sends a clip of a media file.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 8/17/05
 	 * @since 8/17/05
-	 */	
+	 */
    function sendClip($el) {
 	   global $clip_length, $clip_start;
 
@@ -703,37 +703,37 @@
 	 }
 
 
-	
+
 	/**
 	 * Sends the actual media file
 	 * and possibly resamples it.
-	 * 
-	 * 
+	 *
+	 *
 	 * @author Ben Dodson
 	 * @version 11/11/04
 	 * @since 11/11/04
-	 */	
+	 */
 	function sendMedia($path, $name, $resample=false, $download = false) {
 		// Let's get the extension from the file
 		$extArr = explode(".",$path);
 		$ext = $extArr[count($extArr)-1];
-		
+
 		// Now let's fix up the name
 		if (substr($name,0-strlen($ext)-1) != "." . $ext) {
 		  $name .= "." . $ext;
 		}
-		
+
 		// First are we resampling?
 		// If so no header here
 		if ($resample == ""){
 		  sendContentType($ext);
-		}		
+		}
 		// TODO: resample.
 		// probably make a different streamFile (streamResampled)
 		streamFile($path,$name,false,$resample,$download);
 	}
-	
-/** 
+
+/**
  * Sends the ID3 image
  *
  * @author Ben Dodson
@@ -749,30 +749,30 @@ function sendID3Image($path,$name,$id3) {
   header("Pragma: no-cache");
   print($id3);
   return true;
-  
+
 }
 
 
 
 	/**
 	 * Actually sends the data in the specified file.
-	 * 
-	 * 
+	 *
+	 *
 	 * @author Ben Dodson, PHP.net
 	 * @version 11/11/04
 	 * @since 11/11/04
-	 */	
+	 */
 	function streamFile($path,$name,$limit=false,$resample="",$download = false) {
 		global $always_resample, $allow_resample, $always_resample_rate, $jzUSER;
-				
+
 		// Let's ignore if they abort, that way we'll know when the track stops...
-		ignore_user_abort(TRUE);	
-		
+		ignore_user_abort(TRUE);
+
 		$jzSERVICES = new jzServices();
 		$jzSERVICES->loadStandardServices();
 
 		$status = false;
-		
+
 		if ($limit === false)
 			$speed_limit = 1*1024; // from system.php?
 		else
@@ -781,22 +781,22 @@ function sendID3Image($path,$name,$id3) {
 		// but not for streaming / image viewing.
 		// Also, we may want to write a different function for resampling,
 		// but I don't know yet.
-		
+
 		// IF NO SPEED LIMIT:
 		// the 'speed_limit' from above is the amount
 		// of buffer used while sending the file.
 		// but with no speed limit, there is no 'sleep' issued.
 		// this makes seeking in a file much faster.
-		
+
 		// Let's get the extension of the real file
 		$extArr = explode(".",$path);
 		$ext = $extArr[count($extArr)-1];
-		
-		if (!is_file($path) || connection_status() != 0) return (false); 
-		
+
+		if (!is_file($path) || connection_status() != 0) return (false);
+
 		$meta = $jzSERVICES->getTagData($path);
 		$do_resample = false;
-		
+
 
 		if (!isNothing($resample)) {
 		  $do_resample = true;
@@ -805,7 +805,7 @@ function sendID3Image($path,$name,$id3) {
 		if (($allow_resample == "true") && stristr($always_resample,$ext)) {
 		  $do_resample = true;
 		}
-		
+
 
 
 		if ($meta['type'] == "mp3") {
@@ -822,25 +822,25 @@ function sendID3Image($path,$name,$id3) {
 			if ($resample == ""){
 				$resample = $always_resample_rate;
 			}
-			
+
 			// Now let's load up the resampling service
 			$jzSERVICES = new jzServices();
 			$jzSERVICES->loadService("resample","resample");
 			$jzSERVICES->resampleFile($path,$name,$resample);
-			
+
 			// Now let's unset what they are playing
 			$be = new jzBackend();
 			$be->unsetPlaying($_GET['jz_user'],$_GET['sid']);
-			
+
 			return;
 		}
 		// Now we need to know if this is an ID3 image or not
 		// First let's get their limit
 		$limit = "7";
 
-		
+
 		$size = filesize($path);
-		
+
 		$range = getContentRange($size);
 		if ($range !== false) {
 			$range_from = $range[0];
@@ -858,16 +858,16 @@ function sendID3Image($path,$name,$id3) {
 				header("Content-Length: " . ($size - $range_from));
 				header("Content-Range: bytes $range_from" . "-" . ($range_to) . "/$size");
 		}
-		
+
 		header("Content-Disposition: inline; filename=\"".$name."\"");
 		header("Expires: ".gmdate("D, d M Y H:i:s", mktime(date("H")+2, date("i"), date("s"), date("m"), date("d"), date("Y")))." GMT");
 		header("Last-Modified: ".gmdate("D, d M Y H:i:s", filemtime($path))." GMT");
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Pragma: no-cache");
-		
+
 		if ($file = fopen($path, 'rb')) {
 		  @set_time_limit(0);
-		  fseek($file, $range_from);				
+		  fseek($file, $range_from);
 		  while(!feof($file) and (connection_status()==0) and ($cur_pos = ftell($file)) < $range_to+1) {
 		  	print(fread($file, min(1024*$speed_limit, $range_to + 1 - $cur_pos)));
 		    flush();
@@ -875,26 +875,26 @@ function sendID3Image($path,$name,$id3) {
 		    	sleep(1);
 		    }
 		  }
-		 
+
 		  $status = (connection_status()==0);
 		  fclose($file);
 		  @set_time_limit(30);
 		}
-		
+
 		// Now let's unset what they are playing
 		$be = new jzBackend();
 		$be->unsetPlaying($_GET['jz_user'],$_GET['sid']);
-		
+
 		return($status);
 	}
 
-	
+
 	/**
 	 * Converts an associative array to a link.
 	 * Function can take 2 arrays and treats them both the same.
 	 * Useful if you have a set of variables that you use a lot
 	 * and another set you use only once or twice.
-	 * 
+	 *
 	 * This function also remembers things like GET-based frontend/theme settings.
 	 *
 	 * @author Ben Dodson
@@ -903,34 +903,34 @@ function sendID3Image($path,$name,$id3) {
 	 */
 	function urlize($arr1 = array(), $arr2 = array()) {
 	  global $this_page, $root_dir, $link_root, $include_path, $ssl_stream, $secure_urls,$jzUSER;
-	  
+
 	  $this_page = setThisPage();
 	  $arr = $arr1 + $arr2;
-	  
-	  if (!isset($arr['action'])) { 
+
+	  if (!isset($arr['action'])) {
 	    $action="";
 	  } else {
 	    $action = $arr['action'];
 	  }
-	   
+
 	  if (isset($arr['jz_path']) && $arr['jz_path'] == "") {
 	    unset($arr['jz_path']);
 	  }
- 
+
 	  if ($action != "play" && $action != "playlist") {
 		  if (isset($_GET['frontend']) && !isset($arr['frontend'])) {
 		    $arr['frontend'] = $_GET['frontend'];
 		  } else if (isset($_POST['frontend']) && !isset($arr['frontend'])) {
 		    $arr['frontend'] = $_POST['frontend'];
 		  }
-		  
+
 		  if (isset($_GET['theme']) && $_GET['theme'] != '' && !isset($arr['theme'])) {
 		    $arr['theme'] = $_GET['theme'];
 		  } else if (isset($_POST['theme']) && $_POST['theme'] != '' && !isset($arr['theme'])) {
 		    $arr['theme'] = $_POST['theme'];
 		  }
 	  }
-	  
+
 	  switch ($action) {
 	  case "play":
 	    $link = "";
@@ -990,7 +990,7 @@ function sendID3Image($path,$name,$id3) {
 	  if ($action == "playlist") {
 	  	$extension = $jzUSER->getSetting('playlist_type');
 	  }
-	  
+
 	  //$jz_secure = "true"; // for now.
 	  $vars="";
 	  if ($secure_urls == "true" && !url_full_exception($arr)) {
@@ -1006,9 +1006,9 @@ function sendID3Image($path,$name,$id3) {
 		  	$vars .= "&" . urlencode($key) . "=" . urlencode($val);
 			}
 	  }
-	
+
 	  $link = $link . substr($vars,1);
-	
+
 	  if (!isNothing($extension)) {
 			$link .= "&ext." . $extension;
 	  } else {
@@ -1017,10 +1017,10 @@ function sendID3Image($path,$name,$id3) {
 
 	  return $link;
 	}
-	
+
 	/**
 	 * Gets the URL root from a URLized string.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @since 7/16/06
 	 * @version 7/16/06
@@ -1028,29 +1028,29 @@ function sendID3Image($path,$name,$id3) {
 	 function getURLRoot($url) {
 	 	return substr($url, 0, strpos($url,'?'));
 	 }
-	
+
 	/**
 	 * Gets the URL root from a URLized string.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @since 7/16/06
 	 * @version 7/16/06
 	 */
 	function getURLVars($url) {
 		$url = substr($url, strpos($url,'?')+1);
-	
+
 		$url = explode("&",$url);
 	    $url2 = array();
 	    foreach ($url as $var){
 	    	$url2[substr($var,0,strpos($var,'='))] =
 	        substr($var,strpos($var,'=')+1);
 	    }
-	
-	
+
+
 		return $url2;
 	}
 
-	
+
 	/**
 	 * Inverse of the above.
 	 *
@@ -1060,9 +1060,9 @@ function sendID3Image($path,$name,$id3) {
 	 */
 	function unurlize($arr) {
 		global $secure_urls;
-		
+
 		$GET = array();
-	
+
 		if (false !== stristr($_SERVER['PHP_SELF'],"mediabroadcast.php")) {
 		  if (isset($arr['image'])) {
 				$DEC_FUNC = "jz_decode";
@@ -1124,14 +1124,14 @@ function sendID3Image($path,$name,$id3) {
 		  }
 		}
 	  }
-	
+
 	  return $POST;
 	}
-	
-	
+
+
 	/**
 	 * Checks to see if a key indicates our entire string should not be scrambled.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 11/11/04
 	 * @since 11/11/04
@@ -1152,7 +1152,7 @@ function sendID3Image($path,$name,$id3) {
 	      break;
 	    case "update_settings":
 	      /* This will break if you try to update_settings
-               * outside of a popup. 
+               * outside of a popup.
 	       */
 	      if (isset($_REQUEST['action'])) {
 		if ($_REQUEST['action'] != "popup") {
@@ -1165,14 +1165,14 @@ function sendID3Image($path,$name,$id3) {
 	      break;
 	    }
 	  }
-	  
+
 	  return false;
 	}
-	
+
 	/**
 	 * Checks to see if our key/val string should be scrambled.
 	 * Things like text inputs are not scrambled.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 11/11/04
 	 * @since 11/11/04
@@ -1203,23 +1203,23 @@ function sendID3Image($path,$name,$id3) {
 	  }
 	  return false;
 	}
-	
+
 	/** Same as above, but for POST variables.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 12/16/04
 	 * @since 12/16/04
 	 */
 	function post_key_exception($key) {
-	
+
 		// Let's account for some partial matches
-		if (stristr($key,"plTrackPos-") 
+		if (stristr($key,"plTrackPos-")
 			or stristr($key,"plTrackDel-")
 			or stristr($key,"edit_")
 			){
 			return true;
 		}
-	
+
 		switch ($key) {
 				case "update_postsettings":
 			case "jz_list":
@@ -1255,18 +1255,18 @@ function sendID3Image($path,$name,$id3) {
 				return false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Scrambles a string
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 11/6/04
 	 * @since 11/6/04
 	 */
 	function jz_encode($string, $key = false) {
 		global $secure_urls,$security_key;
-		
+
 		if ($secure_urls == "false"){
 			return $string;
 		}
@@ -1284,9 +1284,9 @@ function sendID3Image($path,$name,$id3) {
 			$char = chr(ord($char)+ord($keychar));
 			$result .= $char;
 	  }
-	  return str_replace("+","JZPLUS",base64_encode($result)); 
+	  return str_replace("+","JZPLUS",base64_encode($result));
 	}
-	
+
 	/**
 	 * Unscrambles a string.
 	 *
@@ -1296,11 +1296,11 @@ function sendID3Image($path,$name,$id3) {
 	 */
 	function jz_decode($string, $key = false) {
 		global $secure_urls,$security_key;
-		
+
 		if ($secure_urls == "false"){
 			return $string;
 		}
-		
+
 	  // Complex scheme.
 	  $string = base64_decode(str_replace("JZPLUS","+",$string));
 	  if ($key === false) {
@@ -1316,16 +1316,16 @@ function sendID3Image($path,$name,$id3) {
 			$char = chr(ord($char)-ord($keychar));
 			$result .= $char;
 	  }
-		
+
 	  return $result;
 	}
-	
-	
-	
-	
+
+
+
+
 	/*
 	 * Encodes the URL for a track (since players break easily)
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @since 2/2/05
 	 * @version 2/2/05
@@ -1337,13 +1337,13 @@ function sendID3Image($path,$name,$id3) {
 	  for ($i = 0; $i < strlen($string); $i++) {
 		$ret .= chr(ord($string[$i])+4);
 	  }
-	
+
 	  return strrev($ret);
 	}
-	
+
 	/*
 	 * Decodes the URL for a track (since players break easily)
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @since 2/2/05
 	 * @version 2/2/05
@@ -1382,10 +1382,10 @@ function sendID3Image($path,$name,$id3) {
 	  }
 	  return false;
 	}
-	
+
 	/**
 	 * Scrambles a string for the cookie
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 1/16/05
 	 * @since 11/23/04
@@ -1393,7 +1393,7 @@ function sendID3Image($path,$name,$id3) {
 	function jz_cookie_encode($string) {
 	  return jz_encode($string, "this is a secret key that will be moved and improved.");
 	}
-	
+
 	/**
 	 * Unscrambles a stringf or the cookie
 	 *
@@ -1404,9 +1404,9 @@ function sendID3Image($path,$name,$id3) {
 	function jz_cookie_decode($string) {
 	  return jz_decode($string, "this is a secret key that will be moved and improved.");
 	}
-	 
+
 	function setThisPage() {
-	  global $link_root, $cms_type, $cms_mode, $fe;	
+	  global $link_root, $cms_type, $cms_mode, $fe;
 
 	  if (defined('JZ_URL_OVERRIDE')) {
 	    $link = JZ_URL_OVERRIDE . '?';
@@ -1419,10 +1419,10 @@ function sendID3Image($path,$name,$id3) {
 	    $link = str_replace("popup.php","index.php",$link);
 	  }
 	  else {
-	  //  
+	  //
 		$link = $link_root;
 	  }
-	  
+
 	  // check for things that need to be added:
 	  $this_page = $link;
 
@@ -1463,11 +1463,11 @@ function sendID3Image($path,$name,$id3) {
 	    $this_page .= urlencode(jz_encode("language")) . "=" . urlencode(jz_encode($_GET['language'])) . "&";
 	  }
 
-	  
+
 	  return $this_page;
 	}
 
-	
+
 	/**
 	 * Replace ob_flush()
 	 *
@@ -1479,7 +1479,7 @@ function sendID3Image($path,$name,$id3) {
 	 * @version     $Revision$
 	 * @since       PHP 4.2.0
 	 * @require     PHP 4.0.1 (trigger_error)
-	
+
 	 */
 	if (!function_exists('ob_flush'))
 	{
@@ -1488,13 +1488,13 @@ function sendID3Image($path,$name,$id3) {
 			if (@ob_end_flush()) {
 				return ob_start();
 			}
-	
+
 			trigger_error("ob_flush() Failed to flush buffer. No buffer to flush.", E_USER_NOTICE);
-	
+
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Replace file_get_contents()
 	 *
@@ -1515,7 +1515,7 @@ function sendID3Image($path,$name,$id3) {
 				trigger_error('file_get_contents() failed to open stream: No such file or directory', E_USER_WARNING);
 				return false;
 			}
-	
+
 			clearstatcache();
 			if ($fsize = filesize($filename)) {
 				$data = fread($fh, $fsize);
@@ -1524,19 +1524,19 @@ function sendID3Image($path,$name,$id3) {
 					$data .= fread($fh, 8192);
 				}
 			}
-	
+
 			fclose($fh);
 			return $data;
 		}
 	}
-	
+
 	// microtime for PHP 4
 	function microtime_float()
 	{
 	  list($usec, $sec) = explode(" ", microtime());
 	  return ((float)$usec + (float)$sec);
-	} 
-	
+	}
+
 /**
  * Returns a list of available languages
  *
@@ -1550,9 +1550,9 @@ function getLanguageList() {
   $retArray = readDirInfo($lang_dir,"file");
   sort($retArray);
   $languages = array();
-  for ($c=0; $c < count($retArray); $c++){	
+  for ($c=0; $c < count($retArray); $c++){
     $entry = $retArray[$c];
-    // Let's make sure this isn't the local directory we're looking at 
+    // Let's make sure this isn't the local directory we're looking at
     if ($entry == "." || $entry == ".." || $entry == "master.php") { continue;}
     if (!stristr($entry,"-setup") and !stristr($entry,".html")){
       if (strrpos($entry,'-') !== false) {
@@ -1567,36 +1567,36 @@ function getLanguageList() {
 
 	/**
 	* Translates a word into a native language
-	* 
-	* 
+	*
+	*
 	* @author Ross Carlson
 	* @author Ben Dodson
 	* @version 3.22.05
 	* @since 3.22.05
 	* @param string $word The word to translate
-	* @param $term1, $term2, ....: replace the key %s in $word. 
+	* @param $term1, $term2, ....: replace the key %s in $word.
 	*/
 	function word($word){
 		global $words, $jz_lang_file, $include_path;
-		
+
 		// Let's hash that word
 		$hash = md5($word);
-		
+
 		// Now let's make sure there is a translation for this
 		if (isset($words[$hash])){
-			$ret = $words[$hash];	
+			$ret = $words[$hash];
 		} else {
 			// Ok, it didn't so let's log it and return what they put it
-			$fileName = $include_path. "temp/jinzora-words-". $jz_lang_file. ".log";		
+			$fileName = $include_path. "temp/jinzora-words-". $jz_lang_file. ".log";
 			if (!is_file($fileName)){touch($fileName);}
 			$data = file_get_contents($fileName);
 			if (!stristr($data,$word)){
 				$handle = @fopen($fileName, "a");
 				$data = "$". "words['". $hash. "'] = ". '"'. $word. '";'. "\n";
-				@fwrite($handle,$data);				
+				@fwrite($handle,$data);
 				@fclose($handle);
 			}
-			
+
 			// Now let's set up for returning:
 			$ret = $word;
 		}
@@ -1607,25 +1607,25 @@ function getLanguageList() {
 		}
 		return $ret;
 	}
-	
-	
-	
+
+
+
 	// This function will see if there is a thumbnail for the corresponding item
 	// Added 3.23.04 by Ross Carlson
 	// It returns false or the name of the file
 	function searchThumbnail($searchFile){
 		global $ext_graphic, $web_root;
-		
-		$typeArray = explode("|",$ext_graphic);		
-		$thumb_file = "";			
-		$fileExt = returnFileExt($searchFile);		
+
+		$typeArray = explode("|",$ext_graphic);
+		$thumb_file = "";
+		$fileExt = returnFileExt($searchFile);
 		for ($e=0; $e < count($typeArray); $e++){
 			$thumbFileName = str_replace(".".$fileExt,".thumb.". $typeArray[$e],$searchFile);
 			if (is_file($thumbFileName)){
 				$thumb_file =  str_replace("%2F","/",rawurlencode(str_replace($web_root,"",$thumbFileName)));
 			}
 		}
-		
+
 		// Now let's return it
 		if ($thumb_file <> ""){
 			return $thumb_file;
@@ -1633,10 +1633,10 @@ function getLanguageList() {
 			return false;
 		}
 	}
-	
+
 	/**
 	* Display the opening tag for a table
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1647,10 +1647,10 @@ function getLanguageList() {
 	function jzTableOpen($width = "100", $cellpadding = "5", $class = "jz_track_table", $widthType = "%"){
 		echo '<table class="'. $class. '" width="'. $width. $widthType. '" cellpadding="'. $cellpadding. '" cellspacing="0" border="0">'. "\n";
 	}
-	
+
 	/**
 	* Display the closing tag for a table
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1658,10 +1658,10 @@ function getLanguageList() {
 	function jzTableClose(){
 		echo '</table>'. "\n";
 	}
-	
+
 	/**
 	* open a Table Row
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1670,10 +1670,10 @@ function getLanguageList() {
 	function jzTROpen($class = ""){
 		echo '  <tr class="'. $class. '">'. "\n";
 	}
-	
+
 	/**
 	* close a Table Row
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1681,10 +1681,10 @@ function getLanguageList() {
 	function jzTRClose(){
 		echo '  </tr>'. "\n";
 	}
-	
+
 	/**
 	* Display the opening tag for a table detail
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1701,10 +1701,10 @@ function getLanguageList() {
 		}
 		echo '>'. "\n";
 	}
-	
+
 	/**
 	* Display the opening tag for a table detail
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1712,10 +1712,10 @@ function getLanguageList() {
 	function jzTDClose(){
 		echo '    </td>'. "\n";
 	}
-	
+
 	/**
 	* Display an A HREF tag
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/28/04
 	* @since 04/28/04
@@ -1727,15 +1727,15 @@ function getLanguageList() {
 		if ($target <> ""){ $retVar .= 'target="'. $target. '" '; }
 		if ($onclick <> ""){ $retVar .= 'onclick="'. $onclick. '" '; }
 		$retVar .= 'href="'. $href. '" >'. $item. '</a>';
-		
+
 		// Now let's display the link
 		echo $retVar;
 	}
-	
-	
+
+
 	/**
 	* returns the truncated name of an item
-	* 
+	*
 	* @author Ross Carlson
 	* @version 05/03/04
 	* @since 05/03/04
@@ -1748,11 +1748,11 @@ function getLanguageList() {
 		} else {
 			return $item;
 		}
-	}	
-	
+	}
+
 	/**
 	 * Hightlights (bolds) part of a string to emphasis it
-	 * 
+	 *
 	 * @author Ross Carlson (from www.php.net)
 	 * @version 01/14/05
 	 * @since 01/14/05
@@ -1778,12 +1778,12 @@ function getLanguageList() {
 		   $x = $xtemp;
 	   }
 	   return $x;
-	} 
-	
+	}
+
 	/**
 	 * for php < 4.3.0
-	 * 
-	 * @author Laurent Perrin 
+	 *
+	 * @author Laurent Perrin
 	 * @version 02/06/04
 	 * @since 02/06/04
 	 * @param string $filename file name
@@ -1794,7 +1794,7 @@ function getLanguageList() {
 			switch(strrchr($filename,'.')){
 				case '.mp3':
 				case '.mp2':
-				case '.mp1': 
+				case '.mp1':
 					return 'audio/mpeg';
 				case '.wma':
 					return 'audio/wma';
@@ -1807,17 +1807,17 @@ function getLanguageList() {
 					return 'video/quicktime';
 				case '.mpe':
 				case '.mpg':
-				case '.mpeg': 
+				case '.mpeg':
 					return 'video/mpeg';;
 			} // switch()
 			return '';
 		}
 	}
-	
+
 	/**
 	 * for php < 4.3.0
-	 * 
-	 * @author Laurent Perrin 
+	 *
+	 * @author Laurent Perrin
 	 * @version 02/15/04
 	 * @since 02/06/04
 	 * @param string $filename filename
@@ -1835,10 +1835,10 @@ function getLanguageList() {
 			return $data;
 		}
 	}
-	
+
 	/**
 	* Updates the track counter for something when it's played
-	* 
+	*
 	* @author Ross Carlson
 	* @version 07/26/04
 	* @version 07/26/04
@@ -1853,10 +1853,10 @@ function getLanguageList() {
 			return "";
 		}
 	}
-	
+
 	/**
 	* Handles array sorting for us
-	* 
+	*
 	* @author Ross Carlson
 	*/
 	function track_cmp($a, $b){
@@ -1865,11 +1865,11 @@ function getLanguageList() {
 	   }
 	   return ($a > $b) ? -1 : 1;
 	}
-	
-	
+
+
 	/**
 	* Returns the difference between 2 microtime stamps
-	* 
+	*
 	* @author Ross Carlson
 	* @version 06/17/04
 	* @since 06/17/04
@@ -1880,18 +1880,18 @@ function getLanguageList() {
 	   list($b_dec, $b_sec) = explode(" ", $b);
 	   return $b_sec - $a_sec + $b_dec - $a_dec;
 	}
-	
-	
-	
+
+
+
 	/**
 	* Sets a session variable with the URL of the current page
-	* 
+	*
 	* @author Ross Carlson
 	* @version 05/04/04
 	* @since 05/04/04
 	* @returns Session variable $_SESSION['prev_page']
 	*/
-	function setPreviousPage(){		
+	function setPreviousPage(){
 		// Now let's set the session variable for later
 		$_SESSION['prev_page'] = @$_SERVER['REQUEST_URI'];
 		// Let's make sure it got set right and if not fix it
@@ -1899,37 +1899,37 @@ function getLanguageList() {
 			$_SESSION['prev_page'] = $_SERVER["URL"]. "?". $_SERVER["QUERY_STRING"];
 		}
 	}
-		
+
 	/**
 	* Returns how wide the columns on the genre/artist page should be
-	* 
+	*
 	* @author Ross Carlson
 	* @version 05/03/04
 	* @since 05/03/04
 	* @param integer $items Number of items that are to be displayed
-	* @returns integer returns width 
+	* @returns integer returns width
 	*/
-	function returnColWidth($items){		
+	function returnColWidth($items){
 		global $cols_in_genre;
-		
-		// Let's find out how wide the colums will be in percent 
+
+		// Let's find out how wide the colums will be in percent
 		$col_width = 100 / $cols_in_genre;
 
 		// Now let's make sure we don't divide by zero (Thanks flavio!)
 		if ($items < 1){ $items = 1; }
-		
-		// Let's make sure we have enough items to fill the number of colums that we wanted (say we wanted 3 cols but we only have 1 item) 
+
+		// Let's make sure we have enough items to fill the number of colums that we wanted (say we wanted 3 cols but we only have 1 item)
 		if ($items < $cols_in_genre){
-			// Ok, let's make this a better number 
+			// Ok, let's make this a better number
 			$col_width = 100 / $items;
 		}
-		
+
 		return $col_width;
 	}
-	
+
 	/**
 	* Convert MB to KB
-	* 
+	*
 	* @author Ross Carlson
 	* @version 06/28/04
 	* @since 06/28/04
@@ -1939,10 +1939,10 @@ function getLanguageList() {
 	function convertMBtoKB($size){
 		return $size * 1024;
 	}
-	
+
 	/**
 	* Convert MB to KB
-	* 
+	*
 	* @author Ross Carlson
 	* @version 06/28/04
 	* @since 06/28/04
@@ -1952,10 +1952,10 @@ function getLanguageList() {
 	function convertKBtoMB($size){
 		return round($size / 1024,2);
 	}
-	
+
 	/**
 	* Converts a long numeric value to time, 69 = 1:09:00
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/29/04
 	* @since 04/29/04
@@ -1963,7 +1963,7 @@ function getLanguageList() {
 	* @returns returns the time in days:hours:minutes:seconds
 	*/
 	function formatTime($time){
-		
+
 		// Let's get the days
 		$days=0;
 		while($time > (24*60*60)){
@@ -1983,13 +1983,13 @@ function getLanguageList() {
 			$mins++;
 		}
 		if ($time < 10){$time = "0". $time;}
-		
+
 		return $days. ":". $hours. ":". $mins. ":". $time;
 	}
-		
+
 	/**
 	* Convert minutes to seconds
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/29/04
 	* @since 04/29/04
@@ -1999,17 +1999,17 @@ function getLanguageList() {
 	function convertMinsSecs($minutes){
 		// Let's make sure it was mins:sec
 		if (!stristr($minutes,":")){ $minutes = $minutes. ":"; }
-		
+
 		// Now let's split it by the :
 		$minArray = explode(":",$minutes);
-		
+
 		// Now let's create the time
 		return ($minArray[0] * 60) + $minArray[1];
 	}
-	
+
 	/**
 	* Convert seconds to minutes
-	* 
+	*
 	* @author Ross Carlson
 	* @version 04/29/04
 	* @since 04/29/04
@@ -2019,7 +2019,7 @@ function getLanguageList() {
 	function convertSecMins($seconds){
 		// First let's round it off
 		$seconds = round($seconds);
-		
+
 		// Now let's loop through subtracking 60 each time
 		$ctr=0;
 		while ($seconds >= 60){
@@ -2029,19 +2029,19 @@ function getLanguageList() {
 		if ($seconds < 10){
 			$seconds = "0". $seconds;
 		}
-		
+
 		return $ctr. ":". $seconds;
 	}
-	
-	
+
+
 	// This function will take a filename and return the formated name of the XML (or data) file
 	// Added 4.6.04 by Ross Carlson
 	// Returns the name of the file, formated, without the leading path (so just as it was sent)
 	function returnFormatedFilename($fileName){
-	
+
 		//Ok, let's set it
 		$fileName = str_replace("/","---",$fileName);
-		
+
 		// Now let's make sure we don't have any files beginning with ---
 		while (substr($fileName,0,3) == "---"){
 			$fileName = substr($fileName,3,strlen($fileName));
@@ -2049,26 +2049,26 @@ function getLanguageList() {
 
 		return $fileName;
 	}
-		
+
 	// This function forces the browser to display output
 	function flushDisplay() {
 		global $cms_type;
-		
+
 		if ($cms_type <> "mambo" && $cms_type <> "xoops"){
-			@ob_flush(); 
+			@ob_flush();
 			@flush();
 		}
 		print str_repeat(" ", 4096);	// force a flush
 	}
-	
-	
+
+
 	// This function just returns the directories for us
 	function readJustDirs($dirName, &$readCtr, &$mainArray){
 		global $web_root, $root_dir, $media_dir;
 		// Let's up the max_execution_time
 		ini_set('max_execution_time','600');
 
-		// Let's look at the directory we are in		
+		// Let's look at the directory we are in
 		if (is_dir($dirName)){
 			$d = dir($dirName);
 			while($entry = $d->read()) {
@@ -2077,35 +2077,35 @@ function getLanguageList() {
 				// Now let's read this IF it's just a folder
 				if (is_dir($dirName. "/". $entry)){
 					$mainArray[$readCtr] = str_replace($web_root. $root_dir. $media_dir. "/", "",$dirName. "/". $entry);
-					$readCtr++;	
+					$readCtr++;
 					readJustDirs($dirName. "/". $entry, $readCtr, $mainArray);
 				}
 			}
 			// Now let's close the directory
 			$d->close();
-			
+
 			// Now let's sort that array
 			@sort($mainArray);
-		}		
+		}
 		// Ok, let's return the data
 		return $mainArray;
-		
+
 	}
-		
+
 	// This function takes a directory and get's all sub directories and files and puts them in an array
 	function readAllDirs($dirName, &$readCtr, &$mainArray, $searchExt = "false", $displayProgress = "false"){
 		global $audio_types, $video_types;
-		
+
 		// Let's up the max_execution_time
 		ini_set('max_execution_time','600');
-		
-		// Let's look at the directory we are in		
+
+		// Let's look at the directory we are in
 		if (is_dir($dirName)){
 			$d = dir($dirName);
 			while($entry = $d->read()) {
 				// Let's make sure we are seeing real directories
 				if ($entry == "." || $entry == "..") { continue;}
-				
+
 				// Now let's see if we are looking at a directory or not
 				if (filetype($dirName. "/". $entry) <> "file"){
 					// Ok, that was a dir, so let's move to the next directory down
@@ -2128,37 +2128,37 @@ function getLanguageList() {
 							$readCtr++;
 						}
 					}
-				}			
+				}
 			}
 			// Now let's close the directory
 			$d->close();
-			
+
 			// Now let's sort that array
 			@sort($mainArray);
-		}		
+		}
 		// Ok, let's return the data
 		return $mainArray;
 	}
 
 	function readAllDirs2($dirName, &$readCtr){
 		global $audio_types, $video_types;
-		
+
 		// Let's up the max_execution_time
 		ini_set('max_execution_time','6000');
-		// Let's look at the directory we are in		
+		// Let's look at the directory we are in
 		if (@is_dir($dirName)){
 			$d = @dir($dirName);
 			if (@is_object($d)){
 				while($entry = $d->read()) {
 					// Let's make sure we are seeing real directories
 					if ($entry == "." || $entry == "..") { continue;}
-					if ($readCtr % 100 == 0){ 
+					if ($readCtr % 100 == 0){
 						?>
 						<script language="javascript">
-							fc.innerHTML = '<b><?php echo word("%s files analyzed.",$readCtr); ?></b>';									
+							fc.innerHTML = '<b><?php echo word("%s files analyzed.",$readCtr); ?></b>';
 							-->
 						</SCRIPT>
-						<?php 
+						<?php
 						@flush(); @ob_flush();
 					}
 					// Now let's see if we are looking at a directory or not
@@ -2169,23 +2169,23 @@ function getLanguageList() {
 						if (preg_match("/\.($audio_types|$video_types)$/i", $entry)){
 							$readCtr++;
 							$_SESSION['jz_full_counter']++;
-						}							
-					}			
+						}
+					}
 				}
 				// Now let's close the directory
 				$d->close();
 			}
-		}		
+		}
 	}
 
-	
+
 	// This function makes sure that the variable is TOTALLY clean of slashes
 	function jzstripslashes($variable){
 		// Lets loop through until the variable is clean
 		while (stristr($variable,"\\") <> ""){
 			$variable = stripslashes($variable);
 		}
-		
+
 		while (stristr($variable,"//") <> ""){
 			$variable = str_replace("//","/",($variable));
 		}
@@ -2195,10 +2195,10 @@ function getLanguageList() {
 
 	// This function reads the directory specifed and returns the results into a sorted array */
 	function readDirInfo($dirName, $type){
-	
+
 		// Let's up the max_execution_time
 		ini_set('max_execution_time','600');
-		
+
 		$retArray = array();
 		// First let's make sure this is really a dir...
 		if (is_dir($dirName)){
@@ -2206,7 +2206,7 @@ function getLanguageList() {
 			while($entry = $d->read()) {
 				// Let's make sure this isn't the local directory we're looking at
 				if ($entry == "." || $entry == ".." || $entry == "CVS") { continue;}
-				
+
 				// Let's see if they wanted to look for a directory or a file and add that to the array
 				if ($type == "dir" and (filetype($dirName. "/". $entry) == "dir" or filetype($dirName. "/". $entry) == "link")){
 					$retArray[] = $entry;
@@ -2216,21 +2216,21 @@ function getLanguageList() {
 				}
 			}
 			$d->close();
-			
+
 			// Let's make sure we found something, and if we didn't let's not sort an empty array
 			if (count($retArray) <> 0){
 				sort($retArray);
 			}
 		}
-		
+
 		/* Now let's return the array to them */
 		return $retArray;
 	}
-	
-	
+
+
 	function userAuthenticate($username){
 		global $this_site, $web_root, $root_dir, $media_dir, $cms_user_access, $default_access, $include_path, $jzUSER;
-		
+
 		// Now let's authenticate this user
 		$jzUSER = new jzUser();
 		if ($username == "anonymous") {
@@ -2239,7 +2239,7 @@ function getLanguageList() {
 
 		return $jzUSER->login($username, "cms-user", false);
 	}
-	
+
 	function check_for_numerics($str) {
 		for ($i = 0; $i < strlen($str); $i++) {
 			if (is_numeric($str[$i]))
@@ -2248,19 +2248,19 @@ function getLanguageList() {
 			}
 		}
 	}
-	
+
 	// This function will write out error messages to the log files...
 	function writeLogData($logName, $data){
 		global $include_path, $enable_logging, $log_max_size_kb, $jzUSER;
-		
+
 		if ($enable_logging == "false"){return;}
 
-		// Let's see what file they wanted to open and open it up! 
-		$fileName = $include_path. "temp/" . $logName . ".log";		
+		// Let's see what file they wanted to open and open it up!
+		$fileName = $include_path. "temp/" . $logName . ".log";
 		if (!is_file($fileName)){
 			@touch($fileName);
 		}
-		
+
 		// First let's make sure we're not over the max size
 		/*
 		if (filesize($fileName) > $log_max_size_kb){
@@ -2273,30 +2273,30 @@ function getLanguageList() {
 				}
 			}
 			$data = implode("\n",$nData);
-			
+
 			//$handle = @fopen($fileName, "w");
-			//@fwrite($handle,$data);				
-			//@fclose($handle);		
+			//@fwrite($handle,$data);
+			//@fclose($handle);
 		}
 		*/
-		
+
 		if (isset($jzUSER)){
 			$user = $jzUSER->getName();
 		} else {
 			$user = "anon";
 		}
-		
+
 		// Let's get the microseconds
 		$lTime = explode(" ",microtime());
 		$msec = substr($lTime[0],2,2);
-		
+
 		$handle = @fopen($fileName, "a");
 		$data = date("n/j/y g:i:s",time()). ".". $msec. ", user:". $user. ", ". $data. "\n";
-		@fwrite($handle,$data);				
-		@fclose($handle);			
-      
+		@fwrite($handle,$data);
+		@fclose($handle);
+
 	}
-	
+
 	// This function returns the installed GD version
 	function gd_version() {
 		static $gd_version_number = null;
@@ -2312,33 +2312,33 @@ function getLanguageList() {
 			}
 		}
 		return $gd_version_number;
-	} 
-	
+	}
+
 	/* This function will resize the JPEG's we pass into the site for us and produce PNG's */
 	function resizeImage($source_image, $destination_image, $destination_width, $destination_height){
 		global $keep_porportions;
-		
+
 		// First we need to see if GD is installed or not...
 		if (gd_version() == 0){
 			// Ok, no GD, let's write that to the log...
 			writeLogData('error','Sorry, GD Libraries not found while trying to resize an image...');
 			return false;
 		}
-		
+
 		/* get the picture and set the output picture */
 		$image = $source_image;
 		$new_image = $destination_image;
-		
+
 		/* Let's grab the source image that was uploaded to work with it */
 		$src_img = @imagecreatefromjpeg($image);
-		
+
 		if ($src_img <> ""){
 			/* Let's get the width and height of the source image */
 			$src_width = imagesx($src_img); $src_height = imagesy($src_img);
-			
+
 			/* Let's set the width and height of the new image we'll create */
 			$dest_width = $destination_width; $dest_height = $destination_height;
-			
+
 			/* Now if the picture isn't a standard resolution (like 640x480) we
 			   need to find out what the new image size will be by figuring
 			   out which of the two numbers is higher and using that as the scale */
@@ -2361,46 +2361,46 @@ function getLanguageList() {
 				$dest_height = $destination_height;
 				$dest_width = $destination_width;
 			}
-			
+
 			/* Now let's create our destination image with our new height/width */
 			if (gd_version() >= 2) {
 				$dest_img = imageCreateTrueColor($dest_width, $dest_height);
 			} else {
 				$dest_img = imageCreate($dest_width, $dest_height);
 			}
-			
+
 			/* Now let's copy the data from the old picture to the new one witht the new settings */
 			if (gd_version() >= 2) {
 				imageCopyResampled($dest_img, $src_img, 0, 0, 0 ,0, $dest_width, $dest_height, $src_width, $src_height);
 			} else {
 				imageCopyResized($dest_img, $src_img, 0, 0, 0 ,0, $dest_width, $dest_height, $src_width, $src_height);
 			}
-			
+
 			/* Now let's create our new image */
 			@imagejpeg($dest_img, $new_image);
-			
+
 			/* Now let's clean up all our temp images */
 			imagedestroy($src_img);
 			imagedestroy($dest_img);
-			
+
 			return true;
 		} else {
 			return false;
 		}
-	}	
+	}
 
-	
+
 	function createBlankImage($image, $font, $text, $color, $shadow, $drop, $maxwidth, $alignment, $valign, $padding="5"){
 		global $web_root, $root_dir;
-		
+
 		// First we need to see if GD is installed or not...
 		if (gd_version() == 0){
 			// Ok, no GD, let's write that to the log...
 			writeLogData('error','Sorry, GD Libraries not found!');
 			return false;
 		}
-		
-		/* Now let's create our destination image with our new height/width */		
+
+		/* Now let's create our destination image with our new height/width */
 		$src_img = imagecreatefromjpeg($image);
 		if (gd_version() >= 2) {
 			$dest_img = imageCreateTrueColor($maxwidth, $maxwidth);
@@ -2436,24 +2436,24 @@ function getLanguageList() {
 			$maxcharsperline = floor( ($maxwidth - ($margin * 2)) / $fontwidth);
 			$text = wordwrap($text, $maxcharsperline, "\n", 1);
 		}
-		
+
 		$lines = explode("\n", $text);
-		
+
 		switch($valign){
-		
+
 		 case "center":
 		  $y = (imageSY($dest_img) - ($fontheight * sizeof($lines)))/2;
 		  break;
-		
+
 		 case "bottom":
 		  $y = imageSY($dest_img) - (($fontheight * sizeof($lines)) + $margin);
 		  break;
-		
+
 		 default:
 		  $y = $margin;
 		  break;
 		}
-		
+
 		switch($alignment){
 			 case "right":
 			   while (list($numl, $line) = each($lines)) {
@@ -2462,7 +2462,7 @@ function getLanguageList() {
 					 $y += $fontheight;
 			   }
 			 break;
-			
+
 			 case "center":
 			   while (list($numl, $line) = each($lines)) {
 					 ImageString($dest_img, $font, floor((imagesx($dest_img) - $fontwidth*strlen($line))/2)+$drop, ($y+$drop), $line, $shadow);
@@ -2470,7 +2470,7 @@ function getLanguageList() {
 					 $y += $fontheight;
 			   }
 			 break;
-			
+
 			 default:
 			   while (list($numl, $line) = each($lines)) {
 				ImageString($dest_img, $font, $margin+$drop, ($y+$drop), $line, $shadow);
@@ -2479,18 +2479,18 @@ function getLanguageList() {
 			   }
 			 break;
 			}
-		
+
 		/* Now let's create our new image */
 		$new_image = $web_root. $root_dir. "/temp/temp-image.jpg";
 		@touch($new_image);
-		
+
 		// Now let's make sure that new image is writable
 		if (is_writable($new_image)){
 			imagejpeg($dest_img, $new_image);
-		
+
 			/* Now let's clean up our temp image */
 			imagedestroy($dest_img);
-			
+
 			return true;
 		} else {
 			echo "Sorry, I couldn't open the temporary image file for writing.<br>".
@@ -2502,14 +2502,14 @@ function getLanguageList() {
 			exit();
 			return false;
 		}
-		
+
 	}
-	
-	
+
+
 	// This function will resize the album images
 	function jzResizeAlbum($dirToSearch, $artistImage){
 		global $album_img_width, $album_img_height;
-			
+
 		// Now let's see if the artist image needs to be resized
 		if ($album_img_width <> "0" and $album_img_height <> "0"){
 			// Now let's get the image dimensions and see if it needs resizing
@@ -2518,7 +2518,7 @@ function getLanguageList() {
 			$imgDim = getimagesize($imgFile);
 			$imgWidth = $imgDim[0];
 			$imgHeight = $imgDim[1];
-			
+
 			// Now let's see if either is bigger or smaller than what we want
 			if ($imgHeight <> $album_img_height && $imgWidth <> $album_img_width){
 				// Ok, we need to change the height of the image
@@ -2529,16 +2529,16 @@ function getLanguageList() {
 						@rename ($imgFile, $imgFile. ".old");
 					}
 					// Now let's put the new file in place
-					@rename ($imgDst, $imgFile);						
+					@rename ($imgDst, $imgFile);
 				}
 			}
 		}
 	}
-	
+
 	// This function will resize the artist images
 	function jzResizeArtist($dirToSearch, $Image){
 		global $artist_img_width, $artist_img_height;
-			
+
 		// Now let's see if the artist image needs to be resized
 		if ($artist_img_width <> "0" and $artist_img_height <> "0"){
 			// Now let's get the image dimensions and see if it needs resizing
@@ -2546,8 +2546,8 @@ function getLanguageList() {
 			$imgDst = $dirToSearch. "/". $Image. ".new";
 			$imgDim = getimagesize($imgFile);
 			$imgWidth = $imgDim[0];
-			$imgHeight = $imgDim[1];	
-			
+			$imgHeight = $imgDim[1];
+
 			// Now let's see if either is bigger or smaller than what we want
 			if ($imgHeight <> $artist_img_height && $imgWidth <> $artist_img_width){
 				// Ok, we need to change the height of the image
@@ -2559,7 +2559,7 @@ function getLanguageList() {
 					}
 						// Now let's put the new file in place
 						@rename ($imgDst, $imgFile);
-				}						
+				}
 			}
 		}
 	}
@@ -2576,8 +2576,8 @@ function getLanguageList() {
 		closedir($current_dir);
 		rmdir($dir);
 	}
-	
-	
+
+
 
 	// simple function that can help, if you want to know if a string could be UTF-8 or not
 	function seems_utf8($Str) {
@@ -2603,11 +2603,11 @@ function getLanguageList() {
  * @author Ben Dodson
  * @since 6/28/06
  * @version 6/28/06
- * @return array(from,to) or false, if the RANGE header is not set. 
+ * @return array(from,to) or false, if the RANGE header is not set.
  */
 	function getContentRange($size) {
 		$from = 0; $to = $size-1;
-		
+
 		if (isset($_SERVER['HTTP_RANGE'])) {
 			$split = explode("=",$_SERVER['HTTP_RANGE']);
 			if (trim($split[0]) == "bytes") {
@@ -2622,23 +2622,23 @@ function getLanguageList() {
 					if (isset($split2[1]) && !isNothing($split2[1])) {
 						$to = trim($split2[1]);
 					}
-					
+
 					$from = trim($split2[0]);
 				} else {
 					$from = trim($split[1]);
 				}
-				       			
+
        			if(empty($to)) {
            			$to = $size - 1;  // -1  because end byte is included
                      		          //(From HTTP protocol:
-									 // 	'The last-byte-pos value gives the byte-offset of the 
+									 // 	'The last-byte-pos value gives the byte-offset of the
 									// last byte in the range; that is, the byte positions specified are inclusive')
        			}
-       			
+
        			return array($from,$to);
 			}
 		}
 		return false;
 	}
-	
+
 ?>

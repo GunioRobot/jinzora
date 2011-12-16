@@ -185,7 +185,7 @@ if (isset ($_POST['edit_replace_close']) or isset ($_POST['edit_replace']) or is
 		flushdisplay();
 	}
 
-	// Now we need to update the node			
+	// Now we need to update the node
 ?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
 				p.innerHTML = '<center><?php echo word("Updating the node cache..."); ?></center>';
@@ -202,7 +202,7 @@ if (isset ($_POST['edit_replace_close']) or isset ($_POST['edit_replace']) or is
 		updateNodeCache($node, true, false, true);
 	}
 
-	// Now we need to update the node			
+	// Now we need to update the node
 ?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
 				p.innerHTML = '<center><?php echo word("Complete!"); ?></center>';

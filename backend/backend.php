@@ -1,24 +1,24 @@
-<?php 
+<?php
 if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 /**
- * - JINZORA | Web-based Media Streamer -  
- * 
- * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
- * (but can be used for any media file that can stream from HTTP). 
- * Jinzora can be integrated into a CMS site, run as a standalone application, 
+ * - JINZORA | Web-based Media Streamer -
+ *
+ * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+ * (but can be used for any media file that can stream from HTTP).
+ * Jinzora can be integrated into a CMS site, run as a standalone application,
  * or integrated into any PHP website.  It is released under the GNU GPL.
- * 
+ *
  * - Resources -
  * - Jinzora Author: Ross Carlson <ross@jasbone.com>
  * - Web: http://www.jinzora.org
- * - Documentation: http://www.jinzora.org/docs	
+ * - Documentation: http://www.jinzora.org/docs
  * - Support: http://www.jinzora.org/forum
  * - Downloads: http://www.jinzora.org/downloads
  * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
- * 
+ *
  * - Contributors -
  * Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
- * 
+ *
  * - Code Purpose -
  * This page binds the backend to the frontend.
  *
@@ -45,11 +45,11 @@ require_once(dirname(__FILE__) . "/backends/${backend}/header.php");
 
 // Now we can build library functions.
 //* * * * * * * * * * * * * * * * * *//
-	
+
 /**
  * Checks to see if a users streaming limit has been hit - returns true if it has
- * 
- * 
+ *
+ *
  * @author Ross Carlson, Ben Dodson
  * @version 7/04/2005
  * @since 7/04/2005
@@ -57,7 +57,7 @@ require_once(dirname(__FILE__) . "/backends/${backend}/header.php");
  * @param $willPlay whether or not they are about to stream the track.
  * For this to work properly, this function must be the last check
  * before the user can play back the track.
- */	
+ */
 function checkStreamLimit($track, $willPlay = true, $user = false){
   global $jzUSER;
 
@@ -69,7 +69,7 @@ function checkStreamLimit($track, $willPlay = true, $user = false){
   if (isNothing($limit) || $limit <= 0) {
     return true;
   }
-  
+
   $cap_duration = $jzUSER->getSetting('cap_duration');
   $cap_method = $jzUSER->getSetting('cap_method');
 
@@ -94,7 +94,7 @@ function checkStreamLimit($track, $willPlay = true, $user = false){
   }
   // Now that we've cleaned up the history let's write it back out so it doesn't grow forever
   $user->storeData("streamed", serialize($stArr));
-  
+
   // Let's make it look like an array no matter what:
   if (!is_array($track)) {
     $arr = array();
@@ -124,7 +124,7 @@ function checkStreamLimit($track, $willPlay = true, $user = false){
       $ok = true;
     }
   }
-  
+
   if (!$ok) {
     return false;
   } else {
@@ -132,7 +132,7 @@ function checkStreamLimit($track, $willPlay = true, $user = false){
       foreach ($narr as $e) {
 	$streamArr[] = $e;
       }
-      $user->storeData("streamed", serialize($streamArr));   
+      $user->storeData("streamed", serialize($streamArr));
     }
     return true;
   }
@@ -240,14 +240,14 @@ function canPlay($el,$user) {
 /*
  * Builds a path from meta data
  * to fit the hierarchy.
- * 
+ *
  * @author Ben Dodson
  * @since 8/10/05
  * @version 8/10/05
  **/
 function buildPath($meta) {
   global $hierarchy;
-  
+
   // strip out weird characters.
   if (isset($meta['genre'])) {
     $genre = str_replace("/","-",$meta['genre']);
@@ -269,12 +269,12 @@ function buildPath($meta) {
 
 
   if (isset($meta['filename'])) {
-  	$filename = str_replace("/","-",$meta['filename']);	
+  	$filename = str_replace("/","-",$meta['filename']);
   } else if (isset($meta['track'])) {
   	$filename = str_replace("/","-",$meta['track']);
   }
-  
-  
+
+
   if (isNothing($genre)) {
     $genre = word("Unknown");
   }
@@ -284,10 +284,10 @@ function buildPath($meta) {
   if (isNothing($album)) {
     $album = word("Unknown");
   }
-  
+
   // TODO: 1) in inject, do a case-insensitive comparison.
   //       2) guess id3 fields based on filesystem...
-  
+
   $arr = array();
   $norm = array($genre,$artist,$album,$filename);
   for ($i = 0; $i < sizeof($hierarchy); $i++) {
@@ -303,16 +303,16 @@ function buildPath($meta) {
       break;
     case "track":
       $arr[] = $filename;
-      break;	
+      break;
     default:
       $arr[] = $norm[$i];
     }
   }
-  
+
   return $arr;
 }
 
-/** 
+/**
  * Returns which media path
  * an element is in
  *
@@ -337,7 +337,7 @@ function handleUserInit() {
   global $jzSERVICES,$jzUSER,$jz_language,$node,$skin,$include_path,
     $css,$image_dir,$my_frontend,$fe,$jz_path,$web_path,$USER_SETTINGS_OVERRIDE;
   writeLogData("messages","Index: Testing the language file for security and including");
-  
+
   $USER_SETTINGS_OVERRIDE = array(); // for use by user agents
 
   checkUserAgent();
@@ -357,7 +357,7 @@ function handleUserInit() {
     if (isset($_GET['depth']))
       $node->setNaturalDepth($_GET['depth']);
     else
-      doNaturalDepth($node);    
+      doNaturalDepth($node);
   }
 
   // Let's setup our stylesheet and icons
@@ -373,7 +373,7 @@ function handleUserInit() {
 
 /**
  * Changes Jinzora settings for specific devices.
- * 
+ *
  * @author Ben Dodson
  * @since 1/12/07
  * @version 1/12/07
@@ -392,7 +392,7 @@ function handleUserInit() {
  **/
 function handleSetFrontend($build_fe = true) {
 	global $jzSERVICES,$my_frontend, $jzUSER, $jinzora_skin,$fe,$skin;
-	
+
 	// Now use them.
 	if (isset($_GET['frontend'])) {
 		$my_frontend = $_GET['frontend'];
@@ -458,7 +458,7 @@ function handleSetTheme() {
 	if ($cms_mode == "true"){
 		$skin = "cms-theme";
 	}
-	
+
 	if (!includeable_file($skin,"style")) {
 		// is it in the frontend/frontends/*/style directory?
 		$string = $include_path . "frontend/frontends/${my_frontend}/style";
@@ -503,7 +503,7 @@ function handleSetLanguage() {
 
 
 
-/** 
+/**
  * Initializes the jukebox variables
  *
  * @author Ben Dodson
@@ -540,7 +540,7 @@ function handleJukeboxVars() {
       } else {
 	$_SESSION['jb-addtype'] = "current";
       }
-    }      
+    }
     if (!isset($_SESSION['jb_playwhere']) || isNothing($_SESSION['jb_playwhere'])) {
       if (isset($_GET['action']) && $_GET['action'] == 'playlist') {
 	// hack.. stream these.
@@ -580,7 +580,7 @@ function settingsToArray($filename) {
       continue;
     }
     $line = stripSlashes($line);
-    $key = ""; 
+    $key = "";
     $val = "";
     $i = 0;
     while ($line[$i] != "=" && $i < strlen($line)) {
@@ -629,7 +629,7 @@ function arrayToSettings($array,$filename) {
     echo "Could not write to $filename.";
     die();
   }
-  fwrite($handle,$file);	
+  fwrite($handle,$file);
   fclose ($handle);
 }
 
@@ -673,7 +673,7 @@ function checkPermission($user, $setting, $path = false) {
     break;
   case "play":
     if ($user->getSetting('jukebox_queue') === true ||
-	$user->getSetting('jukebox_admin') === true) 
+	$user->getSetting('jukebox_admin') === true)
       return true;
     // NO BREAK
   case "stream":
@@ -684,7 +684,7 @@ function checkPermission($user, $setting, $path = false) {
     break;
   case "jukebox":
   case "jukebox_queue":
-    if ($jukebox == "true" && 
+    if ($jukebox == "true" &&
 	($user->getSetting('jukebox_queue') === true ||
 	 $user->getSetting('jukebox_admin') === true))
       return true;
@@ -724,7 +724,7 @@ function checkPermission($user, $setting, $path = false) {
  **/
 function checkPlayback($check_streammode = false) {
   global $embedded_player,$jukebox,$jzUSER;
-  
+
   if (!$check_streammode &&
       $jukebox == "true" &&
       checkPermission($jzUSER,'jukebox') === true &&
@@ -748,7 +748,7 @@ function checkPlayback($check_streammode = false) {
 
 /**
  * Returns the default of a setting.
- * 
+ *
  * @author Ben Dodson
  * @version 11/22/04
  * @since 11/22/04
@@ -790,13 +790,13 @@ function user_default($setting) {
   case "resample_rate":
     return $default_resample;
     break;
-  default: 
+  default:
     return false;
-    
+
   }
 }
 
-/** 
+/**
  * Handles all functions that should
  * be executed immediately before viewing a page
  *
@@ -945,7 +945,7 @@ function muteOutput($keywords) {
 
 /**
  * Compares jzMediaElements by filepath for sorting.
- * 
+ *
  * @author Ben Dodson
  * @version 6/9/04
  * @since 6/9/04
@@ -963,7 +963,7 @@ $bn = $b->getFilePath();
 
 /**
  * Compares jzMediaElements for sorting.
- * 
+ *
  * @author Ben Dodson
  * @version 6/9/04
  * @since 6/9/04
@@ -994,7 +994,7 @@ $bn = $b->getName();
 function compareYear($a, $b) {
   $ay = $a->getYear();
   $by = $b->getYear();
-  
+
   if ($ay == "-") {
     $ay = false;
   }
@@ -1014,7 +1014,7 @@ function compareYear($a, $b) {
   if ($ay == $by) {
     return compareNodes($a,$b);
   }
-  
+
   return ($ay < $by) ? 1 : -1;
 }
 
@@ -1035,16 +1035,16 @@ function compareNumber($a,$b) {
 	$adArtist = $a->getAncestor("artist");
 	$bdArtist = $b->getAncestor("artist");
 
-	if(   
+	if(
 		( $ad !== false && $bd !== false && strtoupper($ad->getName()) != strtoupper($bd->getName()))
 		 ||
-	    ( $adArtist !== false && $bdArtist !== false && strtoupper($adArtist->getName()) != strtoupper($bdArtist->getName())) 
+	    ( $adArtist !== false && $bdArtist !== false && strtoupper($adArtist->getName()) != strtoupper($bdArtist->getName()))
 	   ) {
     if ($ad === false || $bd === false) {
       return compareNodes($a,$b);
-    } 
+    }
     return compareNodes($ad,$bd);
-  } 
+  }
 
   if (($ad = $a->getAncestor("disk")) != ($bd = $b->getAncestor("disk"))) {
     if ($ad !== false && $bd !== false) { // both from disks.
@@ -1056,7 +1056,7 @@ function compareNumber($a,$b) {
     }
 
     return -1;
-  } 
+  }
 
   if ($a->isLeaf() === false) {
     return 1;
@@ -1118,21 +1118,21 @@ function sortElements(&$list, $param = "name") {
 	/**
 	 * Displays the status information on screen
 	 * during an update.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 11/13/04
 	 * @since 11/13/04
 	 */
 	function showStatus($path = false) {
 		global $word_importing;
-		
+
 		// Let's set our display items
 		$media_display = str_replace("'","",$path);
 		// Now let's truncate the media_display
 		if (strlen($media_display) > 60){
 			$media_display = substr($media_display,0,60). "...";
 		}
-		
+
 		switch($_SESSION['jz_import_progress']){
 			case "30":
 				$val = ".&nbsp;";
@@ -1145,7 +1145,7 @@ function sortElements(&$list, $param = "name") {
 					$i++;
 				}
 			break;
-		}	  
+		}
 		$_SESSION['jz_import_progress']++;
 		if ($media_display <> ""){
 			?>
@@ -1155,7 +1155,7 @@ function sortElements(&$list, $param = "name") {
 			</SCRIPT>
 			<?php
 		}
-		
+
 		// Now let's figure out what's left
 		if ($_SESSION['jz_import_full_ammount'] <> 0){
 			$left = round((($_SESSION['jz_import_full_progress'] / $_SESSION['jz_import_full_ammount']) * 100));
@@ -1183,7 +1183,7 @@ function sortElements(&$list, $param = "name") {
 
 /**
  * Turns a string with potentially weird characters into a valid path.
- * 
+ *
  * @author Ben Dodson
  * @version 6/9/04
  * @since 6/9/04
@@ -1201,7 +1201,7 @@ function pathize($str, $char = '_') {
  * Returns a useable URL.
  * Type is one of: image|track
  * 'arr' lets you add extra variables to our URL.
- * 
+ *
  * @author Ben Dodson
  * @version 6/9/04
  * @since 6/9/04
@@ -1218,14 +1218,14 @@ function fixAMGUrls($text){
  * Returns a useable URL.
  * Type is one of: image|track
  * 'arr' lets you add extra variables to our URL.
- * 
+ *
  * @author Ben Dodson
  * @version 6/9/04
  * @since 6/9/04
  */
 function jzCreateLink($path, $type, $arr = array()) {
   global $media_dirs,$web_dirs,$include_path,$this_site, $root_dir,$jzUSER;
-  
+
   if ($type == "image" && !($path[0] == '/' || stristr($path,":\\") || stristr($path,":/"))) {
     // the link is relative; return it.
     return $this_site. $root_dir. "/". str_replace("%2F","/",rawurlencode($path));
@@ -1278,7 +1278,7 @@ function jzCreateLink($path, $type, $arr = array()) {
 		} else {
 			$ssid = session_id();
 			writeLogData("as_debug","jzCreateLink: ssid = ". $ssid);
-			
+
 			$arr['jz_path'] = $path;
 			$arr['action'] = "play";
 			$arr['type'] = "track";
@@ -1288,7 +1288,7 @@ function jzCreateLink($path, $type, $arr = array()) {
 		}
     break;
   }
-}			
+}
 
 /**
  * Returns a blank cache;
@@ -1325,7 +1325,7 @@ function jzCreateLink($path, $type, $arr = array()) {
  */
 function blankCache($type = "node") {
   $cache = array();
-  
+
   if ($type == "node") {
     for ($i = 0; $i < 23; $i++) {
       $cache[] = "-";
@@ -1347,7 +1347,7 @@ function blankCache($type = "node") {
     $cache[22] = 'false';
     $cache[23] = uniqid("T");
     $cache[26] = 0;
-    return $cache;		
+    return $cache;
   }
   else {
     return $cache;
@@ -1357,18 +1357,18 @@ function blankCache($type = "node") {
 /**
  * Gets the desired information (genre,artist,album) from a jzMediaElement.
  * This does not use meta data even for tracks-- only the $hierarchy.
- * 
+ *
  * @author Ben Dodson
  * @version 6/10/04
  * @since 6/10/04
  */
 function getInformation(&$element,$type = "album") {
   global $hierarchy;
-  
+
   $path = $element->getPath();
   if (is_string($hierarchy))
     $hierarchy = explode("/",$hierarchy);
-  
+
   for ($i = 0; $i < sizeof($hierarchy); $i++) {
     if ($hierarchy[$i] == $type) {
       return ($i < sizeof($path)) ? str_replace("_"," ",$path[$i]) : false;
@@ -1379,35 +1379,35 @@ function getInformation(&$element,$type = "album") {
 
 /**
  * Figures the ptype of a node from the hierarchy.
- * 
+ *
  * @author Ben Dodson
  * @version 11/3/04
  * @since 11/3/04
  */
 function findPType(&$node) {
   global $hierarchy;
-  
+
   // Obvious cases:
   if ($node->isLeaf()) {
     return "track";
   }
-  
+
   if ($node->getLevel() == 0) {
     return "root";
   }
-  
+
   // Otherwise, we need to use the $hierarchy.
   if (is_string($hierarchy))
     $hier = explode("/",$hierarchy);
   else
     $hier = $hierarchy;
-  
-  
-  
+
+
+
   if ($node->getLevel() > sizeof($hier)) {
     return "generic";
   }
-  
+
   $guess = $hier[$node->getLevel()-1];
   if ($guess == "track")
     return "disk"; // isn't really a track;
@@ -1422,17 +1422,17 @@ function findPType(&$node) {
 
 /**
  * Sets the 'natural depth' for this node based on the hierarchy.
- * 
+ *
  * @author Ben Dodson
  * @version 11/3/04
  * @since 11/3/04
  */
 function doNaturalDepth(&$node) {
   global $hierarchy;
-  
+
   if (is_string($hierarchy))
     $hierarchy = explode("/",$hierarchy);
-  
+
   $level = $oldlevel = $node->getLevel();
   while ($level < sizeof($hierarchy) && $hierarchy[$level] == "hidden") {
     $level++;
@@ -1443,24 +1443,24 @@ function doNaturalDepth(&$node) {
 /**
  * Finds the distance from the node to the level type (genre,artist,album,track)
  * If it is only called with 1 param, it returns the distance from the root to that type.
- * 
+ *
  * @author Ben Dodson
  * @version 6/10/04
  * @since 6/10/04
  */
 function distanceTo($type = "album", $node = false) {
   global $hierarchy;
-  
+
   if (is_string($hierarchy))
     $hierarchy = explode("/",$hierarchy);
-  
+
   if ($node === false) {
     $node = &new jzMediaNode();
   }
-  
+
   if ($type == "any" || $type == "track")
     return -1;
-  
+
   $level = $node->getLevel();
   for ($i = 0; $i < sizeof($hierarchy); $i++) {
     if ($hierarchy[$i] == $type) {
@@ -1474,25 +1474,25 @@ function distanceTo($type = "album", $node = false) {
 
 /**
  * Essentially the inverse of distanceTo.
- * 
+ *
  * @author Ben Dodson
  * @version 5/1/05
  * @since 5/1/05
  */
 function toLevel($distance, $node = false) {
   global $hierarchy;
-  
+
   if (is_string($hierarchy))
     $hierarchy = explode("/",$hierarchy);
-  
+
   if ($node === false) {
     $node = &new jzMediaNode();
   }
-  
+
   if ($distance < 0) {
     return false;
   }
-  
+
   $level = $node->getLevel();
   $distance = $distance + $level;
 
@@ -1509,8 +1509,8 @@ function toLevel($distance, $node = false) {
 
 /**
  * validates a key in our hierarchy.
- * 
- * 
+ *
+ *
  * @author Ben Dodson
  * @version 11/11/04
  * @since 11/11/04
@@ -1529,7 +1529,7 @@ function validateLevel(&$lvl) {
   case "user":
   case "subgenre":
     return true;
-    break;	
+    break;
   case "genres":
   case "subgenres":
   case "artists":
@@ -1541,14 +1541,14 @@ function validateLevel(&$lvl) {
   }
   return false;
 }
-	
+
 
 /**
  * Translates a path to a URL-valid one.
- * 
- * 
+ *
+ *
  * @author PHP online resource
- * @version 
+ * @version
  * @since
  */
 function translate_uri($uri) {
@@ -1563,15 +1563,15 @@ function translate_uri($uri) {
 
 /**
  * Converts seconds to a string
- * 
- * 
+ *
+ *
  * @author Ben Dodson
  * @version 11/17/04
  * @since 11/17/04
  */
 function stringize_time($sec) {
   $str = "";
-  
+
   if ($sec > 60*60*24) {
     // days
     $days = intval($sec / (60*60*24));
@@ -1599,7 +1599,7 @@ function stringize_time($sec) {
       $m = intval($sec / 60);
       $sec -= $m*60;
       if ($str != "" && $m < 10) {
-	$str .= "0";	
+	$str .= "0";
       }
       $str .= $m . ":";
     } else {
@@ -1609,14 +1609,14 @@ function stringize_time($sec) {
       $str .= "0";
     }
     $str .= $sec;
-  }	
+  }
   return $str;
 }
 
 /**
  * Stringizes size given in megs.
- * 
- * 
+ *
+ *
  * @author Ben Dodson
  * @version 11/17/04
  * @since 11/17/04
@@ -1644,17 +1644,17 @@ function updateNodeCache($node, $recursive = false, $showStatus = false, $force 
 	$flags['recursive'] = $recursive;
 
 	$importer = $default_importer;
-	
+
 	// TODO: more dynamic choice of importer.
 	if (false !== stristr($importer,"id3tags")) {
 		// id3tag importer doesn't care about your hierarchy.
-		// TODO: seperate hierarchy for display / import.	
+		// TODO: seperate hierarchy for display / import.
 	} else {
 		// TODO: Remove this stuff once we have a propper way
 		// of getting the path from the node. Make
 		// the function recursive with respect to the node.
 		$mypath = array();
-		
+
 		if (false !== ($val = getInformation($node,"genre"))) {
 			$mypath['genre'] = $val;
 		}
@@ -1670,15 +1670,15 @@ function updateNodeCache($node, $recursive = false, $showStatus = false, $force 
 		if (false !== ($val = getInformation($node,"disk"))) {
 			$mypath['disk'] = $val;
 		}
-		
+
 		$flags['path'] = $mypath;
-		$flags['hierarchy'] = array_slice($hierarchy,sizeof($mypath),sizeof($hierarchy)-sizeof($mypath));		
+		$flags['hierarchy'] = array_slice($hierarchy,sizeof($mypath),sizeof($hierarchy)-sizeof($mypath));
 	}
 
 	$jzSERVICES->loadService("importing",$importer);
 	// TODO: Move flags array into parameters of this function.
-	
-	
+
+
 	/*if ($flags['recursive']) {
 		@ini_set("max_execution_time","0");
 		@ini_set("memory_limit","64");
@@ -1701,7 +1701,7 @@ function updateNodeCache($node, $recursive = false, $showStatus = false, $force 
       $jzSERVICES->importMedia($node, $root_path, $flags);
     }
   }
-  
+
   if ($jukebox == "true") {
   	include_once($include_path. "jukebox/class.php");
   	$jb = new jzJukebox();
@@ -1719,12 +1719,12 @@ function updateNodeCache($node, $recursive = false, $showStatus = false, $force 
 	 **/
 	function doUserBrowsing($node) {
 	  global $jzUSER;
-	  
+
 	  $jzBackend = new jzBackend();
 
 	  $oldHist = $jzUSER->loadData('history');
 	  $jzUSER->storeData('history',$node->getPType(). "|". $node->getName(). "|". $node->getPath("String"). "|". time(). "\n". substr($oldHist,0,5000));
-	  
+
 	  $oldHist = $jzBackend->loadData('history');
 	  // Now let's find the history for this user
 	  $dArr = explode("\n",$oldHist);
@@ -1858,7 +1858,7 @@ function handleSearch($search_string = false, $search_type = false) {
     // We handle this differently than above in
     // case they set @genre and @id (or whatever).
   }
-  
+
   /* if we have 2 locations,
      the closest to the root is our anchor
      and the further is our return type.
@@ -1959,28 +1959,28 @@ function powerSearchType() {
 
   if (isset($_POST['number']) && $_POST['number'] != "")
     return "tracks";
-  
+
   if (isset($_POST['year']) && $_POST['year'] != "")
     return "tracks";
-  
+
   if (isset($_POST['bitrate']) && $_POST['bitrate'] != "")
     return "tracks";
-  
+
   if (isset($_POST['frequency']) && $_POST['frequency'] != "")
     return "tracks";
-  
+
   if (isset($_POST['size']) && $_POST['size'] != "")
     return "tracks";
-  
+
   if (isset($_POST['type']) && $_POST['type'] != "")
     return "tracks";
-  
+
   if (isset($_POST['comment']) && $_POST['comment'] != "")
     return "tracks";
-  
+
   if (isset($_POST['lyrics']) && $_POST['lyrics'] != "")
     return "tracks";
-  
+
   return "nodes";
 }
 
@@ -2003,39 +2003,39 @@ function getSearchMeta() {
       $array['length'] = $_POST['length'];
     }
   }
-  
+
   if (isset($_POST['number']) && $_POST['number'] != "") {
     $array['number'] = $_POST['number'];
     $array['number_operator'] = $_POST['number_operator'];
   }
-  
+
   if (isset($_POST['year']) && $_POST['year'] != "") {
     $array['year'] = $_POST['year'];
     $array['year_operator'] = $_POST['year_operator'];
   }
-  
+
   if (isset($_POST['bitrate']) && $_POST['bitrate'] != "") {
     $array['bitrate'] = $_POST['bitrate'];
     $array['bitrate_operator'] = $_POST['bitrate_operator'];
   }
-  
+
   if (isset($_POST['frequency']) && $_POST['frequency'] != "") {
     $array['frequency'] = $_POST['frequency'];
     $array['frequency_operator'] = $_POST['frequency_operator'];
   }
-  
+
   if (isset($_POST['size']) && $_POST['size'] != "") {
     $array['size'] = $_POST['size'];
     $array['size_operator'] = $_POST['size_operator'];
   }
-  
+
   if (isset($_POST['type']) && $_POST['type'] != "") {
     $array['type'] = $_POST['type'];
   }
-  
+
   if (isset($_POST['comment']) && $_POST['comment'] != "")
     $array['comment'] = $_POST['comment'];
-  
+
   if (isset($_POST['lyrics']) && $_POST['lyrics'] != "")
     $array['lyrics'] = $_POST['lyrics'];
 
@@ -2080,7 +2080,7 @@ function filterSearchResults($results,$meta) {
     }
   }
   return $ret;
-}	
+}
 
 /**
  * Tests to see if a result should be
@@ -2144,7 +2144,7 @@ function removeResultString($type,$m,$meta) {
 /**
  * Estimates the rating given a float.
  * Return value is between 0 and 5, incremented by .5.
- * 
+ *
  * @author Ben Dodson
  * @version 6/13/04
  * @since 6/11/04
@@ -2152,7 +2152,7 @@ function removeResultString($type,$m,$meta) {
 function estimateRating($val) {
   $whole = floor($val);
   $fraction = $val - $whole;
-  
+
   if ($fraction < .25) {
     return $whole;
   } else if ($fraction < .75) {
@@ -2196,11 +2196,11 @@ function jz_filemtime($file) {
  **/
 function isNothing($string) {
   if (!isset($string) ||
-      $string == "" || 
+      $string == "" ||
       $string == false ||
       $string == "-")
     return true;
-  
+
   return false;
 }
 
@@ -2223,5 +2223,5 @@ function removeFromArray(&$arr,$el) {
     $arr = array_values($arr);
   }
 }
-  
+
 ?>

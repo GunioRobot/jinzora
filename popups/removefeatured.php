@@ -1,7 +1,7 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die('Security breach detected.');
 	/**
 	* Removes the selected node to the featured list
-	* 
+	*
 	* @author Ross Carlson
 	* @version 01/19/05
 	* @since 01/19/05
@@ -11,18 +11,18 @@
 		// First let's display the top of the page and open the main block
 		$this->displayPageTop("",word("Removing from featured"). "<br>". $node->getName());
 		$this->openBlock();
-		
+
 		// Now let's add this puppy
 		$node->removeFeatured();
-		
+
 		// Let's display status
 		echo "<br>". word("Remove complete!");
-		
+
 		// Now let's close out
-		$this->closeBlock();		
+		$this->closeBlock();
 		flushDisplay();
-		
+
 		sleep(3);
 		$this->closeWindow(true);
-	
+
 ?>

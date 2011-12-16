@@ -31,12 +31,12 @@
    font-size: 11px;
    background-color:	<?php echo jz_bg_color; ?>;
 }
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
  /* jzMenu Style Sheet */
 
 .jzMenu,.jzSubMenuTable
@@ -271,17 +271,17 @@ tr.jzMainItem td.jzMainFolderRight
 	<!--//
 	/*
 	JSCookMenu v1.23.  (c) Copyright 2002 by Heng Yuan
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a
 	copy of this software and associated documentation files (the "Software"),
 	to deal in the Software without restriction, including without limitation
 	the rights to use, copy, modify, merge, publish, distribute, sublicense,
 	and/or sell copies of the Software, and to permit persons to whom the
 	Software is furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included
 	in all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 	OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	ITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -290,19 +290,19 @@ tr.jzMainItem td.jzMainFolderRight
 	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 	DEALINGS IN THE SOFTWARE.
 	*/
-	
+
 	// Globals
 	var _cmIDCount = 0;
 	var _cmIDName = 'cmSubMenuID';		// for creating submenu id
-	
+
 	var _cmTimeOut = null;			// how long the menu would stay
 	var _cmCurrentItem = null;		// the current menu item being selected;
-	
+
 	var _cmNoAction = new Object ();	// indicate that the item cannot be hovered.
 	var _cmSplit = new Object ();		// indicate that the item is a menu split
-	
+
 	var _cmItemList = new Array ();		// a simple list of items
-	
+
 	// default node properties
 	var _cmNodeProperties =
 	{
@@ -313,7 +313,7 @@ tr.jzMainItem td.jzMainFolderRight
 		// put in <span></span>.  When the menu
 		// bar is vertical, they would be put in
 		// a separate TD cell.
-	
+
 		// HTML code to the left of the folder item
 		mainFolderLeft: '',
 		// HTML code to the right of the folder item
@@ -322,9 +322,9 @@ tr.jzMainItem td.jzMainFolderRight
 		mainItemLeft: '',
 		// HTML code to the right of the regular item
 		mainItemRight: '',
-	
+
 		// sub menu display attributes
-	
+
 		// HTML code to the left of the folder item
 		folderLeft: '',
 		// HTML code to the right of the folder item
@@ -340,13 +340,13 @@ tr.jzMainItem td.jzMainFolderRight
 		// auto dispear time for submenus in milli-seconds
 		delay: 300
 	};
-	
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Drawing Functions and Utility Functions
 	//
 	//////////////////////////////////////////////////////////////////////
-	
+
 	//
 	// produce a new unique id
 	//
@@ -354,7 +354,7 @@ tr.jzMainItem td.jzMainFolderRight
 	{
 		return _cmIDName + (++_cmIDCount);
 	}
-	
+
 	//
 	// return the property string for the menu item
 	//
@@ -368,12 +368,12 @@ tr.jzMainItem td.jzMainFolderRight
 		prefix = '\'' + prefix + '\'';
 		return ' onmouseover="cmItemMouseOver (this,' + prefix + ',' + isMain + ',' + idSub + ',' + orient + ',' + index + ')" onmouseout="cmItemMouseOut (this,' + nodeProperties.delay + ')" onmousedown="cmItemMouseDown (this,' + index + ')" onmouseup="cmItemMouseUp (this,' + index + ')"';
 	}
-	
+
 	function cmNoActionItem (item, prefix)
 	{
 		return item[1];
 	}
-	
+
 	function cmSplitItem (prefix, isMain, vertical)
 	{
 		var classStr = 'cm' + prefix;
@@ -390,7 +390,7 @@ tr.jzMainItem td.jzMainFolderRight
 		var item = eval (classStr);
 		return cmNoActionItem (item, prefix);
 	}
-	
+
 	//
 	// draw the sub menu recursively
 	//
@@ -398,54 +398,54 @@ tr.jzMainItem td.jzMainFolderRight
 	{
 		var str = '<span class="' + prefix + 'SubMenu" id="' + id + '"><table summary="sub menu" cellspacing="' + nodeProperties.subSpacing + '" class="' + prefix + 'SubMenuTable">';
 		var strSub = '';
-	
+
 		var item;
 		var idSub;
 		var hasChild;
-	
+
 		var i;
-	
+
 		var classStr;
-	
+
 		for (i = 5; i < subMenu.length; ++i)
 		{
 			item = subMenu[i];
 			if (!item)
 				continue;
-	
+
 			hasChild = (item.length > 5);
 			idSub = hasChild ? cmNewID () : null;
-	
+
 			str += '<tr class="<?php echo $jz_MenuItem; ?>"' + cmActionItem (item, prefix, 0, idSub, orient, nodeProperties) + '>';
-	
+
 			if (item == _cmSplit)
 			{
 				str += cmSplitItem (prefix, 0, true);
 				str += '</tr>';
 				continue;
 			}
-	
+
 			if (item[0] == _cmNoAction)
 			{
 				str += cmNoActionItem (item, prefix);
 				str += '</tr>';
 				continue;
 			}
-	
+
 			classStr = prefix + 'Menu';
 			classStr += hasChild ? 'Folder' : 'Item';
-	
+
 			str += '<td class="' + classStr + 'Left">';
-	
+
 			if (item[0] != null && item[0] != _cmNoAction)
 				str += item[0];
 			else
 				str += hasChild ? nodeProperties.folderLeft : nodeProperties.itemLeft;
-	
+
 			str += '<td class="' + classStr + 'Text">' + item[1];
-	
+
 			str += '<td class="' + classStr + 'Right">';
-	
+
 			if (hasChild)
 			{
 				str += nodeProperties.folderRight;
@@ -455,11 +455,11 @@ tr.jzMainItem td.jzMainFolderRight
 				str += nodeProperties.itemRight;
 			str += '</td></tr>';
 		}
-	
+
 		str += '</table></span>' + strSub;
 		return str;
 	}
-	
+
 	//
 	// The function that builds the menu inside the specified element id.
 	//
@@ -471,22 +471,22 @@ tr.jzMainItem td.jzMainFolderRight
 	function cmDraw (id, menu, orient, nodeProperties, prefix)
 	{
 		var obj = cmGetObject (id);
-	
+
 		if (!nodeProperties)
 			nodeProperties = _cmNodeProperties;
 		if (!prefix)
 			prefix = '';
-	
+
 		var str = '<table summary="main menu" class="' + prefix + 'Menu" cellspacing="' + nodeProperties.mainSpacing + '">';
 		var strSub = '';
-	
+
 		if (!orient)
 			orient = 'hbr';
-	
+
 		var orientStr = String (orient);
 		var orientSub;
 		var vertical;
-	
+
 		// draw the main menu items
 		if (orientStr.charAt (0) == 'h')
 		{
@@ -501,67 +501,67 @@ tr.jzMainItem td.jzMainFolderRight
 			orientSub = 'v' + orientStr.substr (1, 2);
 			vertical = true;
 		}
-	
+
 		var i;
 		var item;
 		var idSub;
 		var hasChild;
-	
+
 		var classStr;
-	
+
 		for (i = 0; i < menu.length; ++i)
 		{
 			item = menu[i];
-	
+
 			if (!item)
 				continue;
-	
+
 			str += vertical ? '<tr' : '<td';
 			str += ' class="' + prefix + 'MainItem"';
-	
+
 			hasChild = (item.length > 5);
 			idSub = hasChild ? cmNewID () : null;
-	
+
 			str += cmActionItem (item, prefix, 1, idSub, orient, nodeProperties) + '>';
-	
+
 			if (item == _cmSplit)
 			{
 				str += cmSplitItem (prefix, 1, vertical);
 				str += vertical? '</tr>' : '</td>';
 				continue;
 			}
-	
+
 			if (item[0] == _cmNoAction)
 			{
 				str += cmNoActionItem (item, prefix);
 				str += vertical? '</tr>' : '</td>';
 				continue;
 			}
-	
+
 			classStr = prefix + 'Main' + (hasChild ? 'Folder' : 'Item');
-	
+
 			str += vertical ? '<td' : '<span';
 			str += ' class="' + classStr + 'Left">';
-	
+
 			str += (item[0] == null) ? (hasChild ? nodeProperties.mainFolderLeft : nodeProperties.mainItemLeft)
 						 : item[0];
 			str += vertical ? '</td>' : '</span>';
-	
+
 			str += vertical ? '<td' : '<span';
 			str += ' class="' + classStr + 'Text">';
 			str += item[1];
-	
+
 			str += vertical ? '</td>' : '</span>';
-	
+
 			str += vertical ? '<td' : '<span';
 			str += ' class="' + classStr + 'Right">';
-	
+
 			str += hasChild ? nodeProperties.mainFolderRight : nodeProperties.mainItemRight;
-	
+
 			str += vertical ? '</td>' : '</span>';
-	
+
 			str += vertical ? '</tr>' : '</td>';
-	
+
 			if (hasChild)
 				strSub += cmDrawSubMenu (item, prefix, idSub, orientSub, nodeProperties);
 		}
@@ -571,28 +571,28 @@ tr.jzMainItem td.jzMainFolderRight
 		obj.innerHTML = str;
 		//document.write ("<xmp>" + str + "</xmp>");
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Mouse Event Handling Functions
 	//
 	//////////////////////////////////////////////////////////////////////
-	
+
 	//
 	// action should be taken for mouse moving in to the menu item
 	//
 	function cmItemMouseOver (obj, prefix, isMain, idSub, orient, index)
 	{
 		clearTimeout (_cmTimeOut);
-	
+
 		if (!obj.cmPrefix)
 		{
 			obj.cmPrefix = prefix;
 			obj.cmIsMain = isMain;
 		}
-	
+
 		var thisMenu = cmGetThisMenu (obj, prefix);
-	
+
 		// insert obj into cmItems if cmItems doesn't have obj
 		if (!thisMenu.cmItems)
 			thisMenu.cmItems = new Array ();
@@ -607,7 +607,7 @@ tr.jzMainItem td.jzMainFolderRight
 			//thisMenu.cmItems.push (obj);
 			thisMenu.cmItems[i] = obj;
 		}
-	
+
 		// hide the previous submenu that is not this branch
 		if (_cmCurrentItem)
 		{
@@ -615,7 +615,7 @@ tr.jzMainItem td.jzMainFolderRight
 			// move the mouse slowly to the border
 			if (_cmCurrentItem == thisMenu)
 				return;
-	
+
 			var thatPrefix = _cmCurrentItem.cmPrefix;
 			var thatMenu = cmGetThisMenu (_cmCurrentItem, thatPrefix);
 			if (thatMenu != thisMenu.cmParentMenu)
@@ -628,16 +628,16 @@ tr.jzMainItem td.jzMainFolderRight
 					cmHideMenu (thatMenu, thisMenu, thatPrefix);
 			}
 		}
-	
+
 		// okay, set the current menu to this obj
 		_cmCurrentItem = obj;
-	
+
 		// just in case, reset all items in this menu to MenuItem
 		cmResetMenu (thisMenu, prefix);
-	
+
 		var item = _cmItemList[index];
 		var isDefaultItem = cmIsDefaultItem (item);
-	
+
 		if (isDefaultItem)
 		{
 			if (isMain)
@@ -645,22 +645,22 @@ tr.jzMainItem td.jzMainFolderRight
 			else
 				obj.className = '<?php echo $jz_MenuItemHover; ?>';
 		}
-	
+
 		if (idSub)
 		{
 			var subMenu = cmGetObject (idSub);
 			cmShowSubMenu (obj, prefix, subMenu, orient);
 		}
-	
+
 		var descript = '';
 		if (item.length > 4)
 			descript = (item[4] != null) ? item[4] : (item[2] ? item[2] : descript);
 		else if (item.length > 2)
 			descript = (item[2] ? item[2] : descript);
-	
+
 		window.defaultStatus = descript;
 	}
-	
+
 	//
 	// action should be taken for mouse moving out of the menu item
 	//
@@ -671,7 +671,7 @@ tr.jzMainItem td.jzMainFolderRight
 		_cmTimeOut = window.setTimeout ('cmHideMenuTime ()', delayTime);
 		window.defaultStatus = '';
 	}
-	
+
 	//
 	// action should be taken for mouse button down at a menu item
 	//
@@ -685,22 +685,22 @@ tr.jzMainItem td.jzMainFolderRight
 				obj.className = obj.cmPrefix + 'MenuItemActive';
 		}
 	}
-	
+
 	//
 	// action should be taken for mouse button up at a menu item
 	//
 	function cmItemMouseUp (obj, index)
 	{
 		var item = _cmItemList[index];
-	
+
 		var link = null, target = '_self';
-	
+
 		if (item.length > 2)
 			link = item[2];
 		if (item.length > 3)
 			target = item[3] ? item[3] : target;
-	
-		if (link != null && target=='moswindow') 
+
+		if (link != null && target=='moswindow')
 		{
 			window.open (link, '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550');
 		}
@@ -708,10 +708,10 @@ tr.jzMainItem td.jzMainFolderRight
 		{
 			window.open (link, target);
 		}
-	
+
 		var prefix = obj.cmPrefix;
 		var thisMenu = cmGetThisMenu (obj, prefix);
-	
+
 		var hasChild = (item.length > 5);
 		if (!hasChild)
 		{
@@ -735,13 +735,13 @@ tr.jzMainItem td.jzMainFolderRight
 			}
 		}
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////
 	//
 	// Mouse Event Support Utility Functions
 	//
 	//////////////////////////////////////////////////////////////////////
-	
+
 	//
 	// move submenu to the appropriate location
 	//
@@ -777,7 +777,7 @@ tr.jzMainItem td.jzMainFolderRight
 			//alert (subMenu.style.top + ', ' + cmGetY (obj) + ', ' + obj.offsetHeight);
 		}
 	}
-	
+
 	//
 	// show the subMenu w/ specified orientation
 	// also move it to the correct coordinates
@@ -798,11 +798,11 @@ tr.jzMainItem td.jzMainFolderRight
 			//thisMenu.cmSubMenu.push (subMenu);
 			thisMenu.cmSubMenu[thisMenu.cmSubMenu.length] = subMenu;
 		}
-	
+
 		// position the sub menu
 		cmMoveSubMenu (obj, subMenu, orient);
 		subMenu.style.visibility = 'visible';
-	
+
 		//
 		// On IE, controls such as SELECT, OBJECT, IFRAME (before 5.5)
 		// are window based controls.  So, if sub menu and these controls
@@ -822,7 +822,7 @@ tr.jzMainItem td.jzMainFolderRight
 			cmHideControl ("OBJECT", subMenu);
 		}
 	}
-	
+
 	//
 	// reset all the menu items to class MenuItem in thisMenu
 	//
@@ -844,7 +844,7 @@ tr.jzMainItem td.jzMainFolderRight
 			}
 		}
 	}
-	
+
 	//
 	// called by the timer to hide the menu
 	//
@@ -856,7 +856,7 @@ tr.jzMainItem td.jzMainFolderRight
 			cmHideMenu (cmGetThisMenu (_cmCurrentItem, prefix), null, prefix);
 		}
 	}
-	
+
 	//
 	// hide thisMenu, children of thisMenu, as well as the ancestor
 	// of thisMenu until currentMenu is encountered.  currentMenu
@@ -865,7 +865,7 @@ tr.jzMainItem td.jzMainFolderRight
 	function cmHideMenu (thisMenu, currentMenu, prefix)
 	{
 		var str = prefix + 'SubMenu';
-	
+
 		// hide the down stream menus
 		if (thisMenu.cmSubMenu)
 		{
@@ -875,7 +875,7 @@ tr.jzMainItem td.jzMainFolderRight
 				cmHideSubMenu (thisMenu.cmSubMenu[i], prefix);
 			}
 		}
-	
+
 		// hide the upstream menus
 		while (thisMenu && thisMenu != currentMenu)
 		{
@@ -890,7 +890,7 @@ tr.jzMainItem td.jzMainFolderRight
 			thisMenu = cmGetThisMenu (thisMenu.cmParentMenu, prefix);
 		}
 	}
-	
+
 	//
 	// hide thisMenu as well as its sub menus if thisMenu is not
 	// already hidden
@@ -911,7 +911,7 @@ tr.jzMainItem td.jzMainFolderRight
 		thisMenu.style.visibility = 'hidden';
 		cmShowControl (thisMenu);
 	}
-	
+
 	//
 	// hide a control such as IFRAME
 	//
@@ -921,21 +921,21 @@ tr.jzMainItem td.jzMainFolderRight
 		var y = cmGetY (subMenu);
 		var w = subMenu.offsetWidth;
 		var h = subMenu.offsetHeight;
-	
+
 		var i;
 		for (i = 0; i < document.all.tags(tagName).length; ++i)
 		{
 			var obj = document.all.tags(tagName)[i];
 			if (!obj || !obj.offsetParent)
 				continue;
-	
+
 			// check if the object and the subMenu overlap
-	
+
 			var ox = cmGetX (obj);
 			var oy = cmGetY (obj);
 			var ow = obj.offsetWidth;
 			var oh = obj.offsetHeight;
-	
+
 			if (ox > (x + w) || (ox + ow) < x)
 				continue;
 			if (oy > (y + h) || (oy + oh) < y)
@@ -945,7 +945,7 @@ tr.jzMainItem td.jzMainFolderRight
 			obj.style.visibility = "hidden";
 		}
 	}
-	
+
 	//
 	// show the control hidden by the subMenu
 	//
@@ -959,7 +959,7 @@ tr.jzMainItem td.jzMainFolderRight
 		}
 		subMenu.cmOverlap = null;
 	}
-	
+
 	//
 	// returns the main menu or the submenu table where this obj (menu item)
 	// is in
@@ -976,7 +976,7 @@ tr.jzMainItem td.jzMainFolderRight
 		}
 		return null;
 	}
-	
+
 	//
 	// return true if this item is handled using default handlers
 	//
@@ -986,7 +986,7 @@ tr.jzMainItem td.jzMainFolderRight
 			return false;
 		return true;
 	}
-	
+
 	//
 	// returns the object baring the id
 	//
@@ -996,14 +996,14 @@ tr.jzMainItem td.jzMainFolderRight
 			return document.all[id];
 		return document.getElementById (id);
 	}
-	
+
 	//
 	// functions that obtain the coordinates of an HTML element
 	//
 	function cmGetX (obj)
 	{
 		var x = 0;
-	
+
 		do
 		{
 			x += obj.offsetLeft;
@@ -1012,11 +1012,11 @@ tr.jzMainItem td.jzMainFolderRight
 		while (obj);
 		return x;
 	}
-	
+
 	function cmGetXAt (obj, elm)
 	{
 		var x = 0;
-	
+
 		while (obj && obj != elm)
 		{
 			x += obj.offsetLeft;
@@ -1024,7 +1024,7 @@ tr.jzMainItem td.jzMainFolderRight
 		}
 		return x;
 	}
-	
+
 	function cmGetY (obj)
 	{
 		var y = 0;
@@ -1036,11 +1036,11 @@ tr.jzMainItem td.jzMainFolderRight
 		while (obj);
 		return y;
 	}
-	
+
 	function cmGetYAt (obj, elm)
 	{
 		var y = 0;
-	
+
 		while (obj && obj != elm)
 		{
 			y += obj.offsetTop;
@@ -1048,7 +1048,7 @@ tr.jzMainItem td.jzMainFolderRight
 		}
 		return y;
 	}
-	
+
 	//
 	// debug function, ignore :)
 	//
@@ -1058,14 +1058,14 @@ tr.jzMainItem td.jzMainFolderRight
 			return 'undefined';
 		if (obj == null)
 			return 'null';
-	
+
 		var msg = obj + ':\n';
 		var i;
 		for (i in obj)
 			msg += i + ' = ' + obj[i] + '; ';
 		return msg;
 	}
-	
+
 	/* JSCookMenu v1.23	1. correct a position bug when the container is positioned.
 						  thanks to Andre <anders@netspace.net.au> for narrowing down
 						  the problem.
@@ -1098,11 +1098,11 @@ tr.jzMainItem td.jzMainFolderRight
 	/* JSCookMenu v1.1.		added ability to hide controls in IE to show submenus properly */
 	/* JSCookMenu v1.01.	cmDraw generates XHTML code */
 	/* JSCookMenu v1.0.		(c) Copyright 2002 by Heng Yuan */
-	
-	
+
+
 	// directory of where all the images are
 	var cmjzBase = 'includes/js/jz/';
-	
+
 	var cmjz =
 	{
 		// main menu display attributes
@@ -1112,7 +1112,7 @@ tr.jzMainItem td.jzMainFolderRight
 		// put in <span></span>.  When the menu
 		// bar is vertical, they would be put in
 		// a separate TD cell.
-	
+
 		// HTML code to the left of the folder item
 		mainFolderLeft: '&nbsp;',
 		// HTML code to the right of the folder item
@@ -1121,9 +1121,9 @@ tr.jzMainItem td.jzMainFolderRight
 		mainItemLeft: '&nbsp;',
 		// HTML code to the right of the regular item
 		mainItemRight: '&nbsp;',
-	
+
 		// sub menu display attributes
-	
+
 		// 0, HTML code to the left of the folder item
 		folderLeft: '<img alt="" src="<?php echo $main_img_dir; ?>/spacer.png">',
 		// 1, HTML code to the right of the folder item
@@ -1139,7 +1139,7 @@ tr.jzMainItem td.jzMainFolderRight
 		// 6, auto dispear time for submenus in milli-seconds
 		delay: 300
 	};
-	
+
 	// for horizontal menu split
 	var cmjzHSplit = [_cmNoAction, '<td class="<?php echo $jz_MenuItemLeft; ?>"></td><td colspan="2"><span class="<?php echo $jz_MenuSplit; ?>"></span></td>'];
 	var cmjzMainHSplit = [_cmNoAction, '<td class="<?php echo $jz_MenuItemLeft; ?>"></td><td colspan="2"><span class="<?php echo $jz_MenuSplit; ?>"></span></td>'];

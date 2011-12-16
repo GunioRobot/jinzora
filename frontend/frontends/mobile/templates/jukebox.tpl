@@ -86,11 +86,11 @@ function setAddTypeStyle(cur) {
       if (j <= i) {
         el.style.backgroundColor='{/literal}{$volFilled}{literal}';
       } else {
-        el.style.backgroundColor='{/literal}{$volNotFilled}{literal}';    
+        el.style.backgroundColor='{/literal}{$volNotFilled}{literal}';
       }
       j++;
     }
-    
+
   }
 </script>
 {/literal}
@@ -103,7 +103,7 @@ function setAddTypeStyle(cur) {
 <div id="jbAddTypes">
 <br/>
 <h2>{$whereAdd}</h2>
-{section name=addType loop=$addTypes}  
+{section name=addType loop=$addTypes}
   <a id="addType{$smarty.section.addType.index}" href="{$addTypes[addType].href}" onclick="setAddTypeStyle('addType{$smarty.section.addType.index}')" {if $addTypes[addType].selected}style="font-weight:bold;"{/if}>{$addTypes[addType].label}</a><br/>
 {/section}
 </div>

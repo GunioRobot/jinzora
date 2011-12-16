@@ -4,7 +4,7 @@
 	{$tracks[track].artist}
 	{$tracks[track].album}
 	{$tracks[track].track}
-	{$tracks[track].length} 
+	{$tracks[track].length}
 *}
 #EXTM3U
 {section name=track loop=$tracks}

@@ -1,33 +1,33 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* These are the classes extended by the backend adaptors.
 	*
 	* @since 05.10.04
 	* @author Ben Dodson <bdodson@seas.upenn.edu>
 	*/
-	
+
 	/** Users have the following settings:
 	  [note that there is a gid for 'all media']
-	  
+
 	  stream (true|false)
 	  view
 	  write
@@ -49,18 +49,18 @@
 	  powersearch
 	  ratingweight<1>
 	  localpath (a local path to the music collection)
-	  
+
 	*/
-	
+
 	class jzUserClass {
 		var $id;
 		var $name;
 		var $settings;
 		var $data_dir;
-		
+
 		/**
 		* Sets the artist that the user is browsing for tracking purposes
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01.11.05
 		* @since 01.11.05
@@ -74,13 +74,13 @@
 		    }
 			$dp = $this->data_dir . "/". $user_id. ".tracking";
 			$prevArray = unserialize(@file_get_contents($dp));
-			
+
 			// Now let's setup our service
 			$service = new jzServices();
 			$service->loadService("similar", "echocloud");
 
 			$artistList = "";
-			for ($i=0; $i < count($prevArray); $i++){					
+			for ($i=0; $i < count($prevArray); $i++){
 				if ($prevArray[$i]['artist'] <> ""){
 					$artistList .= $prevArray[$i]['artist']. "|";
 				}
@@ -96,7 +96,7 @@
 					}
 				}
 			}
-			
+
 			$root = new jzMediaNode();
 			@usort($favArray, "track_cmp");
 			// Now let's trim this to only 6 artists
@@ -105,20 +105,20 @@
 				returnSimilar($favArray[$i]['artist'], 1);
 			}
 		}
-		
+
 		/*
 		 * Constructor for a jzUser
 		 *
 		 * @author Ben Dodson
 		 *
-		 **/		
+		 **/
 		function jzUserClass($login = true, $uid = false) {
 		  $this->_constructor($login,$uid);
 		}
-		
+
 		function _constructor($login, $uid) {
 		  global $include_path;
-			
+
 		  if ($login === false) {
 		    $be = &new jzBackend();
 		    $this->data_dir = $be->data_dir;
@@ -179,7 +179,7 @@
 		function getID() {
 			return $this->id;
 		}
-		
+
 		/* Gets the user's name
 		 *
 		 * @author Ben Dodson
@@ -200,14 +200,14 @@
 			  return false;
 			}
 			$users = unserialize($f);
-			
+
 			return (isset($users[$user]['id'])) ? $users[$user]['id'] : false;
 		}
-		
+
 
 		function lookupName($id) {
 		  $dp = $this->data_dir . "/user_settings";
-		  
+
 		  $usersettings = unserialize(file_get_contents($dp));
 		  if (isset($usersettings[$id]) && isset($usersettings[$id]['name'])) {
 		    return $usersettings[$id]['name'];
@@ -232,10 +232,10 @@
 		function lookupGID($group) {
 			$dp = $this->data_dir . "/" . "groups";
 			$groups = unserialize(file_get_contents($dp));
-			
+
 			return (isset($groups[$group])) ? $groups[$group] : false;
 		}
-		
+
 		/* Adds a group to the listings.
 		 *
 		 * @author Ben Dodson
@@ -244,18 +244,18 @@
 		function addGroup($group) {
 			$dp = $this->data_dir . "/" . "groups";
 			$groups = unserialize(file_get_contents($dp));
-			
+
 			if (isset($groups[$group])) return false;
-			
+
 			$groups[$group] = sizeof($groups);
-			
+
 			if (!$handle = @fopen($dp,"w")) {
 				die("Could not open groups file (" . $dp . ") for writing.");
 			}
 			fwrite($handle,serialize($groups));
 			fclose($handle);
 		}
-		
+
 		/* Adds a user to the database.
 		 *
 		 * @author Ben Dodson
@@ -276,13 +276,13 @@
 			$settings = array();
 			$settings['name'] = $user;
 			$this->setSettings($settings,$my_id);
-			
+
 			if (!$handle = @fopen($dp,"w")) {
 				die("Could not open users file (" . $dp . "(for writing.");
 			}
 			fwrite($handle,serialize($users));
 			fclose($handle);
-			
+
 			return $my_id;
 		}
 
@@ -315,7 +315,7 @@
 		  }
 		  fwrite($handle,serialize($usersettings));
 		  fclose($handle);
-		  
+
 		}
 
 
@@ -329,7 +329,7 @@
 			$dp = $this->data_dir . "/" . "users";
 			$users = unserialize(file_get_contents($dp));
 			// update users register and user settings.
-			
+
 			if (isset($users[$newname])) {
 				return false;
 			}
@@ -339,29 +339,29 @@
 			$users[$newname] = $users[$oldname];
 			$id = $users[$newname]['id'];
 			unset($users[$oldname]);
-			
-			
+
+
 			if (!$handle = @fopen($dp,"w")) {
 				die("Could not open users file for writing.");
 			}
 			fwrite($handle,serialize($users));
 			fclose($handle);
-			
+
 			$dp = $this->data_dir . "/user_settings";
-			
+
 			$usersettings = unserialize(file_get_contents($dp));
 			$usersettings[$id]['name'] = $newname;
-			
+
 			if (!$handle = @fopen($dp,"w")) {
 				die("Could not open users file for writing.");
 			}
 			fwrite($handle,serialize($usersettings));
 			fclose($handle);
-			
-			
+
+
 			$this->name = $newname;
 		}
-		
+
 		/* Changes the password
 		 *
 		 * @author Ben Dodson
@@ -370,7 +370,7 @@
 		function changePassword($newpass, $name = false) {
 			$dp = $this->data_dir . "/" . "users";
 			$users = unserialize(file_get_contents($dp));
-			
+
 			if ($name === false) {
 				$name = $this->name;
 			}
@@ -378,12 +378,12 @@
 				return false;
 			}
 			$users[$name]['password'] = jz_password($newpass);
-			
+
 			if (!$handle = @fopen($dp,"w")) {
 				die("Could not open users file for writing.");
 			}
 			fwrite($handle,serialize($users));
-			fclose($handle);	
+			fclose($handle);
 		}
 
 		/* Returns all users in an array
@@ -395,7 +395,7 @@
 		 **/
 		function listUsers() {
 		  $dp = $this->data_dir . "/" . "users";
-		  
+
 		  $arr = array();
 		  $users = unserialize(file_get_contents($dp));
 
@@ -405,13 +405,13 @@
 		  asort($arr);
 		  return $arr;
 		}
-		
+
 		/* Logs in a user
 		 *
 		 * @author Ben Dodson
 		 *
 		 */
-		function login($user, $password, $remember = false, $prehashed = false) {	
+		function login($user, $password, $remember = false, $prehashed = false) {
                         global $cms_mode,$cms_type;
 
                         if ($cms_mode != "false") {
@@ -426,7 +426,7 @@
 
 			$dp = $this->data_dir . "/" . "users";
 			$users = unserialize(file_get_contents($dp));
-			
+
 			// Clear their data cache.
                         if ($cms === false) {
 			  /*
@@ -439,12 +439,12 @@
                        }
 
 			$this->initUser();
-			
+
 			if ($cms !== false) {
 			  // The login is coming from CMS.
 			  // This means we can assume they are authenticated;
 			  // Just make sure they have an entry in our users file.
-			  
+
 			  if (!isset($users[$user])) {
 			    // first timer:
 			    $this->addUser($user,"cms-user");
@@ -455,7 +455,7 @@
 			  else {
 			    if ($users[$user]['password'] != jz_password("cms-user")) { // double user. bad move.
 			      // Actually let's let this fly and see how it works out for CMS users.
-			      // To disallow this again, be sure to edit install/step6.php so the 
+			      // To disallow this again, be sure to edit install/step6.php so the
 			      // admin user is created w. password 'cms-user' during a CMS install.
 			      $this->id = $users[$user]['id'];
 			      $_SESSION['jzUserID'] = jz_cookie_encode($this->id);
@@ -469,7 +469,7 @@
 			      writeLogData("access", "cms-user '" . $user . "' logged in successfully.");
 			      return true;
 			    }
-			  }				
+			  }
 			  return false;
 			}
 			// NO CMS; standard way.
@@ -480,7 +480,7 @@
 					setcookie('jzUserID',jz_cookie_encode($this->id),time()+60*60*24*30);
 				}
 				$_SESSION['jzUserID'] = jz_cookie_encode($this->id);
-				$this->loadSettings();				
+				$this->loadSettings();
 				writeLogData("access", "user '" . $user . "' logged in successfully.");
 				return true;
 			}
@@ -490,7 +490,7 @@
 				return false;
 			}
 		}
-		
+
 		/* Logs a user out
 		 *
 		 * @author Ben Dodson
@@ -504,7 +504,7 @@
 			$this->name = NOBODY;
 			$this->loadSettings();
 		}
-		
+
 		/* Gets a certain setting for the user.
 		 * Also see the user_default() function in backend/backend.php.
 		 *
@@ -538,7 +538,7 @@
 		    return $this->getSetting($setting);
 		  }
 		}
-		
+
 		/* Loads the user's settings.
 		 *
 		 * @author Ben Dodson
@@ -547,7 +547,7 @@
 		function loadSettings($my_id = false) {
 			if ($my_id === false) $id = $this->id;
 			else $id = $my_id;
-			
+
 			$dp = $this->data_dir . "/user_settings";
 			$s = unserialize(file_get_contents($dp));
 			if (!isset($s[$id])) {
@@ -556,7 +556,7 @@
 			if ($my_id === false) {
 				$mysettings = array();
 				$settings = $s[$id];
-				// Is the login invalid?		
+				// Is the login invalid?
 				if (!is_array($settings) || $settings == array()) {
 				  return $this->loadSettings($this->lookupUID(NOBODY));
 				}
@@ -598,22 +598,22 @@
 				      $mysettings[$key] = false;
 				    }
 				    else {
-				      $mysettings[$key] = $val;	
+				      $mysettings[$key] = $val;
 				    }
 				  }
 				}
 				$this->settings = $mysettings;
 				$this->name = isset($this->settings['name']) ? $this->settings['name'] : word('Anonymous');
-				
+
 			}
 			return $s[$id];
 		}
-		
+
 		function setSetting($setting, $val, $id = false) {
 			$this->setSettings(array($setting => $val), $id);
 		}
-		
-		
+
+
 		/* Sets a setting or several settings.
 		 * All other settings remain the same.
 		 *
@@ -622,7 +622,7 @@
 		 */
 		function setSettings($settingsArray, $id = false, $wipe = false) {
 			if ($id === false) $id = $this->id;
-		
+
 			if (!$wipe) {
 				$oldsettings = $this->loadSettings($id);
 			} else {
@@ -635,7 +635,7 @@
 			$dp = $this->data_dir . "/user_settings";
 
 			$usersettings = unserialize(file_get_contents($dp));
-			
+
 			/*
 			if (!isNothing($settingsArray['home_dir'])) {
 			  // make sure their home directory exists
@@ -664,7 +664,7 @@
 			}
 
 			$usersettings[$id] = $oldsettings;
-			
+
 			if (!$handle = @fopen($dp,"w")) {
 				die("Could not open user_settings file for writing.");
 			}
@@ -686,7 +686,7 @@
 		function loadPlaylist($id = false) {
 		  if ($id === false) {
 		    // load the current playlist.
-		    // this will likely be a playlist ID stored as a session variable 
+		    // this will likely be a playlist ID stored as a session variable
 		    // for now, just use the session playlist.
 		    if (isset($_SESSION['jz_playlist'])) {
 		      $id = $_SESSION['jz_playlist'];
@@ -779,7 +779,7 @@
 		}
 
 
-		/* 
+		/*
 		 * Moves a playlist (renames it)
 		 *
 		 * @author Ben Dodson
@@ -826,7 +826,7 @@
 		  if (!file_exists($dp)) {
 		    return false;
 		  }
-		  
+
 		  return unserialize(@file_get_contents($dp));
 		}
 
@@ -843,12 +843,12 @@
 
 		  @unlink($dp);
 		}
-		
+
 		/*
 		 * Returns the track object the user
 		 * is currently playing.
 		 * If no track is streaming, returns false.
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @since 12/21/06
 		 */
@@ -871,5 +871,5 @@
 	 		 return false;
 		}
 	}
-	
+
 ?>

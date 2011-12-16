@@ -2,7 +2,7 @@
 
 /**
 * Displays the Item Retagger tool
-* 
+*
 * @author Ross Carlson, Ben Dodson
 * @version 01/27/05
 * @since 01/27/05
@@ -62,7 +62,7 @@ if (isset ($_POST['updateTags'])) {
 		$_SESSION['jz_retag_group'] = $_SESSION['jz_retag_group'] + $length;
 	}
 
-	// Ok, now let's get on with it, first let's setup the div for displaying the data	
+	// Ok, now let's get on with it, first let's setup the div for displaying the data
 	echo word("Retagging files, please stand by...") . "<br><br>";
 	flushdisplay();
 
@@ -371,7 +371,7 @@ echo '<form name="retagger" action="' . urlize($arr) . '" method="POST">';
 				</td>
 				<td>
 					<input onClick="document.retagger.edit_reGenre_custom.value='';" value="filesystem" type="radio" checked name="reGenre_filesystem"> <?php echo word("Filesystem Data"); ?><br>
-					<input value="custom" type="radio" name="reGenre_filesystem"> 
+					<input value="custom" type="radio" name="reGenre_filesystem">
 					<input type="text" name="edit_reGenre_custom" value="" size="30" class="jz_input">
 				</td>
 			</tr>
@@ -381,7 +381,7 @@ echo '<form name="retagger" action="' . urlize($arr) . '" method="POST">';
 				</td>
 				<td>
 					<input onClick="document.retagger.edit_reArtist_custom.value='';" value="filesystem" type="radio" checked name="reArtist_filesystem"> <?php echo word("Filesystem Data"); ?><br>
-					<input value="custom" type="radio" name="reArtist_filesystem"> 
+					<input value="custom" type="radio" name="reArtist_filesystem">
 					<input type="text" name="edit_reArtist_custom" value="" size="30" class="jz_input">
 				</td>
 			</tr>
@@ -391,7 +391,7 @@ echo '<form name="retagger" action="' . urlize($arr) . '" method="POST">';
 				</td>
 				<td>
 					<input onClick="document.retagger.edit_reAlbum_custom.value='';" value="filesystem" type="radio" checked name="reAlbum_filesystem"> <?php echo word("Filesystem Data"); ?><br>
-					<input value="custom" type="radio" name="reAlbum_filesystem"> 
+					<input value="custom" type="radio" name="reAlbum_filesystem">
 					<input type="text" name="edit_reAlbum_custom" value="" size="30" class="jz_input">
 					<br><br>
 				</td>

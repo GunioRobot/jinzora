@@ -17,7 +17,7 @@
 				<option value="lyrics">{$word_lyrics}</option>
 			</select>
 			<input type="hidden" name="doSearch" value="true">
-			<input type="submit" class="jz_submit" value="{$word_go}">			
+			<input type="submit" class="jz_submit" value="{$word_go}">
 		</form>
 	</div>
 </div>

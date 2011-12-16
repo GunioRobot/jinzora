@@ -1,24 +1,24 @@
-<?php 
+<?php
 	define('JZ_SECURE_ACCESS','true');
 	/*
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Ressources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* - Feeds data to Movable Type
 	* -- COMPLETELY UNSUPPORTED!!!!   -   Use at your own risk!
@@ -27,19 +27,19 @@
 	* @author Ross Carlson <ross@jinzora.org>
 	*
 	*/
-	
+
 	// Now let's include what we'll need for settings
 	include_once(dirname(__FILE__).'/../settings.php');
 	include_once($web_root. $root_dir. '/lang/english.php');
 	include_once($web_root. $root_dir. '/system.php');
-	
+
 	$user = $_GET['user'];
 	$numItems = $_GET['numItems'];
 	$img_width = $_GET['img_width'];
 	$resample = $_GET['resample'];
 	$allow_plays = $_GET['allow_plays'];
 	$truncate = $_GET['truncate'];
-	
+
 	// Now let's read in the played file of this user
 	$dataArray = file($web_root. $root_dir. "/data/users/". $user. ".played");
 	// Ok, now let's parse out what we read
@@ -51,8 +51,8 @@
 			$retArray[$c]['time'] = $valArray[1];
 		}
 	}
-	
-	// Now let's look at the entries here and see if this 
+
+	// Now let's look at the entries here and see if this
 	$finalData = "";
 	for ($c=0; $c < count($retArray); $c++){
 		$pathArray = explode("/",$retArray[$c]['path']);
@@ -63,13 +63,13 @@
 			$finalData .= $path. "|". $retArray[$c]['time']. "\n";
 		}
 	}
-	
+
 	// Ok, now we have the items lets display them
 	$finalArray = explode("\n",$finalData);
 	echo '<h2>Now Playing</h2>';
 	$nowArray = explode("|",$finalArray[0]);
 	$nowVal = explode("/",$nowArray[0]);
-	
+
 	// Now let's see if there is art for this item
 	$dirName = $web_root. $root_dir. $media_dir. "/". $nowArray[0];
 	$d = dir($dirName);
@@ -78,10 +78,10 @@
 		// Let's make sure this isn't the local directory we're looking at
 		if (preg_match("/\.($ext_graphic)$/i", $entry)) {
 			$img = $entry;
-		}		
+		}
 	}
 	$d->close();
-	
+
 	// Now let's echo out the item name
 	$item = $nowVal[count($nowVal)-1];
 	if (strlen($item) > $truncate){
@@ -93,7 +93,7 @@
 	} else {
 		echo $item. "<br>";
 	}
-	
+
 	// Now if we have an image let's display it
 	if ($img <> ""){
 		if ($allow_plays == "true"){
@@ -121,7 +121,7 @@
 					$link = $root_dir. "/playlists.php?d=1&r=". $resample. "&style=normal&info=". base64_encode(str_replace("%2F","/",urlencode($nowArray[0])));
 					$title = 'Play '. str_replace("/"," - ",$nowArray[0]);
 				} else {
-					$link = 'javascript:void(0)';	
+					$link = 'javascript:void(0)';
 					$title = str_replace("/"," - ",$nowArray[0]);
 					//echo $item. "<br>";
 				}

@@ -28,9 +28,9 @@
 				<input type="hidden" name="{$jz_list_type}" value="{$jz_list_type_value}">
 				{php}
 					global $jzUSER, $album_name_truncate, $img_play, $img_random_play, $img_play_dis, $img_random_play_dis, $sort_by_year, $web_root, $root_dir, $jz_path, $show_album_clip_play, $img_clip;
-					
+
 					$node = new jzMediaNode($jz_path);
-					$nodes = $node->getSubNodes("nodes");	
+					$nodes = $node->getSubNodes("nodes");
 					$display = new jzDisplay();
 					$blocks = new jzBlocks();
 					$mysort = $jzUSER->getSetting('sort');
@@ -39,8 +39,8 @@
 						sortElements($nodes,"year");
 					} else {
 						sortElements($nodes,"name");
-					}	
-					
+					}
+
 					foreach ($nodes as $child) {
 						$display->playButton($child);
 						$display->randomPlayButton($child);
@@ -52,9 +52,9 @@
 						$display->podcastLink($child, false);
 						$display->rateButton($child);
 						$display->addToFavButton($child);
-						
+
 						echo '<input type="checkbox" name="jz_list[]" value="' . jz_encode($child->getPath("String")) . '">&nbsp;';
-						
+
 						// FYI, you can getYear for any media element. It's guessed from the tracks.
 						$year = $child->getYear();
 						$dispYear = "";
@@ -64,19 +64,19 @@
 						$display->link($child, $display->returnShortName($child->getName(),$album_name_truncate) . $dispYear, word("View album"). ": ". $child->getName() . $dispYear);
 						// Now should we show new data?
 						if ($days = $child->newSince($days_for_new)){
-							echo icon('new', 
+							echo icon('new',
 									  array('literal' => $display->returnToolTip($days. " ". word("days ago"), word("New Since"))));
 						}
-						
+
 						echo " &nbsp; ";
 						$display->rating($child);
 						echo "<br>";
 					}
-					
+
 					$blocks->blockSpacer();
 					$blocks->playlistBar();
 				{/php}
-			</form>		
+			</form>
 		</td>
 	</tr>
 </table>

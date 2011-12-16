@@ -2,7 +2,7 @@
 
 /**
 * Displays the site/location news block text to be edited
-* 
+*
 * @author Ross Carlson, Ben Dodson
 * @version 01/27/05
 * @since 01/27/05

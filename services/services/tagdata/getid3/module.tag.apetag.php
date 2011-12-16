@@ -102,7 +102,7 @@ class getid3_apetag
 		// shortcut
 		$ThisFileInfo['replay_gain'] = array();
 		$thisfile_replaygain = &$ThisFileInfo['replay_gain'];
-		
+
 		for ($i = 0; $i < $thisfile_ape['footer']['raw']['tag_items']; $i++) {
 			$value_size = getid3_lib::LittleEndian2Int(substr($APEtagData, $offset, 4));
 			$offset += 4;

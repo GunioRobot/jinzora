@@ -1,6 +1,6 @@
 {php}
-	global $allow_interface_change, $allow_lang_choice, $jzUSER, $cms_mode, $show_page_load_time, $allow_style_choice; 
-	
+	global $allow_interface_change, $allow_lang_choice, $jzUSER, $cms_mode, $show_page_load_time, $allow_style_choice;
+
 	$display = new jzDisplay();
 {/php}
 <table width="100%" cellspacing="0" cellpadding="1">

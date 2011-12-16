@@ -9,7 +9,7 @@
   margin-top: 0;
   padding-left: 0;
   display: inline;
-} 
+}
 
 #tabs ul li {
   margin-left: 2px;
@@ -37,6 +37,6 @@
         <a href="{$tabs[tab].link}">{$tabs[tab].name|truncate:12:"..":true}</a>
       </li>
       {/section}
-    </ul>    
+    </ul>
   </div>
 </div>

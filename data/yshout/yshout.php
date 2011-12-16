@@ -40,7 +40,7 @@ $curseWords = array(
 	'cunt',
 	'cock',
 	'douche',
-	'bullshit'	
+	'bullshit'
 );
 
 
@@ -101,14 +101,14 @@ switch($reqType) {
 		$shoutName = $_POST['name'];
 
 		// Parse the message
-		if(!processCommand($shoutText)) 
+		if(!processCommand($shoutText))
 			shout($shoutName, $shoutText);
 
 		// Allow execution to flow into refresh
 	case 'refresh':
 		$newShouts = newShouts();
 		if ($newShouts) echo $newShouts;
-		break;	
+		break;
 }
 
 // Initialize the session variables to be used for the rest of this chat session
@@ -134,15 +134,15 @@ function processCommand($cmdString) {
 		$command = substr($cmdString, 1, $firstSpace - 1);
 		$args = substr($cmdString, $firstSpace + 1);
 		$args = trim($args);
-		
+
 		if ($args == '') unset($args);
 		else $args = explode(' ', $args);
-		
+
 	} else {
 		$command = substr($cmdString, 1);
 	}
 
-	
+
 	switch($command) {
 		case 'help':
 			if (isset($args))
@@ -150,7 +150,7 @@ function processCommand($cmdString) {
 			else
 				showHelp('help');
 			break;
-			
+
 		case 'login':
 			if (isset($args))
 				if (login(md5($args[0])))
@@ -181,7 +181,7 @@ function processCommand($cmdString) {
 					sysShout('Unbanned ' . formatString($args[0]) . '.');
 				else
 					sysShout('Couldn\'t unban ' . formatString($args[0]) . '.');
-					
+
 			}
 			break;
 
@@ -217,7 +217,7 @@ function showHelp($cmd) {
 		makeSetShoutText('/help bans', 'bans') . ', ' .
 		makeSetShoutText('/help clearbans', 'clearbans') . ', and ' .
 		makeSetShoutText('/help help', 'help') . '.';
-		
+
 	$help = 'Sorry, help for "'. $cmd .'" does not exist.<br>' .
 		$existsFor;
 
@@ -226,24 +226,24 @@ function showHelp($cmd) {
 			$help = '/login [password]<br>' .
 				'Logs you in an administrator.';
 				break;
-				
+
 		case 'logout':
 			$help = '/logout<br>' .
 				'Logs you out (removes administrator privileges).';
 				break;
-				
+
 		case 'ban':
 			$help = '/ban [ip]<br>' .
 				'Admin only.<br>' .
 				'Bans [ip] from viewing the shoutbox, and from shouting.';
 				break;
-				
+
 		case 'unban':
 			$help = '/unban [ip]<br>' .
 				'Admin only.<br>' .
 				'Unbans [ip], if they were banned. Otherwise it does absolutely nothing, which is also pretty cool.';
 				break;
-				
+
 		case 'bans':
 			$help = '/bans<br>' .
 				'Admin only.<br>' .
@@ -268,7 +268,7 @@ function showHelp($cmd) {
 				$existsFor;
 				break;
 	}
-	
+
 	sysShout($help);
 }
 
@@ -286,7 +286,7 @@ function listBans() {
 	}
 
 	$shoutText = 'Here\'s the list of bans. Click on an IP to unban.<br>';
-	
+
 	foreach ($jData as $key => $value) {
 		$shoutText .= '<a href="javascript:yS.setShoutText(\'/unban ' . $value['ip'] . '\');">' . $value['ip'] . '</a><br>';
 	}
@@ -336,9 +336,9 @@ function shout($nickname, $message) {
 
 	$nickname = cursesGetAway($nickname);
 	$message = cursesGetAway($message);
-	
+
 	$message = parseLinks($message);
-	
+
 	$shouttype =  (isAdmin()? 'admin' : 'user');
 	$ip = getIP();
 	$time = date('h:i a');
@@ -348,7 +348,7 @@ function shout($nickname, $message) {
 		'timestamp' => $timestamp,
 		'nickname' => $nickname,
 		'message' => $message,
-		
+
 		'ipaddress' => $ip,
 		'time' => $time,
 		'date' => $date,
@@ -368,13 +368,13 @@ function shout($nickname, $message) {
 	$jData = array_values($jData);
 	$output = encode($jData);
 	write($paths['log'], $output, 0773);
-	
+
 }
 
 // Echo all new shouts back to the client
 function newShouts($includeOptions = false) {
 	global $paths, $prefs, $sysShouts;
-	
+
 	$newShouts = array();
 
 	if ($includeOptions) {
@@ -385,12 +385,12 @@ function newShouts($includeOptions = false) {
 			'showTimestamps' => $prefs['showTimestamps']
 		);
 	}
-	
+
 	$jData = decode($paths['log']);
-	
+
 	$admin = isAdmin();
-	
-	if ($jData != null) 
+
+	if ($jData != null)
 		foreach($jData as $shout) {
 			$shoutTimestamp = $shout['timestamp'];
 			if ($shoutTimestamp > $_SESSION['MostRecentTimestamp']) {
@@ -399,10 +399,10 @@ function newShouts($includeOptions = false) {
 					unset($shout['ipaddress']);
 					unset($shout['showuserinfo']);
 				}
-	
+
 				if (preg_match("(http:\/\/(.+?) )is", $shout['message']) == false)
 					$shout['message'] = parseEmoticons($shout['message']);
-	
+
 				$newShouts['shouts'][] = $shout;
 			}
 		}
@@ -413,7 +413,7 @@ function newShouts($includeOptions = false) {
 			$newShouts['shouts'][] = $shout;
 		}
 
-	
+
 	if (isset($newShouts['shouts'])) {
 		$numNew = sizeof($newShouts['shouts']);
 		$_SESSION['MostRecentTimestamp'] = $newShouts['shouts'][$numNew - 1]['timestamp'];
@@ -435,10 +435,10 @@ function writeHistory($shout) {
 	$aHistory = explode("\n", $history);
 
 	$numItems = sizeof($aHistory);
-	
+
 	if ($numItems > $prefs['logMaxLines']) {
 		$aHistory = array_slice($aHistory, $numItems - $prefs['logMaxLines']);
-		$history = implode("\n", $aHistory);	
+		$history = implode("\n", $aHistory);
 	}
 
 	$msgClass = 'yshout-shout ';
@@ -452,12 +452,12 @@ function writeHistory($shout) {
 
 			break;
 		case 'user':
-		
+
 			break;
 	}
-	
-	$htmlShout = 
-		'<div class="' . $msgClass . ' yshout-shout"> ' . 
+
+	$htmlShout =
+		'<div class="' . $msgClass . ' yshout-shout"> ' .
 			'<span class="yshout-nickname">' . $shout['nickname'] . ':</span> ' .
 			'<span class="yshout-message">' . $shout['message'] . '</span>' .
 		'</div>' . "\n";
@@ -470,7 +470,7 @@ function writeHistory($shout) {
 function truncate(&$jData) {
 	global $prefs;
 	$numItems = sizeof($jData);
-	if ($numItems > $prefs['shoutMaxLines']) 
+	if ($numItems > $prefs['shoutMaxLines'])
 		$jData = array_slice($jData, $numItems - $prefs['shoutMaxLines']);
 }
 
@@ -501,20 +501,20 @@ function ban($ip) {
 	global $dirs, $paths;
 	if (!isAdmin()) return false;
 	if (!isValidIP($ip)) return false;
-	
-	$ip = formatString($ip); 
-	
+
+	$ip = formatString($ip);
+
 	ensureExists($dirs['prefs']);
 	if (isBanned($ip)) return;
-	
+
 	$jData = decode($paths['ban']);
 
 	if ($jData == null) $jData = array();
-	
+
 	$jData[] = array (
 		'ip' => $ip
 	);
-	
+
 	$jData = array_values($jData);
 	$output = encode($jData);
 	write($paths['ban'], $output, 0773);
@@ -528,7 +528,7 @@ function unban($ip) {
 	if (!isAdmin()) return false;
 	if (!isValidIP($ip)) return false;
 
-	$ip = formatString($ip); 
+	$ip = formatString($ip);
 	ensureExists($dirs['prefs']);
 	$jData = decode($paths['ban']);
 
@@ -551,13 +551,13 @@ function unban($ip) {
 function checkBanned() {
 	global $reqType;
 	$ip = getIP();
-		
+
 	if (isBanned($ip)) {
 		if (isAdmin()) {
 			sysShout('Looks like someone tried to ban you! You\'re an admin though, so I\'ll take the liberty of unbanning you. You see, if all the admins are banned then the site owner\'s in a bit of a pesky situation, as he has to go and clear the ban file manually. So it\'s for your own good, I assure you.');
 			unban($ip);
 		}
-		
+
 		if ($reqType == 'init') {
 			sysShout('You\'re banned.');
 		}
@@ -590,40 +590,40 @@ function parseEmoticons($shout) {
 	$imgString = '<img src="' . $_SESSION['YPath'] . 'smileys/%s.gif" />';
 
 	$shout = str_replace(
-		array('8)', '8-)', '8]'), 
+		array('8)', '8-)', '8]'),
 		sprintf($imgString, 'cool'), $shout);
-		
+
 	$shout = str_replace(
-		array(':?', ':-?'), 
+		array(':?', ':-?'),
 		sprintf($imgString, 'confused'), $shout);
-	
+
 	$shout = str_replace(
-		array(':|', ':-|'), 
+		array(':|', ':-|'),
 		sprintf($imgString, 'neutral'), $shout);
-	
+
 	$shout = str_replace(
-		array(':(', ':-(', '=(', '=-(', ':[', ':-[', '=[', ':{', ':-{'), 
+		array(':(', ':-(', '=(', '=-(', ':[', ':-[', '=[', ':{', ':-{'),
 		sprintf($imgString, 'sad'), $shout);
-		
+
 	$shout = str_replace(
-		array(':)', ':-)', '=)', '=-)', ':]', ':-]', '=]', ':}', ':-}'), 
+		array(':)', ':-)', '=)', '=-)', ':]', ':-]', '=]', ':}', ':-}'),
 		sprintf($imgString, 'smile'), $shout);
-	
+
 	$shout = str_replace(
-		array(';)', ';-)', ';]', ';-]', ';}', ';-}'), 
+		array(';)', ';-)', ';]', ';-]', ';}', ';-}'),
 		sprintf($imgString, 'wink'), $shout);
-	
+
 	$shout = stri_replace(
-		array(':D', ':-D', '=D') , 
+		array(':D', ':-D', '=D') ,
 		sprintf($imgString, 'biggrin'), $shout);
-	
+
 	$shout = stri_replace(
-		array(':p', ':-p', '=p', '=-p'), 
+		array(':p', ':-p', '=p', '=-p'),
 		sprintf($imgString, 'razz'), $shout);
 
 	$shout = stri_replace(
 		array(':o', ':-o', '=o', '=-o',
-		 ':0', ':-0', '=0', '=-0'), 
+		 ':0', ':-0', '=0', '=-0'),
 		sprintf($imgString, 'surprised'), $shout);
 
 	$shout = stri_replace(':cry:', sprintf($imgString, 'cry'), $shout);
@@ -650,10 +650,10 @@ function parseLinks($text) {
 function formatString($toFormat) {
 	$temp = trim($toFormat);
 	if (strlen($temp) > 0) $toFormat = $temp;
-	 
-	$toFormat = htmlentities($toFormat);	
+
+	$toFormat = htmlentities($toFormat);
 	$toFormat = str_replace('\"', '"', $toFormat);
-	$toFormat = str_replace("\'", "'", $toFormat); 
+	$toFormat = str_replace("\'", "'", $toFormat);
 	$toFormat = utf8_decode($toFormat);
 	$toFormat = ereg_replace('%u([[:alnum:]]{4})', '&#x\1;',$toFormat);
 
@@ -664,7 +664,7 @@ function formatString($toFormat) {
 function cursesGetAway($fromHere) {
 	global $prefs, $curseWords;
 	if (!$prefs['curseFilter']) return $fromHere;
-	
+
 	foreach($curseWords as $curse)
 		$fromHere = preg_replace("/\b$curse\b/i", str_repeat('*', strlen($curse)), $fromHere);
 
@@ -694,7 +694,7 @@ function isBanned($ip) {
 
 // Get the client's IP address
 function getIP() {
-	if(isset($HTTP_X_FORWARDED_FOR) && $HTTP_X_FORWARDED_FOR) 
+	if(isset($HTTP_X_FORWARDED_FOR) && $HTTP_X_FORWARDED_FOR)
 		return $HTTP_X_FORWARDED_FOR;
 	else
 		return $_SERVER['REMOTE_ADDR'];
@@ -729,7 +729,7 @@ function write($fPath, $fContents, $chmod = 0777) {
 	flock($hFile, LOCK_UN);
 
 	chmod($fPath, $chmod);
-	
+
 	fclose($hFile);
 }
 
@@ -741,9 +741,9 @@ function encode($obj) {
 function decode($fPath) {
 	global $json;
 	$fData = read($fPath);
-	
+
 	if ($fData == null) return;
-	
+
 	$jData = $json->decode($fData);
 	return $jData;
 }
@@ -756,7 +756,7 @@ function makeSetShoutText($js, $linkText) {
 	return '<a href="javascript:yS.setShoutText(\'' . $js . '\');">' . $linkText . '</a>';
 }
 
-// PHP4 Compatibility stuff 
+// PHP4 Compatibility stuff
 
 function stri_replace($find, $replace, $string) {
 	if(!is_array($find)) $find = array($find);
@@ -778,10 +778,10 @@ function stri_replace($find, $replace, $string) {
 				$between[$bKey] = substr($string,$pos,strlen($bItem));
 				$pos += strlen($bItem) + strlen($fItem);
 			}
-			
+
 			$string = implode($replace[$fKey],$between);
 		}
-			
+
 		return($string);
 	}
 }
@@ -797,7 +797,7 @@ function microtime_float() {
 // Display the history
 function history() {
 	global $paths;
-	
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -811,7 +811,7 @@ function history() {
 			body {
 				padding-top: 50px;
 			}
-			
+
 			h1 {
 				font-family: "Trebuchet MS", Arial, sans-serif;
 				font-size: 20px;
@@ -820,7 +820,7 @@ function history() {
 				margin: 0 auto;
 				margin-bottom: 20px;
 			}
-		
+
 			#yshout {
 				width: 600px;
 				margin: 0 auto;
@@ -837,7 +837,7 @@ function history() {
 				padding: 4px 0;
 				border-top: 1px solid #DDDDDD;
 			}
-			
+
 		</style>
 	</head>
 	<body>
@@ -855,7 +855,7 @@ function history() {
 	padding: 0;
 	line-height: 1.8;
 }
-		
+
 #yshout {
 	font-family: Lucida Grande, Veranda, sans-serif;
 	font-size: 11px;
@@ -956,6 +956,6 @@ function history() {
 
 </html>
 	<?
-} 
+}
 
 ?>

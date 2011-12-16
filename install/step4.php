@@ -6,7 +6,7 @@
 
 	// Now let's include the left
 	include_once($include_path. 'install/leftnav.php');
-	
+
 	$_POST['cms_type'] = $cms_type;
 ?>
 <div id="main">
@@ -40,7 +40,7 @@
 										}
 									 }
 								?>
-								<input type="submit" name="upgrade" class="submit" value="Upgrade"> &nbsp; 
+								<input type="submit" name="upgrade" class="submit" value="Upgrade"> &nbsp;
 							</form>
 							<form action="<?php echo $form_action3; ?>" name="setup5" method="post">
 								<?php
@@ -76,7 +76,7 @@
 						<td class="td" width="1">&nbsp;</td>
 						<td class="td" width="70%" align="left">
 							<select name="cms_type" onmouseover="return overlib('<?php echo $word_install_type_help; ?>', FGCOLOR, '#eeeeeee');" onmouseout="return nd();">
-							<?php 
+							<?php
 								foreach (getAllCMS() as $key => $label) {
 									echo '<option value="' . htmlentities($key) . '"';
 									if ($_POST['cms_type'] == $key) {

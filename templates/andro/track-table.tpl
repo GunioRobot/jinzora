@@ -25,13 +25,13 @@ Matching Tracks:
 				{if $items[item].show_artist_album == "true" and $items[item].artist <> "" and $items[item].album <> ""}
 					<br />
 					<div style="font-size:9px;">
-						{$items[item].artist} 
+						{$items[item].artist}
 						{if $items[item].artist <> ""}
 							- {$items[item].album}
 						{/if}
 					</div>
 				{/if}
-			</td>	
+			</td>
 			<td width="1" valign="top" nowrap align="right">
 				<table width="100%" cellspacing="5" cellpadding="0">
 					<tr>
@@ -44,10 +44,10 @@ Matching Tracks:
 								{$items[item].size} MB
 								&#183;
 								{$items[item].type}
-							</div>	
+							</div>
 						</td>
 					</tr>
-				</table>						
+				</table>
 			</td>
 		</tr>
 	</table>

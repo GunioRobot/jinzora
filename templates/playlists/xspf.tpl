@@ -10,11 +10,11 @@
 <playlist version="1" xmlns="http://xspf.org/ns/0/">
 	<title>Jinzora Playlist</title>
 	<trackList>
-	{section name=track loop=$tracks}			
+	{section name=track loop=$tracks}
 		<track>
 			<location>{$tracks[track].link}</location>
 			<title>{$tracks[track].artist}{$tracks[track].track}</title>
 		</track>
-	{/section}	
+	{/section}
 	</trackList>
 </playlist>

@@ -32,13 +32,13 @@ function doTemplate($node) {
   }
 
   $smarty->assign('devices',$pbt);
-  
+
   /* playlists */
   $url['jz_player_type'] = 'playlist';
   $url['jz_player'] = 'session';
   $selected = (actionIsQueue() && $_SESSION['jz_playlist_queue'] == 'session');
   $playlists[] = array('label' => word('Quick List'), 'url' => urlize($url),'selected'=>$selected);
-  
+
 
   $lists = $jzUSER->listPlaylists("static");
   foreach ($lists as $id => $plName) {
@@ -48,7 +48,7 @@ function doTemplate($node) {
   }
 
   $smarty->assign('playlists',$playlists);
-  
+
   $url['jz_player'] = 'new';
   $smarty->assign('newList',array('href'=>'#',
 				  'onclick'=>"window.location='".urlize($url)."'.concat('&playlistname='.concat(document.getElementById('playlistname').value)); return true;",

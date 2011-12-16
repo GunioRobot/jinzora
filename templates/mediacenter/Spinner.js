@@ -1,7 +1,7 @@
 
 var counter = 0
 var spinnerText
-    
+
 function initializeSpinner(oParentContainer)
     {
         // Box for display of select value
@@ -19,12 +19,12 @@ function initializeSpinner(oParentContainer)
         // show selected option in Spinner box
         oSpinnerBox.innerText = oSpinnerOptSelected.innerText
     }
-    
+
 function setSpinner()
-    {        
+    {
         // button user clicked
         var oClickedBtn = event.srcElement;
-        // direction (up/down) to move selections, based on button clicked        
+        // direction (up/down) to move selections, based on button clicked
         var direction
         if (oClickedBtn.MCSpinnerPlus=="true")direction = "down";
         else direction = "up";
@@ -56,8 +56,8 @@ function setSpinner()
             if (obj.MCSpinnerMinus == "true") oSpinnerMinus = obj;
             if (obj.MCSpinnerSelect == "true") oSpinnerSelect = obj;
             if (obj.MCSpinnerBox == "true") oSpinnerBox = obj;
-        }    
-            
+        }
+
 
         // find selected option
         oSpinnerOptSelected = oSpinnerSelect.options[oSpinnerSelect.selectedIndex];
@@ -67,7 +67,7 @@ function setSpinner()
         if (direction == "down") oNextOpt = oSpinnerOptSelected.nextSibling;
         else oNextOpt = oSpinnerOptSelected.previousSibling;
         // if you are on first or last option, oNextOpt might not be valid. If not, stay on current option
-        if (oNextOpt == null || oNextOpt.tagName == null) 
+        if (oNextOpt == null || oNextOpt.tagName == null)
         {
             oNextOpt = oSpinnerOptSelected
         }
@@ -76,8 +76,8 @@ function setSpinner()
         // (remember, the real select box is invisible) Show selection contents in spinner box
         oSpinnerBox.innerText = oNextOpt.innerText
         // if there is no next sibling for new selected option, you are at the end, so disable plus btn
-        if (oNextOpt.nextSibling == null || oNextOpt.nextSibling.tagName == null) 
-        { 
+        if (oNextOpt.nextSibling == null || oNextOpt.nextSibling.tagName == null)
+        {
             disableBtn(oSpinnerPlus);
             oCurFocus = oSpinnerMinus;
             oSpinnerMinus.focus();
@@ -92,7 +92,7 @@ function setSpinner()
              oSpinnerPlus.focus();
         }
         // else make sure minus btn is enabled
-        else enableBtn(oSpinnerMinus)        
+        else enableBtn(oSpinnerMinus)
     }
     function getSpinnerParent(btn)
     {
@@ -100,7 +100,7 @@ function setSpinner()
         for (i=0; i<5000; i++)
         {
              oTempObj = oTempObj.parentElement
-            if (oTempObj.MCSpinnerContainer == "true") 
+            if (oTempObj.MCSpinnerContainer == "true")
             {
                 return oTempObj;
                 break;

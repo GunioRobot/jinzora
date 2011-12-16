@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Contains the basic Jukebox class
 	*
@@ -55,7 +55,7 @@
 		$newboxes[$id] = $box;
 		$jb = array('type'=>'quickbox');
 		$jb['description'] = $id;
-		 
+
 		$jbArr[] = $jb;
 	      }
 
@@ -70,7 +70,7 @@
 
 		/**
 		* Constructor for the class.
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -97,7 +97,7 @@
 			}
 
 			// Now let's make sure they have installed the jukebox
-			if (!isset($jbArr[0]['type'])){ 
+			if (!isset($jbArr[0]['type'])){
 				// Let's take them through the installer
 				$this->install();
 			}
@@ -108,14 +108,14 @@
 
 		/**
 		* Sets up the jukebox installer
-		* 
+		*
 		* @author Ross Carlson
 		* @version 11/20/05
 		* @since 11/20/05
 		*/
 		function install(){
 			global $include_path;
-			
+
 			// What step are they on?
 			if (isset($_POST['edit_step'])){
 				// Ok, let's display step two by including the right jukebox and running it's installer
@@ -126,7 +126,7 @@
 			<strong>Welcome to the Jinzora Jukebox Installer</strong><br><br>
 			This wizard will guide you through the process of configuring Jinzora to work in Jukebox mode.<br><br>
 			<form method="post">
-				Jukebox Type: 
+				Jukebox Type:
 				<select name="edit_jukebox_type" class="jz_select">
 					<option value="mpd">MPD (Linux)</option>
 					<option value="winamp3">Winamp (Windows)</option>
@@ -141,7 +141,7 @@
 
 		/**
 		* Returns a keyed array showing all the functions that this jukebox supports
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -150,10 +150,10 @@
 		function jbAbilities(){
 			return returnJBAbilities();
 		}
-		
+
 		/**
 		* Returns the stats of the jukebox
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -162,10 +162,10 @@
 		function returnJBStats(){
 			return retJBStats();
 		}
-		
+
 		/**
 		* Connects to the player and returns true or false based on what happens
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -174,10 +174,10 @@
 		function connect(){
 			return playerConnect();
 		}
-		
+
 		/**
 		* Displays add on tools next to the playlist box
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -186,10 +186,10 @@
 		function getAddOnTools(){
 			return getAllAddOnTools();
 		}
-		
+
 		/**
 		* returns the currently playing track path so we can get the node
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -198,10 +198,10 @@
 		function getCurrentTrackPath(){
 			return getCurTrackPath();
 		}
-		
+
 		/**
 		* returns the currently playing track number
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -210,10 +210,10 @@
 		function getCurrentPlayingTrack(){
 			return getCurPlayingTrack();
 		}
-		
+
 		/**
 		* returns the currently playing playlist
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -222,10 +222,10 @@
 		function getCurrentPlaylist(){
 			return getCurPlaylist();
 		}
-		
+
 		/**
 		* Passes a playlist to the jukebox
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -238,10 +238,10 @@
 		  }
 		  playlist($playlist);
 		}
-		
+
 		/**
 		* Passes a command to the jukebox player
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -250,10 +250,10 @@
 		function passCommand($command){
 		  control($command);
 		}
-		
+
 		/**
 		* Returns the status of the player
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -261,10 +261,10 @@
 		function getPlayerStatus($type = "playback"){
 			return getStatus($type);
 		}
-		
+
 		/**
 		* Gets the current track that is playing by the jukebox
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -272,10 +272,10 @@
 		function getCurrentTrackName(){
 			return getCurTrackName();
 		}
-		
+
 		/**
 		* Gets the ammount of time remaining in the current track
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -283,11 +283,11 @@
 		*/
 		function getCurrentTrackRemaining(){
 			return getCurTrackRemaining();
-		}		
-		
+		}
+
 		/**
 		* Gets the length of the current track
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -296,10 +296,10 @@
 		function getCurrentTrackLength(){
 			return getCurTrackLength();
 		}
-		
+
 		/**
 		* Gets the length location of the track (how many seconds into the track we are)
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/9/05
 		* @since 2/9/05
@@ -311,11 +311,11 @@
 
 		/**
 		* Updates the database, if required by the jukebox.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 12/08/06
 		* @since 12/08/06
-		* 
+		*
 		*/
 		function updateDB($node, $recursive, $root_path){
 			if (function_exists("updateJukeboxDB")) {
@@ -326,14 +326,14 @@
 
 		/**
 		* Gets a setting for the jukebox from jbArr.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 12/16/05
 		* @since 12/16/05
 		*/
 		function getSetting($name){
 		  global $jbArr;
-		  
+
 		  if (isset($jbArr[$this->id][$name])) {
 		    return $jbArr[$this->id][$name];
 		  } else {
@@ -341,6 +341,6 @@
 		  }
 		}
 
-	  
+
 	}
 ?>

@@ -1,54 +1,54 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - Contains the Slimzora display functions
 	*
-	* @since 02.17.04 
+	* @since 02.17.04
 	* @author Ross Carlson <ross@jinzora.org>
 	* @author Ben Dodson <ben@jinzora.org>
 	*/
 require_once(dirname(__FILE__).'/../../class.php');
-require_once(dirname(__FILE__).'/../../blocks.php');		
-	
+require_once(dirname(__FILE__).'/../../blocks.php');
+
         class jzBlocks extends jzBlockClass {}
 
 	class jzFrontend extends jzFrontendClass {
 		function jzFrontend() {
 			parent::_constructor();
 		}
-		
+
 		/**
 		* Draws the login page.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/3/04
 		* @since 5/13/04
 		*/
 		function loginPage($failed = false) {
-		
+
 			$display = &new jzDisplay();
-			
+
 			echo '<body onLoad="document.getElementById(\'loginform\').field1.focus();"></body>';
-			
-			$urla = array();			
+
+			$urla = array();
 			$urla['jz_path'] = isset($_GET['jz_path']) ? stripSlashes($_GET['jz_path']) : '';
 			?>
 				<style>
@@ -87,10 +87,10 @@ require_once(dirname(__FILE__).'/../../blocks.php');
 				      } else {
 					// submit the other form
 					// so we can submit a non-cleartext PW without changing browser's stored PW.
-					document.getElementById("loginSecureForm").field1.value = 
+					document.getElementById("loginSecureForm").field1.value =
 					         document.getElementById("loginform").field1.value;
 
-					document.getElementById("loginSecureForm").field2.value = 
+					document.getElementById("loginSecureForm").field2.value =
 					hex_md5(document.getElementById("loginform").field2.value);
 
 					document.getElementById("loginSecureForm").remember.value =
@@ -138,8 +138,8 @@ require_once(dirname(__FILE__).'/../../blocks.php');
 									if ($data['allow_registration'] == "true") {
 									?>
 										&nbsp;<input class="jz_submit" type="submit" name="<?php echo jz_encode('self_register'); ?>" value="<?php echo word("Register"); ?>" onclick="document.getElementById('loginform').doregister.value='true'">
-									<?php 
-									} 
+									<?php
+									}
 									?>
 
 							</form>
@@ -153,18 +153,18 @@ require_once(dirname(__FILE__).'/../../blocks.php');
 			<?php
 			//this->footer();
 		}
-			
+
 		function standardPage(&$node) {
 		  global $jinzora_url,$root_dir,$cms_mode,$jzUSER,
 		    $jbArr;
-		  
+
 		  /* header */
 		  /* use one smarty object so we can use variables in
 		     both header and footer
 		  */
 		  $display = new jzDisplay();
 		  $smarty = smartySetup();
-		  
+
 		  $path = $node->getPath("String");
 
 		  $smarty->assign('cms', $cms_mode == "false" ? false : true);
@@ -188,20 +188,20 @@ require_once(dirname(__FILE__).'/../../blocks.php');
 		  }
 
 		  $tabs = array();
-		  $tabs[] = array('name'=>word('Browse'), 
-				  'link' => urlize(array('page'=>'browse', 
+		  $tabs[] = array('name'=>word('Browse'),
+				  'link' => urlize(array('page'=>'browse',
 							 'jz_path'=>$path)),
 				  'selected' => ($page == 'browse') ? true : false);
-		  
-	     
-		  $tabs[] = array('name'=>word('Lists'), 
-				  'link' => urlize(array('page'=>'lists', 
+
+
+		  $tabs[] = array('name'=>word('Lists'),
+				  'link' => urlize(array('page'=>'lists',
 							 'jz_path'=>$path)),
 				  'selected' => ($page == 'lists' || ($page == 'playlist' && isset($_REQUEST['playlist']))));
 
 
 		  $tabs[] = array('name'=>word('Settings'),
-				  'link' => urlize(array('page'=>'settings', 
+				  'link' => urlize(array('page'=>'settings',
 							 'jz_path'=>$path)),
 				  'selected' => ($page == 'settings') ? true : false);
 
@@ -213,14 +213,14 @@ require_once(dirname(__FILE__).'/../../blocks.php');
 		    } else {
 		      $plName = $jzUSER->loadPlaylist()->getName();
 		    }
-		    $tabs[] = array('name'=>$plName, 
-				    'link' => urlize(array('page'=>'playlist', 
+		    $tabs[] = array('name'=>$plName,
+				    'link' => urlize(array('page'=>'playlist',
 							   'jz_path'=>$path)),
 				    'selected' => ($page == 'playlist'));
 		  } else if (checkPlayback() == 'jukebox') {
 		    $name = $jbArr[$_SESSION['jb_id']]['description'];
-		    $tabs[] = array('name'=>$name, 
-				    'link' => urlize(array('page'=>'jukebox', 
+		    $tabs[] = array('name'=>$name,
+				    'link' => urlize(array('page'=>'jukebox',
 							   'jz_path'=>$path)),
 				    'selected' => ($page == 'jukebox'));
 		  }
@@ -268,7 +268,7 @@ function mobileSmarty() {
   global $main_truncate_length,$chars_per_line,$img_blank;
   $smarty = smartySetup();
   $smarty->assign('templates',dirname(__FILE__).'/templates');
-  $smarty->assign('main_truncate_length',$main_truncate_length); 
+  $smarty->assign('main_truncate_length',$main_truncate_length);
   $smarty->assign('chars_per_line',$chars_per_line);
   $smarty->assign('blankImage',$img_blank);
   return $smarty;

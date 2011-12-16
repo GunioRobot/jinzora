@@ -60,7 +60,7 @@ $ec_dir = e_PLUGIN."jinzora2/";
 $eplug_link = TRUE;
 $eplug_link_name = "Jinzora"; // "Calendar";
 $eplug_link_url = "".$ec_dir."index.php";
-$eplug_link_perms = "Everyone"; // Everyone, Guest, Member, Admin 
+$eplug_link_perms = "Everyone"; // Everyone, Guest, Member, Admin
 
 
 // Text to display after plugin successfully installed ------------------------------------------------------------------

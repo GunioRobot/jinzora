@@ -3,7 +3,7 @@
 
 /**
 * Scans the users system for newly added media
-* 
+*
 * @author Ross Carlson
 * @version 01/18/05
 * @since 01/18/05
@@ -54,14 +54,14 @@ if (!isset ($_POST['edit_scan_now'])) {
                                 <input name="edit_force_scan" value="true" type="checkbox"> <?php echo word("Ignore file modification times (slow)"); ?><br>
 				<br>
 				&nbsp; &nbsp; &nbsp; <input type="submit" name="edit_scan_now" value="<?php echo word("Scan Now"); ?>" class="jz_submit">
-			</form>		
+			</form>
 			<?php
 
 
 	exit ();
 }
 
-// Ok, let's do it...		
+// Ok, let's do it...
 echo "<b>" . word("Scanning") . ":</b>";
 echo '<div id="importStatus"></div>';
 ?>

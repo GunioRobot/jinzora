@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 /**
- * - JINZORA | Web-based Media Streamer -  
- * 
- * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
- * (but can be used for any media file that can stream from HTTP). 
- * Jinzora can be integrated into a CMS site, run as a standalone application, 
+ * - JINZORA | Web-based Media Streamer -
+ *
+ * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+ * (but can be used for any media file that can stream from HTTP).
+ * Jinzora can be integrated into a CMS site, run as a standalone application,
  * or integrated into any PHP website.  It is released under the GNU GPL.
- * 
+ *
  * - Resources -
  * - Jinzora Author: Ross Carlson <ross@jasbone.com>
  * - Web: http://www.jinzora.org
- * - Documentation: http://www.jinzora.org/docs	
+ * - Documentation: http://www.jinzora.org/docs
  * - Support: http://www.jinzora.org/forum
  * - Downloads: http://www.jinzora.org/downloads
  * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
- * 
+ *
  * - Contributors -
  * Please see http://www.jinzora.org/team.html
- * 
+ *
  * - Code Purpose -
  * - This class bundles all of the external services for Jinzora
  *
@@ -28,14 +28,14 @@
 
 class jzServices {
   var $services;
-  
+
   function loadService($type, $service) {
     global $include_path;
 
 	if (strpos($type,"..") !== false) {
 		die('Security breach detected.');
 	}
-	
+
 	if (strpos($service,"..") !== false) {
 		die('Security breach detected.');
 	}
@@ -90,7 +90,7 @@ class jzServices {
     if (!file_exists($include_path."services/services/${type}/${service}.php")) {
       return false;
     }
-		
+
 		writeLogData("messages","Services: Loading service: ". $service. " type: ". $type);
     $this->loaded[$type] = $service;
 
@@ -111,7 +111,7 @@ class jzServices {
 		}
 	}
   }
-  
+
   function jzServices() {
     $this->_constructor();
   }
@@ -127,7 +127,7 @@ class jzServices {
 
   function loadStandardServices() {
     global 	$service_lyrics, $service_similar,
-      		$service_link, $service_metadata, 
+      		$service_link, $service_metadata,
       		$service_tagdata, $include_path,
       		$cms_mode,$cms_type,
       		$service_shopping, $service_images,
@@ -151,7 +151,7 @@ class jzServices {
     }
     // Importer
     if (false !== stristr($backend,"id3")) {
-    	$this->loadService("importing","id3tags"); 
+    	$this->loadService("importing","id3tags");
     } else {
     	$this->loadService("importing","filesystem");
     }
@@ -159,7 +159,7 @@ class jzServices {
 
   function loadUserServices() {
 		global $jzUSER, $embedded_player;
-	
+
 		if (!isNothing($jzUSER->getSetting('player'))) {
 			$this->loadService("players",$jzUSER->getSetting('player'));
 		} else if ($embedded_player != "" && $embedded_player != "false") {
@@ -170,20 +170,20 @@ class jzServices {
   // Wrappers for our services
   function burnTracks($node, $artist, $album){
   	return SERVICE_BURN_TRACKS($node, $artist, $album);
-  }  
-  
+  }
+
   function createResampledTrack($file, $format, $bitrate, $meta, $destination = false){
     return SERVICE_CREATE_RESAMPLED_TRACK($file, $format, $bitrate, $meta, $destination);
-  }  
-  
+  }
+
   function isResampleable($file){
     return SERVICE_IS_RESAMPLABLE($file);
   }
-  
+
   function resampleFile($file,$name,$resample){
   	SERVICE_RESAMPLE($file,$name,$resample);
   }
-  
+
   function rotateImage($image, $node){
   	$func = "SERVICE_ROTATE_IMAGE_" . $this->loaded['images'];
     return $func($image, $node);
@@ -192,12 +192,12 @@ class jzServices {
   	$func = "SERVICE_CREATE_IMAGE_" . $this->loaded['images'];
     return $func($image, $dimensions, $text, $imageType, $forceCreate);
   }
-  
+
   function resizeImage($image, $dimensions, $dest = false, $imageType = "audio"){
   	$func = "SERVICE_RESIZE_IMAGE_" . $this->loaded['images'];
     return $func($image, $dimensions, $dest, $imageType);
   }
-  
+
   function returnPlayerHref(){
 		if ($this->loaded['players'] == ""){
 			$this->loadUserServices();
@@ -205,7 +205,7 @@ class jzServices {
     $func = "SERVICE_RETURN_PLAYER_HREF_" . $this->loaded['players'];
     return $func();
   }
-  
+
   function returnPlayerFormLink($formname){
     $func = "SERVICE_RETURN_PLAYER_FORM_LINK_" . $this->loaded['players'];
     return $func($formname);
@@ -220,21 +220,21 @@ class jzServices {
     $func = "SERVICE_RETURN_PLAYER_HEIGHT_" . $this->loaded['players'];
     return $func();
   }
-  
+
   function displayPlayer(){
     $func = "SERVICE_DISPLAY_PLAYER_" . $this->loaded['players'];
     return $func($this->returnPlayerWidth(),$this->returnPlayerHeight());
   }
-  
+
   function openPlayer($list){
     $func = "SERVICE_OPEN_PLAYER_" . $this->loaded['players'];
     return $func($list);
   }
-  
+
   function createPlaylist($list, $type = false){
     return SERVICE_CREATE_PLAYLIST($list, $type);
   }
-  
+
   function getPLMimeType($type = false){
     return SERVICE_RETURN_MIME($type);
   }
@@ -242,27 +242,27 @@ class jzServices {
   function getPLTypes() {
     return SERVICE_GET_PLAYLIST_TYPES();
   }
-  
+
   function getTagData($track, $installer = false) {
     $func = "SERVICE_GET_TAGDATA_" . $this->loaded['tagdata'];
     return $func($track, $installer);
   }
-  
+
   function setTagData($track, $meta){
     $func = "SERVICE_SET_TAGDATA_" . $this->loaded['tagdata'];
     return $func($track, $meta);
   }
-  
+
   function getLyrics($track) {
     $func = "SERVICE_GETLYRICS_" . $this->loaded['lyrics'];
     return $func($track);
   }
-  
+
   function getArtistMetadata($node, $return = false, $artistName = false) {
     $func = "SERVICE_GETARTISTMETADATA_" . $this->loaded['metadata'];
     return $func($node, $return, $artistName);
   }
-  
+
   function getAlbumMetadata($node, $displayOutput = false, $return = false) {
     $func = "SERVICE_GETALBUMMETADATA_" . $this->loaded['metadata'];
     return $func($node, $displayOutput, $return);
@@ -302,17 +302,17 @@ class jzServices {
     $func = "SERVICE_CMSDEFAULTDB_" . $this->loaded['cms'];
     return $func();
   }
-	
+
 	function updatePlayCountReporting($node) {
     $func = "SERVICE_REPORTING_" . $this->loaded['reporting'];
     return $func($node);
   }
-	
+
 	function createShoppingLink($node){
 		$func = "SERVICE_CREATE_SHOPPING_LINK_" . $this->loaded['shopping'];
     return $func($node);
 	}
-	
+
 	function importMedia($node, $media_path, $flags) {
 		$func = "SERVICE_IMPORTMEDIA_" . $this->loaded['importing'];
 		return $func($node,$media_path,$flags);

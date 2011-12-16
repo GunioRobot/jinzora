@@ -1,24 +1,24 @@
-<?php 
+<?php
 	define('JZ_SECURE_ACCESS','true');
 	/*
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Ressources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* - Renaming Functions for a media library
 	* -- COMPLETELY UNSUPPORTED!!!!   -   Use at your own risk!
@@ -27,26 +27,26 @@
 	* @author Ross Carlson <ross@jinzora.org>
 	*
 	*/
-	
+
 	// first let's include all the functions and stuff we'll need
 	echo '<link rel="stylesheet" href="../style/sandstone/default.css" type="text/css">';
 	include_once('../lib/general.lib.php');
-	
+
 	// Let's set up some variables
 	$srcDir = "C:/Documents and Settings/rcarlson/My Documents/My Music/temp";
 	$destDir = "C:/Documents and Settings/rcarlson/My Documents/My Music";
-	$badArray = explode(";",';?;";/;\;|;*;<;>');	
-	
+	$badArray = explode(";",';?;";/;\;|;*;<;>');
+
 	// Let's make it look a little pretty
 	//echo $css;
-	
+
 	// Now let's see if they pressed any buttons
 	if (isset($_POST['stripAlbum']) or isset($_POST['stripAlbumTest']) or isset($_POST['stripArtistTest']) or isset($_POST['stripArtist']) or isset($_POST['stripAllTest']) or isset($_POST['stripAll'])){
 		stripName();
 	}
-	
+
 	// Did they want to rename from that music service?
-	if (isset($_POST['rename'])){		
+	if (isset($_POST['rename'])){
 		// Ok, first let's clean up the list of new track names
 		$tArray = explode("\n",$_POST['tracks']);
 		$c=0;
@@ -69,7 +69,7 @@
 				$c++;
 			}
 		}
-		
+
 		// Now let's get all the tracks that are in our directory
 		$d = dir($srcDir);
 		while($entry = $d->read()) {
@@ -79,10 +79,10 @@
 			$vArray[] = filemtime($srcDir. "/". $entry). "|". $entry;
 		}
 		$d->close();
-		
+
 		// Now let's sort that array
 		sort($vArray);
-		
+
 		// First let's clean up the directory names
 		$artist = $_POST['artist'];
 		$album = $_POST['album'];
@@ -90,7 +90,7 @@
 			$artist = str_replace($badArray[$i],"",$artist);
 			$album = str_replace($badArray[$i],"",$album);
 		}
-				
+
 		// Now let's create the new folders IF we need to
 		$destArray = explode("/",$destDir. "/". $_POST['artist']. "/". $_POST['album']);
 		$dir = "";
@@ -99,7 +99,7 @@
 			// Now let's see if that exists
 			if (!is_dir($dir)){
 				mkdir($dir);
-			} 
+			}
 		}
 
 		// Now let's compare the two and rename
@@ -126,21 +126,21 @@
 		<?php
 		exit();
 	}
-	
+
 	// Now let's show them what they can do
 	echo '<center><form action="renamer.php" method="post" name="toolsForm">'. "\n";
 	echo '<input type="submit" name="stripAlbumTest" value="Strip Album Names (Test Only)" class="jz_submit">'. "\n";
-	echo '<input type="submit" name="stripAlbum" value="Strip Album Names" class="jz_submit">'. "\n";	
+	echo '<input type="submit" name="stripAlbum" value="Strip Album Names" class="jz_submit">'. "\n";
 	echo '<br>Stips the name of the ablum from the file name IF found<br>'. "\n";
-	
+
 	echo '<br><input type="submit" name="stripArtistTest" value="Strip Artist Names (Test Only)" class="jz_submit">'. "\n";
-	echo '<input type="submit" name="stripArtist" value="Strip Artist Names" class="jz_submit">'. "\n";	
+	echo '<input type="submit" name="stripArtist" value="Strip Artist Names" class="jz_submit">'. "\n";
 	echo '<br>Stips the name of the artist from the file name IF found<br>'. "\n";
-	
+
 	echo '<br><input type="submit" name="stripAllTest" value="Strip Artist & Album Names (Test Only)" class="jz_submit">'. "\n";
-	echo '<input type="submit" name="stripAll" value="Strip Artist & Album Names" class="jz_submit">'. "\n";	
+	echo '<input type="submit" name="stripAll" value="Strip Artist & Album Names" class="jz_submit">'. "\n";
 	echo '<br>Stips the name of the artist from the file name IF found<br>'. "\n";
-	
+
 	echo '<br>Root dir to start search from<br>';
 	// Now let's get all the possibles
 	$retArray = readDirInfo($web_root. $root_dir. $media_dir,"dir");
@@ -151,12 +151,12 @@
 		echo '<option value="'. $retArray[$i]. '">'. $retArray[$i]. '</option>';
 	}
 	echo '</select>';
-	
+
 	// Now let's setup the form for renaming from that music service
 	echo '<br><br><br>Artist<br><input type="text" class="jz_input" name="artist" size="30">';
 	echo '<br><br>Album<br><input type="text" class="jz_input" name="album" size="30">';
 	echo '<br><br>Tracks<br><textarea class="jz_input" name="tracks" cols="60" rows="12"></textarea>';
-	
+
 	// Now let's see how many files are here
 	$d = dir($srcDir);
 	$c=0;
@@ -168,27 +168,27 @@
 	}
 	$d->close();
 	echo "<br>". $c. " tracks found";
-		
+
 	echo '<br><input type="submit" class="jz_submit" name="rename" value="Rename Tracks">';
 	echo '</form></center>';
-	
+
 	// Now let's setup all our functions
 	// -------------------------------------------------------------------
-	
+
 	function stripName(){
 		global $web_root, $root_dir, $media_dir;
-		
+
 		// Let's let them know what we are doing
 		echo "Please wait while we retrieve the listing of ALL files in your collection...<br>This may take a while so just sit back and relax....<br><br>";
 		flushdisplay();
-		
+
 		// First let's get ALL the data back about each and every track
 		$dirName = $web_root. $root_dir. $media_dir. "/". $_POST['rootDir'];
 		$readCtr = 0;
 		$retArray = readAllDirs($dirName, $readCtr, $retArray, "false", "true", "false");
-		
+
 		echo '<br><br>';
-		
+
 		// Now let's sort that and loop through it
 		sort($retArray);
 		for ($i=0;$i<count($retArray);$i++){
@@ -199,7 +199,7 @@
 			$track = $dataArray[count($dataArray)-1];
 			$album = $dataArray[count($dataArray)-2];
 			$artist = $dataArray[count($dataArray)-3];
-			
+
 			// Ok, now we've got the data let's do some find and replace
 			$newTrack = $track;
 			// Now let's see what to stip
@@ -211,7 +211,7 @@
 			if (isset($_POST['stripArtist']) or isset($_POST['stripArtistTest']) or isset($_POST['stripAllTest']) or isset($_POST['stripAll'])){
 				$newTrack = str_replace(" - ". $album. "-","",$newTrack);
 				$newTrack = str_replace(" - ". $album,"",$newTrack);
-				$newTrack = str_replace($album,"",$newTrack);		
+				$newTrack = str_replace($album,"",$newTrack);
 			}
 			$ext = returnFileExt($newTrack);
 			// Now let's make sure we didn't totally mangle the name
@@ -219,15 +219,15 @@
 				// Ok, that means that the track name should be the album name
 				$newTrack = str_replace(".". $ext,"",$newTrack). " - ". $album. ".". $ext;
 			}
-			
+
 			// Now let's make sure the first 3 characters aren't " - "
 			if (substr($newTrack,0,3) == " - "){
 				$newTrack = substr($newTrack,3,strlen($newTrack));
 			}
-			
+
 			// Now let's replace _ with space
 			$newTrack = str_replace("_"," ",$newTrack);
-			
+
 			// Now let's strip some funky characters
 			$newTrack = str_replace(" [-]", "", $newTrack);
 			$newTrack = str_replace("[-]", "", $newTrack);
@@ -236,15 +236,15 @@
 			$newTrack = str_replace(" [ ]", "", $newTrack);
 			$newTrack = str_replace("[ ]", "", $newTrack);
 			$newTrack = str_replace(" .". $ext, ".". $ext, $newTrack);
-			
+
 			// Now if the file name is really short let's just stick with the old one
 			if (strlen($newTrack) < 8){
 				$newTrack = $track;
 			}
-			
+
 			// Now let's trim newtrack
 			$newTrack = trim($newTrack);
-			
+
 			// Now let's see if there was a change needed
 			if ($track <> $newTrack){
 				// Was this a test or for real?
@@ -261,32 +261,32 @@
 				}
 				flushdisplay();
 			}
-	
-			
+
+
 			//echo $track. "<br>". $newTrack. "<br><br>";
-			
+
 			//echo $artist. '<br>'. $album. '<br>'. $track. '<br><br>';
-			
+
 		}
-		
+
 		exit();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

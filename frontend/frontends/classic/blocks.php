@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Creates many of the different blocks that are used by the Slick interface
 	*
@@ -26,16 +26,16 @@
 	*/
 
 	class jzBlocks extends jzBlockClass {
-	  
+
 		/**
 		* Constructor for the class.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 12/22/04
 		* @since 12/22/04
 		*/
 		function jzBlocks() {
-		
+
 		}
 
 		/**
@@ -55,7 +55,7 @@
 		</table>
 		<?php
 		}
-	
+
 		/**
 		* Displays the random albums block
 		* @author Ross Carlson
@@ -66,7 +66,7 @@
 		*/
 		function classicRandomAlbums(&$node, $level = ""){
 			global $hierarchy;
-			
+
 			$title = word("Random Albums");
 			if ($node->getName() <> ""){
 			  $title = word("Random Albums"). " :: ". $node->getName();

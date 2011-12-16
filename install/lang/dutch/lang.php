@@ -26,7 +26,7 @@
 	$word_admin_pass = "Admin wachtwoord:";
 	$word_default_access = "Standaard toegangsniveau:";
 	$word_no_access = "Geen toegang";
-	$word_lofi = "Lo-Fi";	
+	$word_lofi = "Lo-Fi";
 	$word_user = "Standaard gebruiker";
 	$word_admin = "Admin";
 	$word_viewonly = "Alleen kijken";

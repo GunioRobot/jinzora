@@ -2,7 +2,7 @@
 
 /**
 * Displays the Item Information editing tool
-* 
+*
 * @author Ross Carlson, Ben Dodson
 * @version 01/27/05
 * @since 01/27/05
@@ -285,10 +285,10 @@ if ($node->getPType() == "album") {
 $be = new jzBackend();
 if ($be->hasFeature('setID')) {
 ?>
-									    
+
 						<tr class="<?php echo $row_colors[$i]; $i = 1 - $i;?>">
 							<td width="30%" valign="top">
-								    
+
 								<nobr>
 									<?php echo word("Item ID"); ?>
 								</nobr>

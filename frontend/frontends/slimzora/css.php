@@ -1,4 +1,4 @@
-<?php 
+<?php
 	if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 ?>
 <style>
@@ -14,22 +14,22 @@ a {
 	text-decoration: none;
 	font-size: 11px;
 }
-a:link { 
+a:link {
 	color: <?php echo jz_link_color; ?>;
 }
-a:visited { 
+a:visited {
 	color: <?php echo jz_link_color; ?>;
 }
 a:hover {
 	color: <?php echo jz_link_hover_color; ?>;
 }
-.jz_row1 { 
+.jz_row1 {
 	background-color: <?php echo jz_row1; ?>;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
-.jz_row2 { 
-	background-color: <?php echo jz_row2; ?>; 
+.jz_row2 {
+	background-color: <?php echo jz_row2; ?>;
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }

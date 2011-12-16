@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	 * - JINZORA | Web-based Media Streamer -  
-	 * 
-	 * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	 * (but can be used for any media file that can stream from HTTP). 
-	 * Jinzora can be integrated into a CMS site, run as a standalone application, 
+	 * - JINZORA | Web-based Media Streamer -
+	 *
+	 * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	 * (but can be used for any media file that can stream from HTTP).
+	 * Jinzora can be integrated into a CMS site, run as a standalone application,
 	 * or integrated into any PHP website.  It is released under the GNU GPL.
-	 * 
+	 *
 	 * - Resources -
 	 * - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	 * - Web: http://www.jinzora.org
-	 * - Documentation: http://www.jinzora.org/docs	
+	 * - Documentation: http://www.jinzora.org/docs
 	 * - Support: http://www.jinzora.org/forum
 	 * - Downloads: http://www.jinzora.org/downloads
 	 * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	 * 
+	 *
 	 * - Contributors -
 	 * Please see http://www.jinzora.org/team.html
-	 * 
+	 *
 	 * - Code Purpose -
 	 * - This is the leo's lyrics service.
 	 *
@@ -25,16 +25,16 @@
 	 * @author Ross Carlson <ross@jinzora.org>
 	 * @author Ben Dodson <ben@jinzora.org>
 	 */
-	
+
 	$jzSERVICE_INFO = array();
 	$jzSERVICE_INFO['name'] = "Echocloud";
 	$jzSERVICE_INFO['url'] = "http://www.echocloud.net";
-	
+
 	define('SERVICE_SIMILAR_echocloud','true');
-	
+
 	/**
 	* Returns an array of similar artists
-	* 
+	*
 	* @author Ross Carlson, Ben Dodson
 	* @version 01/14/05
 	* @since 01/14/05
@@ -42,7 +42,7 @@
 	* @param $limit Limit the number of results
 	*/
 	function SERVICE_SIMILAR_echocloud($element, $limit = false) {
-	  
+
 	  if ($element === false) return;
 
 		// Let's setup the backend to read the cache to see if we can just return it
@@ -89,19 +89,19 @@
 			if ($limit){
 			  $retArray = @array_slice($retArray,0,$limit);
 			}
-			
+
 			// Now let's store this for later caching
 			$be->storeData("similar-data-" . $element->getName(), time(). "\n". serialize($retArray));
-			
+
 			// Now let's return
 			return $retArray;
 		}
 		return false;
 	}
-	
+
 	/**
 	* Returns similar artist data from Echocloud
-	* 
+	*
 	* @author Ross Carlson
 	* @version 07/16/04
 	* @version 07/16/04
@@ -110,10 +110,10 @@
 	*/
 	function returnEchocloudData($data){
 		global $echocloud;
-		
+
 		// Let's see if they wanted to NOT show data
 		if ($echocloud == "0"){ return; }
-		
+
 		$ec_con = "";
 		$fp = @fsockopen('echocloud.jinzora.org',80, $errno, $errstr, 2);
 		// Let's make sure that opened ok
@@ -130,7 +130,7 @@
 					}
 				} else {
 					$ec_con .= fread($fp,1024);
-				}	
+				}
 			}
 			fclose($fp);
 		}

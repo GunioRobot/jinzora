@@ -1,20 +1,20 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	* JINZORA | Web-based Media Streamer 
+	* JINZORA | Web-based Media Streamer
 	*
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* Jinzora Author:
 	* Ross Carlson: ross@jasbone.com
 	* http://www.jinzora.org
-	* Documentation: http://www.jinzora.org/docs	
+	* Documentation: http://www.jinzora.org/docs
 	* Support: http://www.jinzora.org/forum
 	* Downloads: http://www.jinzora.org/downloads
 	* License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* Contributors:
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
 	*
@@ -22,7 +22,7 @@
 	* Created: 9.24.03 by Ross Carlson
 	*
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	
+
 	// This class let's us access our flat file database
 	class jz_db{
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -34,26 +34,26 @@
 		// $result = $query->select("select where GENRE = Jazz");
 		//
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-		
+
 		// This function will query our database for us
 		function select($query){
 			global $root_dir, $web_root;
-			
+
 			// Now we need to figure out which colum they wanted to search on
 			$queryCol = trim(substr(str_replace("select where ","",$query),0,strpos(str_replace("select where ","",$query)," =")));
 			$queryVal = trim(substr($query,strpos($query," = ")+3,strlen($query)));
-						
+
 			// Let's make sure our database is really there
 			$database = $web_root. $root_dir. "/data/jz_database.csv";
 			if (!is_file($database)){
 				die ("Database not found at: ". $web_root. $root_dir. "/data/jz_database.csv");
 			}
-			
+
 			// Ok, now let's open the database and read the data in it
 			$handle = fopen ($database, "rb");
 			$contents = fread ($handle, filesize ($database));
 			fclose ($handle);
-			
+
 			// Now let's query that file by breaking it out into rows
 			$e=0;
 			$dataArray = explode("\n",$contents);
@@ -80,8 +80,8 @@
 			return $finalArray;
 		}
 	}
-	
-	
+
+
 	/*
 	 * genres - reuturns an array of the ID3v1 genres
 	 */
@@ -237,80 +237,80 @@
 		147 => 'Synthpop'
 			);
 	} // genres
-	
+
 	/*
-	
+
 	Zip file creation class
 	makes zip files on the fly...
-	
+
 	use the functions add_dir() and add_file() to build the zip file;
 	see example code below
-	
+
 	by Eric Mueller
 	http://www.themepark.com
-	
+
 	v1.1 9-20-01
 	  - added comments to example
-	
+
 	v1.0 2-5-01
-	
+
 	initial version with:
 	  - class appearance
 	  - add_file() and file() methods
 	  - gzcompress() output hacking
 	by Denis O.Philippov, webmaster@atlant.ru, http://www.atlant.ru
-	
-	*/  
-	
+
+	*/
+
 	// official ZIP file format: http://www.pkware.com/appnote.txt
-	
-	class zipfile   
-	{   
-	
+
+	class zipfile
+	{
+
 		var $datasec = array(); // array to store compressed data
-		var $ctrl_dir = array(); // central directory    
+		var $ctrl_dir = array(); // central directory
 		var $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00"; //end of Central directory record
-		var $old_offset = 0;  
-	
-		function add_dir($name)    
-	
+		var $old_offset = 0;
+
+		function add_dir($name)
+
 		// adds "directory" to archive - do this before putting any files in directory!
 		// $name - name of directory... like this: "path/"
 		// ...then you can add files using add_file with names like "path/file.txt"
-		{   
-			$name = str_replace("\\", "/", $name);   
-	
-			$fr = "\x50\x4b\x03\x04";  
+		{
+			$name = str_replace("\\", "/", $name);
+
+			$fr = "\x50\x4b\x03\x04";
 			$fr .= "\x0a\x00";    // ver needed to extract
 			$fr .= "\x00\x00";    // gen purpose bit flag
 			$fr .= "\x00\x00";    // compression method
 			$fr .= "\x00\x00\x00\x00"; // last mod time and date
-	
+
 			$fr .= pack("V",0); // crc32
 			$fr .= pack("V",0); //compressed filesize
 			$fr .= pack("V",0); //uncompressed filesize
 			$fr .= pack("v", strlen($name) ); //length of pathname
 			$fr .= pack("v", 0 ); //extra field length
-			$fr .= $name;   
+			$fr .= $name;
 			// end of "local file header" segment
-	
+
 			// no "file data" segment for path
-	
+
 			// "data descriptor" segment (optional but necessary if archive is not served as file)
 			$fr .= pack("V",$crc); //crc32
 			$fr .= pack("V",$c_len); //compressed filesize
 			$fr .= pack("V",$unc_len); //uncompressed filesize
-	
+
 			// add this entry to array
-			$this -> datasec[] = $fr;  
-	
-			$new_offset = strlen(implode("", $this->datasec));  
-	
+			$this -> datasec[] = $fr;
+
+			$new_offset = strlen(implode("", $this->datasec));
+
 			// ext. file attributes mirrors MS-DOS directory attr byte, detailed
 			// at http://support.microsoft.com/support/kb/articles/Q125/0/19.asp
-	
+
 			// now add to central record
-			$cdrec = "\x50\x4b\x01\x02";  
+			$cdrec = "\x50\x4b\x01\x02";
 			$cdrec .="\x00\x00";    // version made by
 			$cdrec .="\x0a\x00";    // version needed to extract
 			$cdrec .="\x00\x00";    // gen purpose bit flag
@@ -320,70 +320,70 @@
 			$cdrec .= pack("V",0); //compressed filesize
 			$cdrec .= pack("V",0); //uncompressed filesize
 			$cdrec .= pack("v", strlen($name) ); //length of filename
-			$cdrec .= pack("v", 0 ); //extra field length    
+			$cdrec .= pack("v", 0 ); //extra field length
 			$cdrec .= pack("v", 0 ); //file comment length
 			$cdrec .= pack("v", 0 ); //disk number start
 			$cdrec .= pack("v", 0 ); //internal file attributes
-			$ext = "\x00\x00\x10\x00";  
-			$ext = "\xff\xff\xff\xff";   
+			$ext = "\x00\x00\x10\x00";
+			$ext = "\xff\xff\xff\xff";
 			$cdrec .= pack("V", 16 ); //external file attributes  - 'directory' bit set
-	
+
 			$cdrec .= pack("V", $this -> old_offset ); //relative offset of local header
-			$this -> old_offset = $new_offset;  
-	
-			$cdrec .= $name;   
+			$this -> old_offset = $new_offset;
+
+			$cdrec .= $name;
 			// optional extra field, file comment goes here
 			// save to array
-			$this -> ctrl_dir[] = $cdrec;   
-	
-			  
-		}  
-	
-	
-		function add_file($data, $name)    
-	
-		// adds "file" to archive    
+			$this -> ctrl_dir[] = $cdrec;
+
+
+		}
+
+
+		function add_file($data, $name)
+
+		// adds "file" to archive
 		// $data - file contents
 		// $name - name of file in archive. Add path if your want
-	
-		{   
-			$name = str_replace("\\", "/", $name);   
+
+		{
+			$name = str_replace("\\", "/", $name);
 			//$name = str_replace("\\", "\\\\", $name);
-	
-			$fr = "\x50\x4b\x03\x04";  
+
+			$fr = "\x50\x4b\x03\x04";
 			$fr .= "\x14\x00";    // ver needed to extract
 			$fr .= "\x00\x00";    // gen purpose bit flag
 			$fr .= "\x08\x00";    // compression method
 			$fr .= "\x00\x00\x00\x00"; // last mod time and date
-	
-			$unc_len = strlen($data);   
-			$crc = crc32($data);   
-			$zdata = gzcompress($data);   
+
+			$unc_len = strlen($data);
+			$crc = crc32($data);
+			$zdata = gzcompress($data);
 			$zdata = substr( substr($zdata, 0, strlen($zdata) - 4), 2); // fix crc bug
-			$c_len = strlen($zdata);   
+			$c_len = strlen($zdata);
 			$fr .= pack("V",$crc); // crc32
 			$fr .= pack("V",$c_len); //compressed filesize
 			$fr .= pack("V",$unc_len); //uncompressed filesize
 			$fr .= pack("v", strlen($name) ); //length of filename
 			$fr .= pack("v", 0 ); //extra field length
-			$fr .= $name;   
+			$fr .= $name;
 			// end of "local file header" segment
-			  
+
 			// "file data" segment
-			$fr .= $zdata;   
-	
+			$fr .= $zdata;
+
 			// "data descriptor" segment (optional but necessary if archive is not served as file)
 			$fr .= pack("V",$crc); //crc32
 			$fr .= pack("V",$c_len); //compressed filesize
 			$fr .= pack("V",$unc_len); //uncompressed filesize
-	
+
 			// add this entry to array
-			$this -> datasec[] = $fr;  
-	
-			$new_offset = strlen(implode("", $this->datasec));  
-	
+			$this -> datasec[] = $fr;
+
+			$new_offset = strlen(implode("", $this->datasec));
+
 			// now add to central directory record
-			$cdrec = "\x50\x4b\x01\x02";  
+			$cdrec = "\x50\x4b\x01\x02";
 			$cdrec .="\x00\x00";    // version made by
 			$cdrec .="\x14\x00";    // version needed to extract
 			$cdrec .="\x00\x00";    // gen purpose bit flag
@@ -393,41 +393,41 @@
 			$cdrec .= pack("V",$c_len); //compressed filesize
 			$cdrec .= pack("V",$unc_len); //uncompressed filesize
 			$cdrec .= pack("v", strlen($name) ); //length of filename
-			$cdrec .= pack("v", 0 ); //extra field length    
+			$cdrec .= pack("v", 0 ); //extra field length
 			$cdrec .= pack("v", 0 ); //file comment length
 			$cdrec .= pack("v", 0 ); //disk number start
 			$cdrec .= pack("v", 0 ); //internal file attributes
 			$cdrec .= pack("V", 32 ); //external file attributes - 'archive' bit set
-	
+
 			$cdrec .= pack("V", $this -> old_offset ); //relative offset of local header
 	//        echo "old offset is ".$this->old_offset.", new offset is $new_offset<br>";
-			$this -> old_offset = $new_offset;  
-	
-			$cdrec .= $name;   
+			$this -> old_offset = $new_offset;
+
+			$cdrec .= $name;
 			// optional extra field, file comment goes here
 			// save to central directory
-			$this -> ctrl_dir[] = $cdrec;   
-		}  
-	
-		function file() { // dump out file    
-			
-			
-			$data = implode("", $this -> datasec);   
-			$ctrldir = implode("", $this -> ctrl_dir);   
-	
-			return    
-				$data.   
-				$ctrldir.   
-				$this -> eof_ctrl_dir.   
+			$this -> ctrl_dir[] = $cdrec;
+		}
+
+		function file() { // dump out file
+
+
+			$data = implode("", $this -> datasec);
+			$ctrldir = implode("", $this -> ctrl_dir);
+
+			return
+				$data.
+				$ctrldir.
+				$this -> eof_ctrl_dir.
 				pack("v", sizeof($this -> ctrl_dir)).     // total # of entries "on this disk"
 				pack("v", sizeof($this -> ctrl_dir)).     // total # of entries overall
 				pack("V", strlen($ctrldir)).             // size of central dir
 				pack("V", strlen($data)).                 // offset to start of central dir
 				"\x00\x00";                             // .zip file comment length
-		}  
-	}  
-	
-	
+		}
+	}
+
+
 	class SCXML {
 
 /* DO NOT CHANGE ANYTHING FROM THIS POINT ON - THIS MEANS YOU !!! */

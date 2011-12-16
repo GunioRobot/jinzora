@@ -56,6 +56,6 @@
       {$elements[element].openPlayTag}>{$Play}</a>
     </td>
   </tr>
-  </table>  
+  </table>
   {/section}
 </div>

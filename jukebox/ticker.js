@@ -35,7 +35,7 @@ function CurTicker_tick() {
 	window.setTimeout("CurTicker_tick()", 50);
 }
 
- 
+
 NextTicker_RIGHTTOLEFT = false;
 NextTicker_SPEED = 2;
 NextTicker_STYLE = "";

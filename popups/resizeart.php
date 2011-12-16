@@ -41,9 +41,9 @@ if (isset ($_POST['edit_resize_art'])) {
 			$parent = $node->getParent();
 ?>
 					<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-						ar.innerHTML = '<nobr><?php echo word("Artist"); ?>: <?php echo $parent->getName(); ?></nobr>';					
-						a.innerHTML = '<nobr><?php echo word("Album"); ?>: <?php echo $node->getName(); ?></nobr>';					
-						t.innerHTML = '<nobr><?php echo word("Analyzed"); ?>: <?php echo $i; ?></nobr>';					
+						ar.innerHTML = '<nobr><?php echo word("Artist"); ?>: <?php echo $parent->getName(); ?></nobr>';
+						a.innerHTML = '<nobr><?php echo word("Album"); ?>: <?php echo $node->getName(); ?></nobr>';
+						t.innerHTML = '<nobr><?php echo word("Analyzed"); ?>: <?php echo $i; ?></nobr>';
 						-->
 					</SCRIPT>
 					<?php
@@ -59,9 +59,9 @@ if (isset ($_POST['edit_resize_art'])) {
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
 				ar = document.getElementById("artist");
 				a = document.getElementById("album");
-				ar.innerHTML = '<nobr><?php echo word("Completed in"). " ". convertSecMins((time() - $start)). " ". word("seconds"); ?></nobr>';					
-				a.innerHTML = '<nobr><?php echo word("Analyzed"); ?>: <?php echo $i; ?></nobr>';							
-				t.innerHTML = '&nbsp;';							
+				ar.innerHTML = '<nobr><?php echo word("Completed in"). " ". convertSecMins((time() - $start)). " ". word("seconds"); ?></nobr>';
+				a.innerHTML = '<nobr><?php echo word("Analyzed"); ?>: <?php echo $i; ?></nobr>';
+				t.innerHTML = '&nbsp;';
 				-->
 			</SCRIPT>
 			<?php

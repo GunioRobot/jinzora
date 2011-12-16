@@ -5,7 +5,7 @@
 	$blocks = new jzBlocks();
 	$node = new jzMediaNode($jz_path);
 	$smarty = smartySetup();
-	
+
 	global $show_frontpage_items, $show_alphabet, $random_albums;
 {/php}
 <table width="100%">
@@ -17,8 +17,8 @@
 			{if $editor_pick_title <> ""}
 				{include file="$smarty_include/templates/slick/featured.tpl"}
 			{/if}
-			
-			{php}		
+
+			{php}
 				if ($show_frontpage_items == "true") {
 					$sfi = true;
 				} else {
@@ -52,10 +52,10 @@
 				if ($random_albums <> "0" and !isset($_GET['jz_letter'])){
 					$blocks->slickRandomAlbums($node, $node->getName());
 				}
-				
+
 				// Now let's show the charts
 				$blocks->showSlickCharts($node,$chart_types);
-				
+
 				// we might still have tracks.
 				$tracks = $node->getSubNodes("tracks");
 				if (count($tracks) <> 0){
@@ -65,7 +65,7 @@
 					$blocks->blockBodyClose();
 					$blocks->blockSpacer();
 				}
-			
+
 				$fe->footer();
 			{/php}
 		</td>

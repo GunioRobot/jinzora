@@ -31,9 +31,9 @@ $(function(){
 
     var params = { allowScriptAccess: "always" };
     var atts = { id: "musicplayer" };
-    swfobject.embedSWF("nifty/niftyplayer.swf", 
-                       "musicplayer", "1", "1", "8", null, null, params, atts, 
-				function(e) { 
+    swfobject.embedSWF("nifty/niftyplayer.swf",
+                       "musicplayer", "1", "1", "8", null, null, params, atts,
+				function(e) {
 					if (e.success) {
 						// hack for no callback
 						setTimeout('loadPlayer()',500);
@@ -43,13 +43,13 @@ $(function(){
 
 
 /* create junction */
-var activity = 
+var activity =
   { ad: "org.jinzora.jukebox",
     friendlyName: "Jinzora Jukebox",
     roles: { "remote": { platforms: { "web" : { url:window.location.toString()}
 				   ,"android": {package:"org.jinzora",
 					    url:"http://prpl.stanford.edu/android/jinzora.apk"} }}
-           , "jukebox": { platforms: {}} 
+           , "jukebox": { platforms: {}}
     }
   }
 
@@ -58,7 +58,7 @@ var activity =
 
 actor =
   { roles: ["jukebox"]
-  , onMessageReceived : function(msg,header) 
+  , onMessageReceived : function(msg,header)
       {
 	if (msg.action) {
            // hack to reuse old code with RemoteIntent system
@@ -110,11 +110,11 @@ actor =
 	  drawList();
 	break;
 	}
-	
+
 	// update my playback:
 	if (isFollowing(header.from))
 	switch (msg.action) {
-	case "play": 
+	case "play":
           if (pos == -1) jumpTo(0);
 	  else doPlay();
 	break;
@@ -135,7 +135,7 @@ actor =
 
 	if (msg.status) {
 		updatePlayingStatus(msg,header.from);
-		
+
 	}
       }
   }
@@ -232,7 +232,7 @@ $('.playlist_entry').live('click',
     var entryID = this.id;
     // pl_entry_X
     var num = entryID.substring(9);
-    
+
     // local-only or remote? remote for now
     msg = {action:"jumpto"};
     msg.pos = num;
@@ -308,7 +308,7 @@ function addToList(list, addtype, from) {
     playlist = list;
     drawList();
     return true;
-  } 
+  }
   else if (addtype=='END') {
     playlist=playlist.concat(list);
     drawList();
@@ -330,7 +330,7 @@ function drawList() {
     var entryID = 'pl_entry_'+i;
     var friendID = 'pl_friend_'+i;
 
-    var html =  ''; 
+    var html =  '';
   	html += '<div id="'+entryID+'" class="playlist_entry">'
 	html += '<div id="'+friendID+'" class="entry_friends">&nbsp;</div>';
  	html += playlist[i].name;
@@ -363,7 +363,7 @@ function setInfo(item) {
 	info += '<br/>';
       }
       //info += '<a href="'+playlist[pos].url+'">Link</a>';
-  
+
   $('#infobar').html(info);
 }
 
@@ -417,7 +417,7 @@ function updatePlayingStatus(msg,from) {
 
   for (i=0;i<playlist.length;i++) {
     var p = playlist[i].playing;
- 
+
     var kill=-1;
     for (j=0;j<p.length;j++) {
       if (p[j]==from) {

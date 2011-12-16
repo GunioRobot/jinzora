@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* This is the media backend for the database adaptor.
 	*
@@ -25,13 +25,13 @@
 	* @author Ben Dodson
 	*/
 	class jzPlaylist {
-			
+
 		var $list; // list of jzMediaNodes and jzMediaTracks.
 		var $name; // name of playlist
 		var $isPublic; // if it is public, we cannot erase it until it is made private.
 		var $id;
-		
-		
+
+
 		/**
 		 * Constructor for a playlist.
 		 *
@@ -67,8 +67,8 @@
 		function getPlayHREF($random=false,$limit=0) {
 		  global $jzUSER;
 		  // do they have permissions or should we just do text?
-		  // return null otherwise 
-		  
+		  // return null otherwise
+
 		  $arr = array();
 		  $arr['type'] = 'playlist';
 		  $arr['jz_pl_id'] = $this->getID();
@@ -76,7 +76,7 @@
 		  if ($limit != 0) { $arr['limit'] = $limit; }
 		  if ($random){ $arr['mode'] = "random"; }
 		  if ($clips){ $arr['clips'] = "true"; }
-		  
+
 		  if (isset($_GET['frame'])){
 		    $arr['frame'] = $_GET['frame'];
 		  }
@@ -97,10 +97,10 @@
 
 		  return urlize($arr);
 		}
-		
+
 		/**
 		* Gets the playlist's name.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/29/04
 		* @since 10/29/04
@@ -108,11 +108,11 @@
 		function getName() {
 			return $this->name;
 		}
-		
-		
+
+
 		/**
 		* Returns the type of the variable (jzPlaylist)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
@@ -120,8 +120,8 @@
 		function getType() {
 			return "jzPlaylist";
 		}
-		
-		/** 
+
+		/**
 		 * Returns the type of this playlist.
 		 * Currently one of: static|dynamic
 		 *
@@ -135,18 +135,18 @@
 
 		/**
 		* Renames the playlist.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/29/04
 		* @since 10/29/04
-		*/		
+		*/
 		function rename($newname) {
 			$this->name = $newname;
 		}
-		
+
 		/**
 		* Gets the playlist's ID.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/29/04
 		* @since 10/29/04
@@ -156,7 +156,7 @@
 		}
 		/**
 		* Gets the playlist's length
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
@@ -172,7 +172,7 @@
 		  $count = 0;
 		  for ($i = 0; $i < sizeof($this->list); $i++) {
 		    $el = $this->list[$i];
-	
+
 		    if ($el->getType() == "jzMediaTrack") {
 		      $count++;
 		    }
@@ -189,9 +189,9 @@
 		  return $count;
 		}
 
-		/** 
+		/**
 		 * 'Intelligently' creates a random playlist from the given list.
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @param The number of elements to return
 		 * @param type the type of the playlist.
@@ -211,7 +211,7 @@
 
 		    $el = $this->getAt(0);
 		    $mainArray = $el->getSubNodes("tracks",-1,true,$lim);
-		    
+
 		    // Now let's get the top 5 similar artists
 		    $simArray = $jzSERVICES->getSimilar($el);
 		    $simArray = seperateSimilar($simArray);
@@ -219,7 +219,7 @@
 		    // Now let's shuffle
 		    $similarArray = array();
 		    for ($e=0;$e<count($simArray['matches']);$e++){
-		      if (isset($simArray['matches'][$e])){		
+		      if (isset($simArray['matches'][$e])){
 			// Ok, this is one that we want, let's get it's path
 			$simArt = $simArray['matches'][$e];
 			if ($lim) {
@@ -245,7 +245,7 @@
 		  if ($count <= 0) {
 		    $count = $trackcount;
 		  }
-		 
+
 		  if ($trackcount <= $count) {
 		    $pl = $this;
 		    $pl->flatten();
@@ -258,7 +258,7 @@
 		  $numbers = range(0,$trackcount-1);
 		  srand((float)microtime() * 1000000);
 		  $numbers = array_rand($numbers,$count);
-		  
+
 		  $size_list = array();
 		  $list = $this->getList();
 
@@ -379,13 +379,13 @@
 		* Stream uses their local path, if possible. Otherwise, uses the virtual path.
 		* Jukebox uses the physical path
 		* General uses the virtual path always.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
 		*/
 		function createPlaylist($purpose = false, $intro = true, $m_playlist_type = false) {
-			global $use_ext_playlists, $jukebox, $audio_types, $video_types, $playlist_type,$root_dir, 
+			global $use_ext_playlists, $jukebox, $audio_types, $video_types, $playlist_type,$root_dir,
 				   $include_path, $allow_resample,$jzUSER,$jzSERVICES,$embedded_player,$site_title;
 
 			if ($m_playlist_type == false || $m_playlist_type == "") {
@@ -394,7 +394,7 @@
 				  $m_playlist_type = $jzUSER->getSetting('playlist_type');
 				}
 			}
-			
+
 			if ($purpose !== false) {
 				if ($jukebox != "false") {
 					$m_playlist_type = "jukebox";
@@ -417,7 +417,7 @@
 			  $jzSERVICES->openPlayer($list);
 			  exit();
 			}
-			
+
 			// Now let's look at the list and IF it's a single track let's possibly change the list type
 			if (isset($_GET['type']) && $_GET['type'] == "track"){
 				// Ok, now we need to know the file extension of what's being played
@@ -436,7 +436,7 @@
 			// Ok, now we need to load up the playlist service that's appropriate to this playlist type
 			return $jzSERVICES->createPlaylist($list,$m_playlist_type);
 		}
-		
+
 		/**
 		* Gets the element at the given position.
 		* The position is either an integer or an ordered list of indices:
@@ -490,12 +490,12 @@
 		      if ($p[0] >= $this->length())
 			return false;
 		      return $this->list[$p[0]];
-		      
+
 		    }
 		    else {
 		      $cur = array_shift($p);
 		      $pos = implode(":",$p);
-		      
+
 		      $list = &new jzPlaylist();
 		      $list->add($this->getAt($cur));
 		      $list->flatten(0,1);
@@ -503,10 +503,10 @@
 		    }
 		  }
 		}
-		  
+
 		/**
 		* Gets the entire list of elements.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
@@ -514,10 +514,10 @@
 		function getList() {
 		  return $this->list;
 		}
-		
+
 		/**
 		* Moves an element in the playlist.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
@@ -525,16 +525,16 @@
 		function move($pos,$new_pos) {
 			if ($pos > $this->length())
 				return;
-				
+
 			if ($new_pos > $this->length()-1)
 				$new_pos = $this->length()-1;
-			
+
 			if ($pos > $new_pos) {
 				// backwards
 				$el = $this->list[$pos];
 				for ($i = $pos; $i > $new_pos; $i--)
 					$this->list[$i] = $this->list[$i-1];
-					
+
 				$this->list[$new_pos] = $el;
 			}
 			else if ($pos < $new_pos) {
@@ -542,25 +542,25 @@
 				$el = $this->list[$pos];
 				for ($i = $pos; $i < $new_pos; $i++)
 					$this->list[$i] = $this->list[$i+1];
-					
+
 				$this->list[$new_pos] = $el;
-			
+
 			}
 		}
-		
+
 		/**
 		* Flattens a node. If no node is specified,
 		* flatten them all.
 		* If $degree > 0, flatten it that much.
 		* Else, flatten to jzMediaTracks.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
 		*/
 		function flatten($pos = false, $degree = -1) {
 			global $max_playlist_length;
-			
+
 			if ($this->getPlType()=='dynamic') {
 			  $this->handleRules();
 			}
@@ -582,7 +582,7 @@
 								$this->list = $new_list;
 								$this->truncate();
 								return;
-							}							
+							}
 						}
 					} else { // jzMediaNode
 						if ($degree > 0) {
@@ -596,7 +596,7 @@
 									return;
 								}
 							}
-							
+
 						}
 						else {
 							$more = $cur->getSubNodes("tracks",-1);
@@ -608,7 +608,7 @@
 									$this->truncate();
 									return;
 								}
-							
+
 							}
 						}
 					}
@@ -620,7 +620,7 @@
 				for ($i = 0; $i < $pos; $i++) {
 					$new_list[] = $this->list[$i];
 				}
-				
+
 				$cur = $this->list[$pos];
 				if ($cur->getType() == "jzMediaNode") {
 					if ($degree > 0) {
@@ -645,7 +645,7 @@
 								$this->truncate();
 								return;
 							}
-						
+
 						}
 					}
 				}
@@ -658,26 +658,26 @@
 							$this->list = $new_list;
 							$this->truncate();
 							return;
-						}	
+						}
 					}
 				}
 				else {
 					$new_list[] = $cur;
 				}
-				
+
 				for ($i = $pos+1; $i < $this->length(); $i++) {
 					$new_list[] = $this->list[$i];
 				}
-				
+
 				$this->list = $new_list;
 				$this->truncate();
 			}
 		}
-		
-		
+
+
 		/**
 		* Shuffles the playlist.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/29/04
 		* @since 10/29/04
@@ -686,11 +686,11 @@
 			srand((float)microtime() * 1000000);
 			shuffle($this->list);
 		}
-		
-		
+
+
 		/**
 		* Adds an element to the list. If a position is not given, add it to the end.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
@@ -711,18 +711,18 @@
 				for ($i = 0; $i < $pos; $i++) {
 					$newlist[] = $this->list[$i];
 				}
-				
+
 				if (is_array($element))
 					$newlist = $newlist + $element;
 				else
 					$newlist[] = $element;
-					
+
 				for ($i = $pos; $i < sizeof($this->list); $i++)
 					$newlist[] = $this->list[$i];
-				
+
 				$this->list = $newlist;
 			}
-			
+
 			$this->truncate();
 		}
 
@@ -736,7 +736,7 @@
 		function getLimit() {
 		  return (isset($this->limit)) ? $this->limit : 0;
 		}
-		
+
 		/**
 		 * Gets the global limit of the playlist
 		 *
@@ -748,7 +748,7 @@
 		  $this->limit = $n;
 		}
 
-		/* 
+		/*
 		 * Gets the list of rules for a dynamic playlist.
 		 *
 		 * @author Ben Dodson
@@ -779,7 +779,7 @@
 		  if (!is_array($this->rulelist)) {
 		    $this->rulelist = array();
 		  }
-		  
+
 		  $rule = array();
 		  $rule['amount'] = $amount;
 		  $rule['function'] = $function;
@@ -855,7 +855,7 @@
 			// Now let's shuffle
 			$similarArray = array();
 			for ($e=0;$e<count($simArray['matches']);$e++){
-			  if (isset($simArray['matches'][$e])){		
+			  if (isset($simArray['matches'][$e])){
 			    // Ok, this is one that we want, let's get it's path
 			    $simArt = $simArray['matches'][$e];
 			    $subArray = $simArt->getSubNodes($type,$distance,true,($count/1.5));
@@ -888,7 +888,7 @@
 
 		/**
 		* Removes an element from the list.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/30/04
 		* @since 10/30/04
@@ -899,11 +899,11 @@
 			}
 			unset($this->list[$this->length()-1]);
 		}
-		
+
 		/**
 		* Filters in (audio|video) files.
 		* Note that this will also flatten the playlist.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 10/31/04
 		* @since 10/31/04
@@ -928,7 +928,7 @@
 				}
 			}
 		}
-	
+
 
 		/**
 		 * Adds the elements from a form to the playlist.
@@ -947,7 +947,7 @@
 		    foreach ($_POST['jz_list'] as $file) {
 		      $new = &new jzMediaNode($file);
 		      $this->add($new);
-		    } 
+		    }
 		  } else if (isset($_POST['jz_list_type']) && $_POST['jz_list_type'] == "playlists") {
 		    foreach ($_POST['jz_list'] as $file) {
 		      //$new = &new jzPlaylist($file);
@@ -959,10 +959,10 @@
 		      $new = &new jzMediaTrack($file);
 		      $this->add($new);
 		    }
-		    
+
 		  }
 		}
-		   
+
 		/**
 		 * Plays media from a remote playlist
 		 *
@@ -973,7 +973,7 @@
 		 function addFromExternal($url) {
 			// requires stream support in file handlers
 			$list = file($_REQUEST['external_playlist']);
-	
+
 			for ($i=0; $i<sizeof($list);$i++) {
 				if ($list[$i][0] != '#') {
 					$name = null;
@@ -989,11 +989,11 @@
 
 			fclose($stream);
 		 }
-		
-   
+
+
 		/**
 		* Truncates a list to the given size
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/2/04
 		* @since 11/1/04
@@ -1012,35 +1012,35 @@
 			}
 			if ($size < 0 || $this->length() <= $size)
 				return;
-			
+
 			for ($i = $this->length()-1; $i >= $size; $i--) {
 				unset($this->list[$i]);
 			}
-			
+
 		}
-		
+
 		/**
 		* Creates a random playlist
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/31/04
 		* @since 10/31/04
 		*/
 		function generate($random_play_type, $random_play_number, $random_play_genre = false,$resample = false) {
 			global $web_root, $root_dir, $media_dir, $audio_types, $this_site, $directory_level;
-			
+
 			$this->truncate(0);
-			
-			// Let's initalize some variables 
+
+			// Let's initalize some variables
 			$final_ctr = 0;
-			
+
 			if ($random_play_genre !== false && $random_play_genre != ""){
 				$node = &new jzMediaNode($random_play_genre);
 			} else {
 				$node = &new jzMediaNode();
 			}
-					
-			// Ok, now let's see what kind of random list they wanted 
+
+			// Ok, now let's see what kind of random list they wanted
 			switch (strtolower($random_play_type)) {
 				case "songs" : # Ok, they wanted some random songs
 				       $tracks = $node->getSubNodes("tracks",-1,true,$random_play_number*6);
@@ -1061,47 +1061,47 @@
 					$this->filter("audio");
 					return $this;
 				break;
-				
+
 				case "albums" : # Ok, they wanted some random Albums
 					$albums = $node->getSubNodes("nodes",distanceTo("album",$node),true,$random_play_number);
 					$this->add($albums);
 					$this->filter("audio");
-					
+
 					return $this;
 				break;
-				
+
 				case "artists" : # Ok, they wanted some random Artists
 					$artists = $node->getSubNodes("nodes",distanceTo("artist",$node),true,$random_play_number);
-					
+
 					$this->add($artists);
 					$this->filter("audio");
-					
+
 					return $this;
-					
-					
+
+
 				break;
-				
+
 				case "genres" : # Ok, they wanted some random Genres
 					$node = &new jzMediaNode();
 					$genres = $node->getSubNodes("nodes",distanceTo("genre",$node),true,$random_play_number);
-					
+
 					$this->add($genres);
 					$this->filter("audio");
-					
+
 					return $this;
-				
+
 				break;
-				
+
 			}
 
 		}
-		
-		
+
+
 		/* ACTIONS FOR A PLAYLIST: */
-		
+
 		/**
 		* Streams the playlist to the user.
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/12/04
 		* @since 11/12/04
@@ -1115,7 +1115,7 @@
 					$fileExt = "m3u";
 				}
 			}
-			
+
 			// Now let's look at the list and IF it's a single track let's possibly change the list type
 			if (isset($_GET['type']) && $_GET['type'] == "track"){
 				// Ok, now we need to know the file extension of what's being played
@@ -1167,50 +1167,50 @@
 				// Now we need to create a playlist from this so we can redirect to it
 				$fileName = $web_root. $root_dir. "/temp/search-result.pls.m3u";
 				$handle = fopen($fileName, "w");
-				fwrite($handle,$this->createPlaylist(false, true, $fileExt));	
+				fwrite($handle,$this->createPlaylist(false, true, $fileExt));
 				fclose ($handle);
-				
+
 				// Now let's send them to that page
 				echo '<meta http-equiv="refresh" content="0; url='. $this_site. $root_dir. '/playlists.php?searchpl=true">';
 			}
 		}
-		
+
 		/**
 		* Sends the playlist to the jukebox
-		* 
+		*
 		* @author Ross Carlson
 		* @version 2/10/05
 		* @since 2/10/05
 		*/
 		function jukebox($playlist = false) {
 			global $include_path, $web_root, $root_dir, $media_dir, $audio_mimes, $playlist_ext;
-			
+
 			if ($playlist === false) {
 			  $playlist = $this;
 			}
 			// Now let's create the jukebox object
 			include_once($include_path. "jukebox/class.php");
 			$jb = new jzJukebox();
-			
+
 			$jb->passPlaylist($playlist);
 		}
-		
-		
+
+
 		/**
 		* Does the default action on this playlist (play|jukebox)
-		* 
+		*
 		* @author Ben Dodson <bdodson@seas.upenn.edu>
 		* @version 11/12/04
 		* @since 11/12/04
 		*/
 		function play() {
 		  global $jukebox,$jzUSER,$jz_path;
-		  
+
 		  if (checkPermission($jzUSER,'play',$jz_path) === false) {
 		    return false;
 		  }
 
-		  $l = $this;		  
+		  $l = $this;
 		  $l->flatten();
 
 		  if (sizeof($l->list) == 0) {
@@ -1224,19 +1224,19 @@
 		}
 
 		/* Downloads the playlist
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @since 2/24/05
 		 * @version 2/24/05
 		 *
-		 **/		
+		 **/
 		function download() {
 			global $include_path;
-			
+
 		  include_once($include_path. 'lib/jzcomp.lib.php');
 		  include_once($include_path. 'lib/general.lib.php');
 		  $pl = $this;
-		  
+
 		  if ($pl->getPlType() == "dynamic") {
 		    $pl->handleRules();
 		  }
@@ -1257,7 +1257,7 @@
 		  }
 
 		  $pl->flatten();
-		  $list = $pl->getList();		  
+		  $list = $pl->getList();
 		  $i = 0;
 		  $files = array();
 		  $m3u = "";$oldPath="";$onepath=true;
@@ -1278,12 +1278,12 @@
 				$oldPath = $path;
 			}
 		  }
-		  
+
 		  $name = $this->getName();
 		  if ($name === false || $name == "") {
 		    $name = "Playlist";
 		  }
-		  
+
 		  // Now should we add art?
 		  if ($onepath){
 		  	// Ok, let's create the node so we can get the art
@@ -1293,25 +1293,25 @@
 				$files[$i] = $artNode->getMainArt();
 			}
 		  }
-		 
+
 		  // Silly to send a 1 element playlist
 		  if (sizeof($files) > 1) {
 		  	// Now let's write that to the temp dir
 			$fileName = $include_path. "temp/playlist.m3u";
 			$handle = @fopen($fileName, "w");
-			@fwrite($handle,$m3u);				
-			@fclose($handle);	
-			$files[$i+1] = $fileName;		
+			@fwrite($handle,$m3u);
+			@fclose($handle);
+			$files[$i+1] = $fileName;
 		  }
 			// Now let's send it
 			sendFileBundle($files, $name);
 		}
 
 		function makePublic($comment) {} // add/remove this list from the public list of playlists.
-		
+
 		function removePublic() {} // removes it from the public list.
-	
+
 	}
-	
-	
+
+
 ?>

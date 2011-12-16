@@ -1,7 +1,7 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	// Ok, let's kill the lock file
 	@unlink($include_path. "temp/install.lock");
-	
+
 	// Ok, they got to step 9, so let's track it
 	$url = "http://www.jinzora.com/jinzora-installer-finished.php";
 	$url_parsed = parse_url($url);
@@ -19,12 +19,12 @@
 		   if ( $s == "\r\n" )
 			   $body = true;
 		}
-		fclose($fp);	
+		fclose($fp);
 	}
-	
+
 	$root_page = setThisPage();
 	$form_action = setThisPage() . "install=step9";
-		
+
 	// Now did they want to proceed?
 	if (isset($_POST['share_stats'])){
 		// Ok, did they want to share stats?
@@ -39,11 +39,11 @@
 			$comments = $_POST['comments'];
 			$media_dir_count = sizeof(explode("|",$_SESSION['all_media_paths'])) - 1;
 			$mcms_type = $_POST['cms_type'];
-			
+
 			// Now let's get the backend data
 			require_once($include_path. 'backend/backend.php');
 			$root_node = &new jzMediaNode();
-			
+
 			if (distanceTo('genre') !== false)
 				$genres = $root_node->getSubNodeCount('nodes',distanceTo('genre'));
 			if (distanceTo('artist') !== false)
@@ -53,16 +53,16 @@
 			if (distanceTo('track') !== false)
 				$disks = $root_node->getSubNodeCount('nodes',distanceTo('track'));
 			$tracks = $root_node->getSubNodeCount('tracks',-1);
-				
+
 			$length = "";
-			
+
 			$sql_type = isset($sql_type) ? $sql_type : "false";
 			$genres = isset($genres) ? $genres : "false";
 			$artists = isset($artists) ? $artists : "false";
 			$albums = isset($albums) ? $albums : "false";
 			$tracks = isset($tracks) ? $tracks : "false";
 			$disks = isset($disks) ? $disks : "false";
-			
+
 			$user_agent = "";
 			if (isset($_SERVER['HTTP_USER_AGENT'])){
 				$user_agent = $_SERVER['HTTP_USER_AGENT'];
@@ -70,20 +70,20 @@
 			$webserver = "";
 			if (isset($_SERVER['SERVER_SOFTWARE'])){
 				$webserver = $_SERVER['SERVER_SOFTWARE'];
-			}			
+			}
 			$phpVersion = phpversion();
-			
+
 			// Now let's get the build
 			include_once($include_path. 'system.php');
-			
+
 			// Now let's connect to the stats page
 			$host = "www.jinzora.com";
-			$path = "useragent=". urlencode($user_agent). 
-					"&webserver=". urlencode($webserver). 
-					"&phpversion=". urlencode($phpVersion). 
-					"&hierarchy=" . urlencode(implode("/",$hierarchy)) . 
-					"&backend=" . urlencode($backend) . 
-					"&dbtype=" . urlencode($sql_type) . 
+			$path = "useragent=". urlencode($user_agent).
+					"&webserver=". urlencode($webserver).
+					"&phpversion=". urlencode($phpVersion).
+					"&hierarchy=" . urlencode(implode("/",$hierarchy)) .
+					"&backend=" . urlencode($backend) .
+					"&dbtype=" . urlencode($sql_type) .
 					"&genres=${genres}".
 					"&artists=${artists}".
 					"&albums=${albums}".
@@ -92,16 +92,16 @@
 					"&length=${length}".
 					"&frontend=${frontend}".
 					"&default_access=${default_access}".
-					"&username=". urlencode($username). 
-					"&site=". urlencode($site). 
-					"&comments=". urlencode($comments). 
-					"&media_dir=". urlencode($media_dir_count). 
+					"&username=". urlencode($username).
+					"&site=". urlencode($site).
+					"&comments=". urlencode($comments).
+					"&media_dir=". urlencode($media_dir_count).
 					"&build=". urlencode($version).
 					"&installtype=". urlencode($mcms_type).
 					"&jukebox=". urlencode($_POST['jukebox']);
-		
-			$url = "http://www.jinzora.com/jinzora-stats.php?". $path;		
-			
+
+			$url = "http://www.jinzora.com/jinzora-stats.php?". $path;
+
 			$url_parsed = parse_url($url);
 			$host = $url_parsed["host"];
 			$port = $url_parsed["port"];
@@ -112,7 +112,7 @@
 			   $path .= "?".$url_parsed["query"];
 			$out = "GET $path HTTP/1.0\r\nHost: $host\r\n\r\n";
 			@$fp = fsockopen($host, $port, $errno, $errstr, 30);
-			@fwrite($fp, $out);			
+			@fwrite($fp, $out);
 			@fclose($fp);
 
 			header("Location: ". $root_page);
@@ -159,7 +159,7 @@
 						</td>
 						<td class="td" width="1">&nbsp;</td>
 						<td class="td" width="75%" align="left">
-							<?php 
+							<?php
 								if (isset($_SERVER['HTTP_HOST'])){
 									$host = $_SERVER['HTTP_HOST'];
 								} else {
@@ -212,13 +212,13 @@
 			<?php echo $word_resources; ?>
 		</span>
 	</div>
-	<a target="_blank" href="http://www.jinzora.com/donate.htm"><?php echo $word_donations; ?></a>	
+	<a target="_blank" href="http://www.jinzora.com/donate.htm"><?php echo $word_donations; ?></a>
 	<br>
 	<a target="_blank" href="http://www.jinzora.com"><?php echo $word_website; ?></a>
 	<br>
 	<a target="_blank" href="http://www.jinzora.com/forums"><?php echo $word_forums; ?></a>
 	<br>
-	<a target="_blank" href="http://www.jinzora.com/docs"><?php echo $word_docs; ?></a>	
+	<a target="_blank" href="http://www.jinzora.com/docs"><?php echo $word_docs; ?></a>
 	<div class="go">
 		<span class="goToNext">
 			<?php echo $word_usage_stats; ?>
@@ -235,7 +235,7 @@
 		}
 		echo $word_anon_stat_note;
 		echo '<br>'.
-			'<br><input checked onclick="javascript:document.setup.share.value=\''. $word_share_stats. '\';" class="jz_radio" type="radio" name="stats" value="true"> '. $word_share_stats. 
+			'<br><input checked onclick="javascript:document.setup.share.value=\''. $word_share_stats. '\';" class="jz_radio" type="radio" name="stats" value="true"> '. $word_share_stats.
 			' <input  onclick="javascript:document.setup.share.value=\''. $word_launch_jinzora. '\';"  class="jz_radio" type="radio" name="stats" value="false"> '. $word_no_thanks. '<br>'.
 			'<div class="go">'.
 				'<span class="goToNext">'.

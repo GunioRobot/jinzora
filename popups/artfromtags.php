@@ -43,15 +43,15 @@ foreach ($nodes as $node) {
 
 			if($art !== false) {
 				$handle = fopen($art, "wb");
-				fwrite($handle,$meta['pic_data']);				
+				fwrite($handle,$meta['pic_data']);
 				fclose($handle);
 				$node->addMainArt("data" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "art_" . $node->getID() .  ".jpg");
 			}
-		} 
+		}
 	}
 ?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-				c.innerHTML = '<?php echo word("Art found for"); ?>: <?php echo $node->getName();?>';					
+				c.innerHTML = '<?php echo word("Art found for"); ?>: <?php echo $node->getName();?>';
 				-->
 			</SCRIPT>
 			<?php
@@ -60,7 +60,7 @@ foreach ($nodes as $node) {
 }
 ?>
 		<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-			c.innerHTML = '<?php echo word("Complete!"); ?>';					
+			c.innerHTML = '<?php echo word("Complete!"); ?>';
 			-->
 		</SCRIPT>
 		<?php

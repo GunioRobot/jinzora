@@ -73,7 +73,7 @@ if (isset ($_POST['edit_podcast_add'])) {
 			<script language="javascript">
 				t = document.getElementById("track");
 				p = document.getElementById("pbar");
-				p.innerHTML = '<?php echo "<br><br><center><img src=${include_path}style/images/progress-bar.gif><br>". word("Please wait"). "...</center>"; ?>';									
+				p.innerHTML = '<?php echo "<br><br><center><img src=${include_path}style/images/progress-bar.gif><br>". word("Please wait"). "...</center>"; ?>';
 				-->
 			</SCRIPT>
 			<?php
@@ -99,7 +99,7 @@ if (isset ($_POST['edit_podcast_add'])) {
 	$newNode->addDescription($desc);
 	$newNode->addMainArt($imgFile);
 
-	// Now let's loop and look at each enclosure		
+	// Now let's loop and look at each enclosure
 	$i = 1;
 	foreach ($retArray as $item) {
 		// Let's grab it
@@ -134,8 +134,8 @@ if (isset ($_POST['edit_podcast_add'])) {
 	}
 ?>
 			<script language="javascript">
-				p.innerHTML = '&nbsp;';									
-				t.innerHTML = '<br><center><?php echo word("Updates Complete!"); ?></center>';									
+				p.innerHTML = '&nbsp;';
+				t.innerHTML = '<br><center><?php echo word("Updates Complete!"); ?></center>';
 				-->
 			</SCRIPT>
 			<?php
@@ -193,7 +193,7 @@ $arr['jz_path'] = $node->getPath('String');
 			<center>
 				<input type="submit" name="edit_podcast_add" value="<?php echo word("Subscribe"); ?>" class="jz_submit">
 			</center>
-		</form>		
+		</form>
 		<br><br>
 		<strong><?php echo word("Managing Existing Podcasts"); ?></strong><br>
 		<?php
@@ -234,7 +234,7 @@ if (is_array($pData)) {
 		echo '<a href="' . urlize($arr) . '">' . word("Update") . '</a>';
 		/*
 		echo " | ";
-		
+
 		$arr['sub_action'] = "delete";
 		echo '<a href="'. urlize($arr). '">'. word("Delete"). '</a>';
 		*/

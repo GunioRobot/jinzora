@@ -2,7 +2,7 @@
 
 /**
 * Displays the read more information on an artist from a popup
-* 
+*
 * @author Ross Carlson
 * @version 01/19/05
 * @since 01/19/05

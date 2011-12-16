@@ -9,7 +9,7 @@ global $jzSERVICES;
 var playback = '<?php echo checkPlayback(); ?>';
 var streamto = '<?php echo checkPlayback(true); ?>';
 
-function playbackLink(url) {  
+function playbackLink(url) {
   if (playback == 'stream') {
   	return true;
     //window.open(url,'_self');
@@ -20,8 +20,8 @@ function playbackLink(url) {
     ajax_direct_call(url,sendJukeboxRequest_cb);
     <?php } else { ?>
     window.open(url,'_SELF');
-    <?php } ?> 
-  } 
+    <?php } ?>
+  }
   <?php if (checkPlayback(true) == 'embedded') { ?>
   else if (playback == 'embedded') {
     win = openMediaPlayer(url,<?php echo $jzSERVICES->returnPlayerWidth(); ?>,<?php echo $jzSERVICES->returnPlayerHeight(); ?>);
@@ -44,7 +44,7 @@ function addToPlaylist(url) {
 }
 
 /* update playlist via form */
-function submitPlaybackForm(button,url) {  
+function submitPlaybackForm(button,url) {
   form = button.form;
   document.pressedVal = null;
 
@@ -79,7 +79,7 @@ function submitPlaybackForm(button,url) {
         break;
       }
     }
-    <?php if (!defined('NO_AJAX_JUKEBOX')) { ?> 
+    <?php if (!defined('NO_AJAX_JUKEBOX')) { ?>
     ajax_submit_form(form,url,sendJukeboxRequest_cb);
     return false;
     <?php } else { ?>
@@ -111,7 +111,7 @@ function searchKeywords(f,url) {
     	f.target='_self';
     	return true;
     }
-    
+
     if (playback == 'jukebox') {
       ajax_submit_form(f,url,sendJukeboxRequest_cb);
        return false;

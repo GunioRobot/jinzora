@@ -6,7 +6,7 @@
    }
 
 /////////////////////////////////////////////////////////////////
-// Scaling elements for page resize 
+// Scaling elements for page resize
 function onScaleEvent(vScale)
 {
     try
@@ -34,16 +34,16 @@ function backFromFullScreen()
 
 
 /////////////////////////////////////////////////////////////////
-// determine which remote control key the user selected 
+// determine which remote control key the user selected
 // and take appropriate action
 function onRemoteEvent(keyChar)
 {
     /* Call optional "doOnFocus" function if needed; you can locate this function on the HTML page, and use it to tie some
-   custom functionality to a remote-control keypress. If you want to stop onRemoteEvent from moving focus after that, 
+   custom functionality to a remote-control keypress. If you want to stop onRemoteEvent from moving focus after that,
    return true in the doOnFocus function to indicate that remote control keypress is already being handled in some other way */
     try
     {
-        if (doOnFocus(keyChar) == true) 
+        if (doOnFocus(keyChar) == true)
         {
             return true;
         }
@@ -90,7 +90,7 @@ function onRemoteEvent(keyChar)
             pageUpDown("up");
             return true;
             break;
-            
+
         case 34:    // Page down (minus) selected; page-down scrolling menu
             pageUpDown("down");
             return true;
@@ -108,7 +108,7 @@ function onRemoteEvent(keyChar)
     return true
 }
 
-    
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Set background color for Shared Viewport and MCE toolbars that appear when you move mouse
 function setBGColor(Color)
@@ -126,7 +126,7 @@ function setBGColor(Color)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* For Media Center 2003 version, test onload event to see if variables are reset; if they are not, this
 means that user is returning from some Media Center view, such as full-screen video mode or my TV.
-If this is the case, you want to ignore your page's onload event. In the current version of Media Center, 
+If this is the case, you want to ignore your page's onload event. In the current version of Media Center,
 the page does not fire an onload event when this happens, so this function will not be necessary */
 
 var backFromMediaCenter = false
@@ -142,7 +142,7 @@ function continueOnloadFunctions()
     your page initilizing functions. Return false */
      return false
 }
-    
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This function tests to see if you need to open a Viewport for media playback
 function needViewport()
@@ -190,17 +190,17 @@ function IsMCExtender()
              To tell which type of session it is, check if video is allowed. If video is allowed... */
             if (window.external.MediaCenter.Capabilities.IsVideoAllowed == true)
             {
-                // ... then it is an extender session, so return true    
+                // ... then it is an extender session, so return true
                 return true
             }
             // Media Center does not allow video in a traditional Remote Desktop session. So if video is not allowed ...
             else
             {
-                /* IsConsole and IsVideoAllowed are both false false, so user is accessing through a traditional Remote 
-                Desktop session, rather than from an extender device. That means that they probably have access to a keyboard 
-                and mouse, but they cannot play video. If your application features video playback, you may want to 
-                adjust your functionality for this user accordingly. 
-                Returning false simply indicates that this is not an Extender session.  */     
+                /* IsConsole and IsVideoAllowed are both false false, so user is accessing through a traditional Remote
+                Desktop session, rather than from an extender device. That means that they probably have access to a keyboard
+                and mouse, but they cannot play video. If your application features video playback, you may want to
+                adjust your functionality for this user accordingly.
+                Returning false simply indicates that this is not an Extender session.  */
                 return false
             }
         }

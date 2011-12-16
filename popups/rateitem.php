@@ -2,7 +2,7 @@
 
 /**
 * Rates the currently viewed item
-* 
+*
 * @author Ross Carlson
 * @version 01/19/05
 * @since 01/19/05

@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - Creates an M3U compliant playlist
 	*
@@ -25,10 +25,10 @@
 	* @author Ben Dodson <ben@jinzora.org>
 	* @author Ross Carlson <ross@jinzora.org>
 	*/
-	
+
 	/**
 	* Returns the mime type for this playlist
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/24/05
 	* @since 2/24/05
@@ -37,10 +37,10 @@
 	function SERVICE_RETURN_MIME_M3U(){
 		return "audio/mpegurl";
 	}
-	
+
 	/**
 	* Creates an M3U compliant playlist and returns it for playing
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/24/05
 	* @since 2/24/05
@@ -49,28 +49,28 @@
 	*/
 	function SERVICE_CREATE_PLAYLIST_M3U($list){
 		global $allow_resample, $web_root, $root_dir, $this_site;
-		
+
 		// Let's setup Smarty
 		$smarty = smartySetup();
-		
+
 		// Let's start the list off right
 		$list->flatten();
-		
+
 		$i = 0;
 		foreach ($list->getList() as $track) {
 			// Should we play this?
-			if ((stristr($track->getPath("String"),".lofi.") 
+			if ((stristr($track->getPath("String"),".lofi.")
 				or stristr($track->getPath("String"),".clip."))
 				and $_SESSION['jz_play_all_tracks'] <> true){continue;}
-				
+
 			// Now let's get the extension to be sure it can be played
 			$pArr = explode("/",$track->getPath("String"));
 			$eArr = explode(".",$pArr[count($pArr)-1]);
 			$ext = $eArr[count($eArr)-1];
-			
+
 			// Let's get the meta
 			$meta = $track->getMeta();
-			
+
 			// Now let's figure out the full track name
 			$trackn = $track->getFileName("user");
 			if (!stristr($trackn,"mediabroadcast.php")) {
@@ -85,11 +85,11 @@
 			$i++;
 		}
 		unset($_SESSION['jz_play_all_tracks']);
-		
+
 		$smarty->assign('this_site', $this_site);
 		$smarty->assign('root_dir', $root_dir);
 		$smarty->assign('tracks', $tArr);
-		
+
 		// Now let's include the template
 		$smarty->display(SMARTY_ROOT. 'templates/playlists/m3u.tpl');
 	}

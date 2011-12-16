@@ -26,7 +26,7 @@
 						$blocks = new jzBlocks();
 						$node = new jzMediaNode($_GET['jz_path']);
 						global $types;
-						
+
 						$blocks->showCharts($node,$types);
 					{/php}
 				</tr>

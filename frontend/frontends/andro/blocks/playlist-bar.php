@@ -1,7 +1,7 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 global $img_playlist,$img_check,$img_check_none;
 	if (sizeof($nodes) > 0 || sizeof($tracks) > 0) {
-		$smarty->assign('addListButton', $display->addListButton(true));				
+		$smarty->assign('addListButton', $display->addListButton(true));
 		$smarty->assign('hidden_1', $display->hiddenVariableField('action','mediaAction'), true, true);
 		$smarty->assign('hidden_2', $display->hiddenVariableField('path',$_GET['jz_path']), true, true);
 		$url_array = array();

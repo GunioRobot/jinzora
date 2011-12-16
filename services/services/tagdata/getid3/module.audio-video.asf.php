@@ -1071,7 +1071,7 @@ class getid3_asf
 							foreach ($thisfile_asf['stream_bitrate_properties_object']['bitrate_records'] as $dummy => $dataarray) {
 								if (@$dataarray['flags']['stream_number'] == $streamnumber) {
 									$thisfile_asf_videomedia_currentstream['bitrate'] = $dataarray['bitrate'];
-									$thisfile_video['streams'][$streamnumber]['bitrate'] = $dataarray['bitrate']; 
+									$thisfile_video['streams'][$streamnumber]['bitrate'] = $dataarray['bitrate'];
 									$thisfile_video['bitrate'] += $dataarray['bitrate'];
 									break;
 								}

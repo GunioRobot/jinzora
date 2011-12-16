@@ -44,7 +44,7 @@ foreach ($nodes as $node) {
 		$parent->setPType('artist');
 ?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ar.innerHTML = '<?php echo word("Artist"); ?>: <?php echo $parent->getName(); ?>';					
+					ar.innerHTML = '<?php echo word("Artist"); ?>: <?php echo $parent->getName(); ?>';
 					-->
 				</SCRIPT>
 				<?php
@@ -52,7 +52,7 @@ foreach ($nodes as $node) {
 		flushdisplay();
 ?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					a.innerHTML = '<?php echo word("Album"); ?>: <?php echo $node->getName(); ?>';					
+					a.innerHTML = '<?php echo word("Album"); ?>: <?php echo $node->getName(); ?>';
 					-->
 				</SCRIPT>
 				<?php
@@ -63,8 +63,8 @@ foreach ($nodes as $node) {
 }
 ?>
 		<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-			ar.innerHTML = '<?php echo word("Complete!"); ?>';					
-			a.innerHTML = '&nbsp;';					
+			ar.innerHTML = '<?php echo word("Complete!"); ?>';
+			a.innerHTML = '&nbsp;';
 			-->
 		</SCRIPT>
 		<?php

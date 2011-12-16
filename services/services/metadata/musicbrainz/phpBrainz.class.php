@@ -146,7 +146,7 @@ class mbQuery {
 			return '';
 		}
 		return substr($bigID, $marker+1);
-	}       
+	}
 
 
 

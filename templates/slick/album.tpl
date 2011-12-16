@@ -2,7 +2,7 @@
 	$blocks = new jzBlocks();
 	$node = new jzMediaNode($_GET['jz_path']);
 	$fe = &new jzFrontend();
-	
+
 	global $jzSERVICES;
 {/php}
 <table width="100%" cellpadding="1">
@@ -44,7 +44,7 @@
 						{if $show_similar}
 							<td valign="top" width="1" valign="top" height="100%">&nbsp;</td>
 							<td height="100%" width="10%" valign="top">
-								{if $show_radio == "true"}						
+								{if $show_radio == "true"}
 									{php}
 										$blocks->slickRadioBlock($node);
 										$blocks->blockSpacer();
@@ -52,15 +52,15 @@
 								{/if}
 								{if $show_similar == "true"}
 									{php}
-										$blocks->slickSimilarArtistBlock($node,false,8); 
+										$blocks->slickSimilarArtistBlock($node,false,8);
 										$blocks->blockSpacer();
-										$blocks->slickSimilarAlbumBlock($node,8); 
+										$blocks->slickSimilarAlbumBlock($node,8);
 									{/php}
 								{/if}
 								{php}
 									// Now let's show the filler block
 									$blocks->blockSpacer();
-									$blocks->slickFillerBlock();		
+									$blocks->slickFillerBlock();
 								{/php}
 							</td>
 						{/if}

@@ -11,7 +11,7 @@
 				{/if}
 			{literal}
 		</font>
-		<br />	
+		<br />
 		<div id="yshout"></div>
 		<script type="text/javascript">
 			loadYShout({

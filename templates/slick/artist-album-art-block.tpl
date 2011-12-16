@@ -1,11 +1,11 @@
 {php}
 	global $show_album_art, $sort_by_year, $album_name_truncate,$jz_path;
-	
+
 	// Let's get all the subnodes
 	$node = new jzMediaNode($jz_path);
 	$nodes = $node->getSubNodes("nodes");
 	$display = new jzDisplay();
-	
+
 	if ($sort_by_year == "true"){
 		sortElements($nodes,"year");
 	} else {
@@ -36,12 +36,12 @@
 </table>
 
 <table width="100%" cellspacing="0" cellpadding="2"><tr><td colspan="4" class="jz_block_td">
-{php}	
+{php}
 	// Now let's show the album art
 	if ($show_album_art <> "false" && sizeof($artarr) > 0){
 		echo '<table width="100%" cellpadding="5" cellspacing="0">';
 		$c=0;
-		
+
 		// Now let's figure out how many colums to have
 		$alb_truncate = $album_name_truncate;
 		if (count($nodes) < 8){
@@ -59,7 +59,7 @@
 			$alb_truncate = 6;
 			$num=4;
 		}
-		
+
 		foreach ($nodes as $child) {
 			$year = $child->getYear();
 			$dispYear = "";
@@ -70,7 +70,7 @@
 			if ($c==0){ echo '</tr><tr>'; }
 				// Now let's display the data
 				echo '<td width="'. $colWidth. '%" align="center"><center>';
-				if (($art = $child->getMainArt($imageSize. "x". $imageSize)) == false) {								
+				if (($art = $child->getMainArt($imageSize. "x". $imageSize)) == false) {
 					// TODO: Create the default image here IF they want it
 					$art = "style/images/default.jpg";
 				}
@@ -84,7 +84,7 @@
 			$c++;
 			if ($c==$num){$c=0;}
 		}
-		echo '</table>';		
+		echo '</table>';
 	}
 {/php}
 </td></tr></table>

@@ -15,7 +15,7 @@ function drawPage($node) {
     $nodes = $node->getSubNodes('nodes');
   }
   $tracks = $node->getSubNodes('tracks');
-  
+
   // Now let's display the site description
 $news = $blocks->siteNews($node);
 if ($news <> ""){
@@ -41,11 +41,11 @@ if ($news <> ""){
     $i++;
   }
   echo "</table></td></tr></table>";
-  
+
   if (!isset($_GET['letter'])) {
     $url = array();
     $url['letter'] = '#';
-    
+
     echo "| <a href=\"" . urlize($url) . "\">#</a>";
     for ($let = 'A'; $let != 'Z'; $let++) {
       $url['letter'] = $let;
@@ -57,7 +57,7 @@ if ($news <> ""){
     if (sizeof($tracks) > 0) {
       $blocks->trackTable($tracks,false,true);
     }
-    
+
     if ($random_albums <> "0"){
       echo "<br>";
       $blocks->randomAlbums($node, $node->getName());
@@ -66,4 +66,4 @@ if ($news <> ""){
   $blocks->blockBodyClose();
   echo "<br>";
 }
-  
+

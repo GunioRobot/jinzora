@@ -1,29 +1,29 @@
-<?php 
-	if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');	
-	
+<?php
+	if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
+
 	// Now let's actually define the icons
 	if (!isset($image_dir)){
 		$image_dir = $include_path. 'style/'. $skin. '/';
 	}
 	$main_img_dir = $include_path. 'style/images/';
-	$disabled_dir = $root_dir. '/style/images/';	
-	
+	$disabled_dir = $root_dir. '/style/images/';
+
 	// Now let's create the blank icons
 	if ($jinzora_skin == 'cms-theme'){
 		$dis_dir = $disabled_dir;
 	} else {
 		$dis_dir = $image_dir;
-	}	
+	}
 	$img_begin = '<span id="jz_images"><img src="'. $main_img_dir. 'blank.gif" border=0 class="icon ';
-	
-	
+
+
 	/**
 	 * Use of these constants is not recommended.
 	 * Instead, use the icon function:
 	 * icon('play', array('option' => 'value', ...) )
 	 */
-	 
-	$img_play 			= $img_begin. 'icon-play" alt="'. word("Play"). '" title="'. word("Play"). '"></span>'; 
+
+	$img_play 			= $img_begin. 'icon-play" alt="'. word("Play"). '" title="'. word("Play"). '"></span>';
 	$img_random_play 	= $img_begin. 'icon-random" alt="'. word("Play Random"). '" title="'. word("Play Random"). '"></span>';
 	$img_download 		= $img_begin. 'icon-download" alt="'. word("Download"). '" title="'. word("Download"). '"></span>';
 	$img_prefs 			= $img_begin. 'icon-prefs" alt="'. word("Preferences"). '" title="'. word("Preferences"). '"></span>';
@@ -37,7 +37,7 @@
 	$img_slim_pop 		= $img_begin. 'icon-slimpop" alt=Slimzora title=Slimzora></span>';
 	$img_play_dis 		= $img_begin. 'icon-play-disabled" alt="'. word("Play"). '" title="'. word("Play"). '"></span>';
 	$img_random_play_dis= $img_begin. 'icon-random-disabled" alt="'. word("Play Random"). '" title="'. word("Play Random"). '"></span>';
-	$img_download_dis 	= $img_begin. 'icon-download-disabled" alt="'. word("Download"). '" title="'. word("Download"). '"></span>';	
+	$img_download_dis 	= $img_begin. 'icon-download-disabled" alt="'. word("Download"). '" title="'. word("Download"). '"></span>';
 	$img_tiny_play 		= $img_begin. 'icon-tiny-play" alt="'. word("Play"). '" title="'. word("Play"). '"></span>';
 	$img_tiny_play_dis  = $img_begin. 'icon-tiny-play-dis" alt="'. word("Play"). '" title="'. word("Play"). '"></span>';
 	$img_tiny_info 		= $img_begin. 'icon-tiny-info" alt="'. word("Information"). '" title="'. word("Information"). '"></span>';
@@ -45,8 +45,8 @@
 	$img_rate 			= $img_begin. 'icon-rate" alt="'. word("Rate"). '" title="'. word("Rate"). '"></span>';
 	$img_discuss 		= $img_begin. 'icon-discuss" alt="'. word("Discuss"). '" title="'. word("Discuss"). '"></span>';
 	$img_discuss_dis 	= $img_begin. 'icon-discuss-disabled" alt="'. word("Discuss"). '" title="'. word("Discuss"). '"></span>';
-	$img_email			= $img_begin. 'icon-email" alt="'. word("Share via email"). '" title="'. word("Share via email"). '"></span>';	
-	$img_rss 			= $img_begin. 'icon-rss" alt="'. word("RSS Feed"). '" title="'. word("RSS Feed"). '"></span>';	
+	$img_email			= $img_begin. 'icon-email" alt="'. word("Share via email"). '" title="'. word("Share via email"). '"></span>';
+	$img_rss 			= $img_begin. 'icon-rss" alt="'. word("RSS Feed"). '" title="'. word("RSS Feed"). '"></span>';
 	$img_dollar 		= $img_begin. 'icon-purchase" alt="'. word("Purchase"). '" title="'. word("Purchase"). '"></span>';
 	$img_podcast 		= $img_begin. 'icon-podcast" alt="'. word("Subscribe to Podcast"). '" title="'. word("Subscribe to Podcast"). '"></span>';
 	$img_up_arrow 		= $img_begin. 'icon-uparrow" alt="'. word("Up level"). '" title="'. word("Up level"). '"></span>';
@@ -64,8 +64,8 @@
 	$img_jb_no_repeat 	= $img_begin. 'icon-norepeat" alt="'. word("No Repeat"). '" title="'. word("No Repeat"). '"></span>';
 	$img_arrow_up 		= $img_begin. 'icon-up" alt="'. word("Move Up"). '" title="'. word("Move Up"). '"></span>';
 	$img_arrow_down 	= $img_begin. 'icon-down" alt="'. word("Move Down"). '" title="'. word("Move Down"). '"></span>';
-	
-	// These are for the stars	
+
+	// These are for the stars
 	$img_star_half_empty = $img_begin. 'icon-star-h-e" alt="'. word("Rate"). '" title="'. word("Rate"). '"></span>';
 	$img_star_full_empty = $img_begin. 'icon-star-f-e" alt="'. word("Rate"). '" title="'. word("Rate"). '"></span>';
 	$img_star_right 	 = $img_begin. 'icon-star-r" alt="'. word("Rate"). '" title="'. word("Rate"). '"></span>';
@@ -73,7 +73,7 @@
 	$img_star_full 		 = $img_begin. 'icon-star-f" alt="'. word("Rate"). '" title="'. word("Rate"). '"></span>';
 
 	// This are various random icons
-    $img_folder 		= '<img src="'. $root_dir. '/style/images/folder.gif" border=0"/>';	
+    $img_folder 		= '<img src="'. $root_dir. '/style/images/folder.gif" border=0"/>';
 	$img_blank 			= '<img src="'. $main_img_dir. 'blank.gif" border=0>';
 	$img_login 			= '<img src="'. $image_dir. 'login.gif" border=0 alt="'. word("Login in/out"). '" title="'. word("Login in/out"). '">';
 	$img_delete 		= '<img src="'. $image_dir. 'delete.gif" border=0 alt="'. word("Delete"). '" title="'. word("Delete"). '">';
@@ -82,8 +82,8 @@
 	$img_clear 			= '<img src="'. $image_dir. 'clear.gif" border=0 alt="'. word("Clear"). '" title="'. word("Clear"). '">';
 	$img_fav_track 		= '<img src="'. $image_dir. 'rate.gif" border=0 alt="'. word("Add to favorites"). '" title="'. word("Add to favorites"). '">';
 	$img_lofi 			= '<img src="'. $image_dir. 'play-lofi.gif" border=0 alt="'. word("Play Lofi"). '" title="'. word("Play Lofi"). '">';
-    $img_sm_logo 		= '<img src="'. $root_dir. '/style/images/powered-by-small.gif" border=0 alt="'. $this_pgm. $version. '" title="'. $this_pgm. $version. '">';	
-	$img_slimzora 		= '<img src="'. $root_dir. '/style/images/slimzora.gif" border=0 alt="'. $this_pgm. $version. '" title="'. $this_pgm. $version. '">';	
+    $img_sm_logo 		= '<img src="'. $root_dir. '/style/images/powered-by-small.gif" border=0 alt="'. $this_pgm. $version. '" title="'. $this_pgm. $version. '">';
+	$img_slimzora 		= '<img src="'. $root_dir. '/style/images/slimzora.gif" border=0 alt="'. $this_pgm. $version. '" title="'. $this_pgm. $version. '">';
 	$img_add_fav 		= '<img src="'. $image_dir. 'add-fav.gif" border=0 alt="'. word("Add to Favorites"). '" title="'. word("Add to Favorites"). '">';
 	$img_pause 			= '<img src="'. $image_dir. 'pause.gif" border=0 alt="'. word("Pause"). '" title="'. word("Pause"). '">';
 	$img_stop 			= '<img src="'. $image_dir. 'stop.gif" border=0 alt="'. word("Stop"). '" title="'. word("Stop"). '">';
@@ -108,7 +108,7 @@
  * @author Ben Dodson
  * @since 10/31/2007
  **/
- 
+
 function icon($type, $args = array()) {
   global $img_begin;
 

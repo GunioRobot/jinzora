@@ -1,20 +1,20 @@
 <?php define('JZ_SECURE_ACCESS','true');
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *    
-	* JINZORA | Web-based Media Streamer  
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	* JINZORA | Web-based Media Streamer
 	*
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
-	* or integrated into any PHP website.  It is released under the GNU GPL. 
-	* 
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
+	* or integrated into any PHP website.  It is released under the GNU GPL.
+	*
 	* Jinzora Author:
-	* Ross Carlson: ross@jasbone.com 
+	* Ross Carlson: ross@jasbone.com
 	* http://www.jinzora.org
-	* Documentation: http://www.jinzora.org/docs	
+	* Documentation: http://www.jinzora.org/docs
 	* Support: http://www.jinzora.org/forum
 	* Downloads: http://www.jinzora.org/downloads
 	* License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* Contributors:
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
 	*
@@ -22,11 +22,11 @@
 	* Created: 9.24.03 by Ross Carlson
 	*
 	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	
+
 	$include_path = getcwd(). "/";
-	
-	@include_once('system.php');        
-	@include_once('settings.php');  	
+
+	@include_once('system.php');
+	@include_once('settings.php');
 	include_once($include_path. "lib/general.lib.php");
 	include_once($include_path. 'services/class.php');
 	include_once('backend/backend.php');
@@ -34,13 +34,13 @@
 	$jzSERVICES = new jzServices();
 	$jzSERVICES->loadStandardServices();
 	$display = new jzDisplay();
-	
+
 	// Now let's get the node so we can get the tracks
 	$node = new jzMediaNode($_GET['jz_path']);
 	$par = $node->getAncestor("artist");
 	$artist = $par->getName();
 	$tracks = $node->getSubNodes("tracks",-1);
-	
+
 	// Now let's display the header
 	header("Content-type: application/xml");
 	echo  '<?xml version="1.0" encoding="utf-8"?>'. "\n".
@@ -51,7 +51,7 @@
 			 '  <link>http://www.jinzora.com/</link>'. "\n".
 			 '  <language>en-us</language>'. "\n".
 			 '  <generator>Jinzora http://www.jinzora.com/</generator>'. "\n";
-	
+
 	if (($art = $node->getMainArt("200x200")) <> false) {
 		echo '  <itunes:image rel="image" type="video/jpeg" href="'. str_replace("&","&amp;",$display->returnImage($art,false, false, false, "limit", false, false, false, false, false, "0", false, true)). '">'. $node->getName(). '</itunes:image>'. "\n";
 		echo '  <itunes:link rel="image" type="video/jpeg" href="'. str_replace("&","&amp;",$display->returnImage($art,false, false, false, "limit", false, false, false, false, false, "0", false, true)). '">'. $node->getName(). '</itunes:link>'. "\n";
@@ -66,13 +66,13 @@
 		// Let's get the tracks path
 		$meta = $track->getMeta();
 		$artist = $track->getAncestor("artist");
-		
-		// Now let's create the URL		
+
+		// Now let's create the URL
 		$tpArr = explode("?",$track->getFileName("user"));
 		$path = $this_site. $root_dir. "/mediabroadcast.php/". $tpArr[1]. "/". $track->getName(). ".mp3";
 		$path = str_replace("&","&amp;",$path);
-		
-		$tName = $track->getName();		
+
+		$tName = $track->getName();
 		if ($meta['number'] <> ""){
 			$tName = $meta['number']. " - ". $tName;
 		}
@@ -85,7 +85,7 @@
 		echo '<enclosure url="'. $path. '" length="'. round((($meta['size'] * 1024) * 1024)). '" type="audio/mpeg"/>'. "\n";
 		echo '</item>'. "\n";
 	}
-	
+
 	echo '</channel>'. "\n";
 	echo '</rss>';
 ?>

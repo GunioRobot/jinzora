@@ -2,7 +2,7 @@
 
 /**
 * Displays the upload status box
-* 
+*
 * @author Ross Carlson, Ben Dodson
 * @version 03/01/05
 * @since 03/01/05

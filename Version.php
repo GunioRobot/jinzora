@@ -1,4 +1,4 @@
-<?php 
+<?php
 $modversion['name'] = 'Jinzora';
 $modversion['version'] = '2.x';
 $modversion['description'] = 'Jinzora Media Jukebox';

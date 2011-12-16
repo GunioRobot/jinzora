@@ -1,42 +1,42 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Contains the Audiontron Jukebox Interface code
 	*
 	* @since 2/9/05
 	* @author Ross Carlson <ross@jinzora.org>
 	*/
-	
+
 	/*
-	
+
 	NOTES FOR THIS JUKEBOX
-	
+
 	This Jukebox requires the following settings:
-	
+
 	server
 	port
 	password
 	description
 	type
-	
+
 	An example would be:
 	$jbArr[0]['server'] = "localhost";
 	$jbArr[0]['port'] = "4800";
@@ -46,14 +46,14 @@
 	$jbArr[0]['mediaserver'] = "SERVERNAME";
 	$jbArr[0]['mediashare'] = "SHARENAME";
 
-	*/	
-	
+	*/
+
 	// Right off the bat we need to clear the status session var before the functions run
 	$_SESSION['jz_audiotron_status'] = "";
-	
+
 	/**
 	* Returns the connection status of the player true or false
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -71,10 +71,10 @@
 		}
 		return true;
 	}
-	
+
 	/**
 	* Returns Addon tools for MPD - namely refresh jukebox database
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -83,10 +83,10 @@
 	function getAllAddOnTools(){
 		return;
 	}
-	
+
 	/**
 	* Returns the currently playing tracks path so we can get the node
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -94,10 +94,10 @@
 	*/
 	function getCurTrackPath(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
 		$status = getATStatus();
-		
+
 		// Now let's get the location
 		$cur = substr($status,strpos($status,"SourceID=")+strlen("SourceID="));
 		$cur = substr($cur,0,strpos($cur,"\n"));
@@ -106,10 +106,10 @@
 
 		return $cur;
 	}
-	
+
 	/**
 	* Returns the currently playing track number
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -117,20 +117,20 @@
 	*/
 	function getCurPlayingTrack(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
 		$status = getATStatus();
-		
+
 		// Now let's get the location
 		$cur = substr($status,strpos($status,"CurrIndex=")+strlen("CurrIndex="));
 		$cur = substr($cur,0,strpos($cur,"\n"));
-		
+
 		return $cur;
 	}
-	
+
 	/**
 	* Returns the currently playing playlist
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -138,13 +138,13 @@
 	*/
 	function getCurPlaylist(){
 		global $jbArr;
-		
+
 		// Let's get the full playing list - we'll create a session variable for this since it can be HUGE and take FOREVER
 		if (!isset($_SESSION['jb_at_playlist'])){
 			$_SESSION['jb_at_playlist'] = file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. "/apigetinfo.asp?type=playq");
 		}
 		$list = $_SESSION['jb_at_playlist'];
-		
+
 		// Now let's break that into an array so we can process it
 		$valArray = explode("[Song",$list);
 		for ($i=0; $i < count($valArray); $i++){
@@ -162,7 +162,7 @@
 
 	/**
 	* Passes a playlist to the jukebox player
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -170,14 +170,14 @@
 	*/
 	function playlist($playlist){
 		global $include_path, $jbArr,$jzSERVICES;
-		
+
 		$playlist = $jzSERVICES->createPlaylist($playlist,"jukebox");
 		// First we need to get the current playlist so we can figure out where to add
 		$curList = getCurPlaylist();
-		
+
 		// Let's get where we are in the current list
 		$curTrack = getCurPlayingTrack();
-		
+
 		// Ok, now we need to figure out where to add the stuff
 		if ($_SESSION['jb-addtype'] == "current"){
 			// Ok, let's split our first playlist in 2 so we can add in the middle
@@ -193,7 +193,7 @@
 		  $begArr = array();
 		  $endArr = array();
 		}
-		
+
 		// Now let's send the new playlist to the player
 		$f=false;$data="";
 		for ($i=0; $i < count($begArr); $i++){
@@ -205,7 +205,7 @@
 				$f=true;
 				$data .= $val;
 			}
-		}		
+		}
 		// Ok, Now let's add the new stuff
 		$pArray = explode("\n",$playlist);
 		for ($i=0; $i < count($pArray); $i++){
@@ -233,15 +233,15 @@
 		// Now let's clear the current list
 		control("clear", false);
 		usleep(500);
-		
+
 		$fileName = $jbArr[$_SESSION['jb_id']]['localpath']. "/". $jbArr[$_SESSION['jb_id']]['playlistname'];
 		$handle = fopen($fileName, "w");
-		fwrite($handle,$data);	
+		fwrite($handle,$data);
 		fclose ($handle);
-		
+
 		// Ok, now we need to tell the audiotron to play the M3U file
 		$plName = "\\\\". $jbArr[0]['mediaserver']. "\\". $jbArr[0]['mediashare']. "\\". $jbArr[0]['playlistname'];
-		
+
 		// Now let's play then load
 		file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. "/apicmd.asp?cmd=stop");
 		file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. "/apicmd.asp?cmd=clear");
@@ -256,7 +256,7 @@
 			file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. "/apicmd.asp?cmd=next");
 			usleep(500);
 			$c++;
-		}	
+		}
 		?>
 		<script>
 			history.back();
@@ -264,10 +264,10 @@
 		<?php
 		return;
 	}
-		
+
 	/**
 	* Passes a command to the jukebox player
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -351,19 +351,19 @@
 			<?php
 		}
 	}
-	
+
 	/**
 	* Returns the players current status
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
 	*/
 	function getStatus(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
-		$status = getATStatus();		
+		$status = getATStatus();
 		$status = substr($status,strpos($status,"State=")+strlen("State="));
 		$status = trim(substr($status,0,strpos($status,"\n")));
 
@@ -379,10 +379,10 @@
 			break;
 		}
 	}
-	
+
 	/**
 	* Returns the current playing track
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -390,7 +390,7 @@
 	*/
 	function getCurTrackName(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
 		$status = getATStatus();
 		if (stristr($status,"State=Inactive")){
@@ -400,13 +400,13 @@
 			$cur = substr($status,strpos($status,"Title=")+strlen("Title="));
 			$cur = substr($cur,0,strpos($cur,"\n"));
 		}
-		
+
 		return $cur;
 	}
-	
+
 	/**
 	* Returns how long is left in the current track (in seconds)
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -414,21 +414,21 @@
 	*/
 	function getCurTrackLocation(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
 		$status = getATStatus();
-		
+
 		// Now let's get the location
 		$cur = substr($status,strpos($status,"CurrPlayTime=")+strlen("CurrPlayTime="));
 		$cur = substr($cur,0,strpos($cur,"\n"));
-		
+
 		// Now let's return
 		return $cur;
 	}
-	
+
 	/**
 	* Returns how long is left in the current track (in seconds)
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -436,24 +436,24 @@
 	*/
 	function getCurTrackRemaining(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
 		$status = getATStatus();
-		
+
 		// Now let's get the location
 		$cur = getCurTrackLocation();
-		
+
 		// Now let's get the length
 		$length = getCurTrackLength();
 		$remain = ($length - $cur);
-		
+
 		// Now let's return
 		return $remain;
 	}
-	
+
 	/**
 	* Gets the length of the current track
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -461,27 +461,27 @@
 	*/
 	function getCurTrackLength(){
 		global $jbArr;
-		
+
 		// First let's get the full status from the player
 		$status = getATStatus();
-		
+
 		// Now let's get the length
 		$length = substr($status,strpos($status,"TotalTime=")+strlen("TotalTime="));
 		$length = substr($length,0,strpos($length,"\n"));
-		
+
 		return $length;
-		
+
 		// Now let's get the location
 		$cur = substr($status,strpos($status,"CurrPlayTime=")+strlen("CurrPlayTime="));
 		$cur = substr($cur,0,strpos($cur,"\n"));
-		
+
 		return $cur;
 	}
-	
+
 	/**
 	* Gets the current status from the Audiotron
 	* We use this so that we would only make 1 request to the audiotron per pass
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -490,7 +490,7 @@
 	*/
 	function getATStatus($force = false){
 		global $jbArr;
-		
+
 		usleep(500);
 		if ($_SESSION['jz_audiotron_status'] == "" or $force){
 			$_SESSION['jz_audiotron_status'] = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['username']. ":". $jbArr[$_SESSION['jb_id']]['password']. "@". $jbArr[$_SESSION['jb_id']]['server']. "/apigetstatus.asp");

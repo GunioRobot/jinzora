@@ -30,7 +30,7 @@ function doTemplate($node) {
 			'openPlayTag'=>$display->getOpenPlayTag($el));
   }
   $smarty->assign('elements',$elements);
- 
+
   jzTemplate($smarty,'playlist');
 }
 

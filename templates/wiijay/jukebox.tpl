@@ -46,7 +46,7 @@ font-size:22px;
 			<!--
 			{if $jukebox_display == "art"}
 				<span>
-				{$artist} - 
+				{$artist} -
 				{$album}
 				</span>
 			{/if}
@@ -61,9 +61,9 @@ font-size:22px;
 			<select multiple name="jbjumpto[]" id="jukeboxJumpToSelect" class="jz_select" size="7" style="width:250px;font-size:20px;" {if $playlist_jump_supported}onclick="setJbFormCommand('jumpto'); sendJukeboxForm(); return false;"{/if}>
 
 				{foreach from=$playlist item=track key=id}
-					<option value="{$track.index}" 
-						{if $track.selected}selected{/if} 
-						{if $track.playing}style="font-weight:bold;" selected>* 
+					<option value="{$track.index}"
+						{if $track.selected}selected{/if}
+						{if $track.playing}style="font-weight:bold;" selected>*
 						{else}>
 						{/if}
 						{$track.label}

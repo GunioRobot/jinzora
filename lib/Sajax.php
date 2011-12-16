@@ -1,22 +1,22 @@
-<?php	
+<?php
 if (!isset($SAJAX_INCLUDED)) {
 
-	/*  
+	/*
 	 * GLOBALS AND DEFAULTS
 	 *
-	 */ 
+	 */
 	$sajax_debug_mode = 0;
 	$sajax_export_list = array();
 	$sajax_request_type = "GET";
 	$sajax_remote_uri = "";
-	
+
 	/*
 	 * CODE
 	 *
-	 */ 
+	 */
 	function sajax_init() {
 	}
-	
+
 	function sajax_get_my_uri() {
 	  global $my_frontend, $skin, $jz_language,$include_path;
 		$str = $include_path . "ajax_request.php";
@@ -24,21 +24,21 @@ if (!isset($SAJAX_INCLUDED)) {
 
 		return $str;
 	}
-	
+
 	$sajax_remote_uri = sajax_get_my_uri();
 
 	function sajax_handle_client_request() {
 		global $sajax_export_list;
-		
+
 		$mode = "";
-		
-		if (! empty($_GET["rs"])) 
+
+		if (! empty($_GET["rs"]))
 			$mode = "get";
-		
+
 		if (!empty($_POST["rs"]))
 			$mode = "post";
-			
-		if (empty($mode)) 
+
+		if (empty($mode))
 			return;
 
 		if ($mode == "get") {
@@ -49,19 +49,19 @@ if (!isset($SAJAX_INCLUDED)) {
 			header ("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
 			header ("Pragma: no-cache");                          // HTTP/1.0
 			$func_name = $_GET["rs"];
-			if (! empty($_GET["rsargs"])) 
+			if (! empty($_GET["rsargs"]))
 				$args = $_GET["rsargs"];
 			else
 				$args = array();
 		}
 		else {
 			$func_name = $_POST["rs"];
-			if (! empty($_POST["rsargs"])) 
+			if (! empty($_POST["rsargs"]))
 				$args = $_POST["rsargs"];
 			else
 				$args = array();
 		}
-		
+
 		if (! in_array($func_name, $sajax_export_list))
 			echo "-:$func_name not callable";
 		else {
@@ -71,31 +71,31 @@ if (!isset($SAJAX_INCLUDED)) {
 		}
 		exit;
 	}
-	
+
 	function sajax_get_common_js() {
 		global $sajax_debug_mode;
 		global $sajax_request_type;
 		global $sajax_remote_uri;
-		
+
 		$t = strtoupper($sajax_request_type);
-		if ($t != "GET" && $t != "POST") 
+		if ($t != "GET" && $t != "POST")
 			return "// Invalid type: $t.. \n\n";
-		
+
 		ob_start();
 		?>
-		
+
 		// remote scripting library
 		// (c) copyright 2005 modernmethod, inc
 		var sajax_debug_mode = <?php echo $sajax_debug_mode ? "true" : "false"; ?>;
 		var sajax_request_type = "<?php echo $t; ?>";
-		
+
 		function sajax_debug(text) {
 			if (sajax_debug_mode)
 				alert("RSD: " + text)
 		}
  		function sajax_init_object() {
  			sajax_debug("sajax_init_object() called..")
- 			
+
  			var A;
 			try {
 				A=new ActiveXObject("Msxml2.XMLHTTP");
@@ -116,20 +116,20 @@ if (!isset($SAJAX_INCLUDED)) {
 			var i, x, n;
 			var uri;
 			var post_data;
-			
+
 			uri = "<?php echo $sajax_remote_uri; ?>";
 			if (sajax_request_type == "GET") {
-				if (uri.indexOf("?") == -1) 
+				if (uri.indexOf("?") == -1)
 					uri = uri + "?rs=" + escape(func_name);
 				else
 					uri = uri + "&rs=" + escape(func_name);
-				for (i = 0; i < args.length-1; i++) 
+				for (i = 0; i < args.length-1; i++)
 					uri = uri + "&rsargs[]=" + escape(args[i]);
 				uri = uri + "&rsrnd=" + new Date().getTime();
 				post_data = null;
 			} else {
 				post_data = "rs=" + escape(func_name);
-				for (i = 0; i < args.length-1; i++) 
+				for (i = 0; i < args.length-1; i++)
 					post_data = post_data + "&rsargs[]=" + escape(args[i]);
 			}
 			if (directurl != false) {
@@ -148,10 +148,10 @@ if (!isset($SAJAX_INCLUDED)) {
 				x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			}
 			x.onreadystatechange = function() {
-				if (x.readyState != 4) 
+				if (x.readyState != 4)
 					return;
 				sajax_debug("received " + x.responseText);
-				
+
 				var status;
 				var data;
 				if (directurl != false) {
@@ -161,9 +161,9 @@ if (!isset($SAJAX_INCLUDED)) {
 				  status = x.responseText.charAt(0);
 				  data = x.responseText.substring(2);
 				}
-				if (status == "-") 
+				if (status == "-")
 					alert("Error: " + data);
-				else  
+				else
 					args[args.length-1](data);
 			}
 			x.send(post_data);
@@ -218,11 +218,11 @@ function getFormValues(fobj)
     case "select-one":
       str += escape(fobj.elements[i].name) +
 	"=" + escape(fobj.elements[i].options[fobj.elements[i].selectedIndex].value) + "&";
-      break;	  
+      break;
     case "select-multiple":
       for (var j = 0; j < fobj.elements[i].options.length; j++) {
 	if (fobj.elements[i].options[j].selected) {
-	  str += escape(fobj.elements[i].name) + 
+	  str += escape(fobj.elements[i].name) +
 	    "=" + escape(fobj.elements[i].options[j].value) + "&";
 	}
       }
@@ -230,7 +230,7 @@ function getFormValues(fobj)
     }
   }
   if (document.pressed != null) {
-    
+
     if (null != document.pressedVal) {
       str += escape(document.pressed) + "=" + escape(document.pressedVal) + "&";
     } else {
@@ -238,7 +238,7 @@ function getFormValues(fobj)
     }
   }
   str = str.substr(0,(str.length - 1));
-  return str;  
+  return str;
 }
 
 
@@ -247,11 +247,11 @@ function getFormValues(fobj)
 		ob_end_clean();
 		return $html;
 	}
-	
+
 	function sajax_show_common_js() {
 		echo sajax_get_common_js();
 	}
-	
+
 	// javascript escape a value
 	function sajax_esc($val)
 	{
@@ -259,41 +259,41 @@ function getFormValues(fobj)
 	}
 
 	function sajax_get_one_stub($func_name) {
-		ob_start();	
+		ob_start();
 		?>
-		
+
 		// wrapper for <?php echo $func_name; ?>
-		
+
 		function x_<?php echo $func_name; ?>() {
 			sajax_do_call("<?php echo $func_name; ?>",
 				x_<?php echo $func_name; ?>.arguments, false);
 		}
-		
+
 		<?php
 		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
-	
+
 	function sajax_show_one_stub($func_name) {
 		echo sajax_get_one_stub($func_name);
 	}
-	
+
 	function sajax_export() {
 		global $sajax_export_list;
-		
+
 		$n = func_num_args();
 		for ($i = 0; $i < $n; $i++) {
 			$sajax_export_list[] = func_get_arg($i);
 		}
 	}
-	
+
 	$sajax_js_has_been_shown = 0;
 	function sajax_get_javascript()
 	{
 		global $sajax_js_has_been_shown;
 		global $sajax_export_list;
-		
+
 		$html = "";
 		if (! $sajax_js_has_been_shown) {
 			$html .= sajax_get_common_js();
@@ -304,12 +304,12 @@ function getFormValues(fobj)
 		}
 		return $html;
 	}
-	
+
 	function sajax_show_javascript()
 	{
 		echo sajax_get_javascript();
 	}
-	
+
 	$SAJAX_INCLUDED = 1;
 }
 ?>

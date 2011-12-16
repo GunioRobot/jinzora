@@ -1,21 +1,21 @@
-<?php 
+<?php
         if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *   
-        * JINZORA | Web-based Media Streamer  
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        * JINZORA | Web-based Media Streamer
         *
-        * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s  
-        * (but can be used for any media file that can stream from HTTP).  
-        * Jinzora can be integrated into a PostNuke site, run as a standalone application, 
+        * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+        * (but can be used for any media file that can stream from HTTP).
+        * Jinzora can be integrated into a PostNuke site, run as a standalone application,
         * or integrated into any PHP website.  It is released under the GNU GPL.
-        * 
+        *
         * Jinzora Author:
         * Ross Carlson: ross@jasbone.com
         * http://www.jinzora.org
-        * Documentation: http://www.jinzora.org/docs        
+        * Documentation: http://www.jinzora.org/docs
         * Support: http://www.jinzora.org/forum
         * Downloads: http://www.jinzora.org/downloads
         * License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-        * 
+        *
         * Contributors:
         * Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
         * Translated by Wolfram Koerver www.koervernet.de
@@ -244,7 +244,7 @@
         $words['e6f2490ba15793d2c1a17bf3d8620ef5'] = "Auto Set Seitenformat";
         $words['33ae353f0a5916a25c21f2321e8e23b7'] = "Automatische Einstellung Seitenformat";
         $words['6480fb06eea39a9204d3caaa9768ce23'] = "Analyse...";
-        
+
         // These are for the docs for the help system - they do NOT need to be modified unless
         // You want to modify all the config system settings....
         $words['a72657793fdc801a6f06b12f5625a496'] = "Should we show links to the lyrics for a track if that track has lyrics?  This link will open a new window to allow the user to easily view the lyrics.";
@@ -293,9 +293,9 @@
         $words['cee88be31636e76d54890c97bb1c5012'] = "This will lock the default resample rate for this user and force them to use real-time resampling when streaming media - WARNING: resampling is VERY CPU intensive!";
         $words['d7dd5ee4fa2ebd1fbe50e911e07755ca'] = "Resample Rate Lock";
         $words['0252c53775f6218086e279137d7ea1ab'] = "This specifies the external or embedded player.  What this means is when a user plays media it will be played in a player embedded into a small popup webpage.  There are several choices, they are:<br><br><li><strong>wimpy</strong> - A Flash based media player, this player is NOT included with Jinzora and MUST be purchased from www.wimpyplayer.com<li><strong>wmp</strong> - This is the embedded Windows Media Player, a very universal player<li><strong>xspf</strong> - This is an embedded Flash based player that is open source and included with Jinzora - highly recommended";
-        
-        
-        
+
+
+
         // These are for the config system - they do NOT need to be modified unless
         // You want to modify all the config system settings....
         $words['416fb745fe7e48b87f0314ba1bf1141f'] = "Should we show the link for Slimzora";
@@ -365,7 +365,7 @@
         $words['22243fdc4bbcce5bcc15d7ca0088ff76'] = "Should we use an embedded player?  Valid choices are:<br><br><li>xspf (open source Flash based)<li>wmp (Windows Media Player)<li>wimpy (commercial Flash based player - www.wimplyplayer.com)";
         $words['ba111d34b18d4ef1e0afeaf420a08448'] = "The main title for your Jinzora site";
         $words['9f73ecc603b7dbf7e155fa935778e4c9'] = "The theme (color set) that Jinzora will use";
-        $words['aca33b9c046b2a50b8c3c54cc0380de8'] = "The frontend or interface that Jinzora will use";        
+        $words['aca33b9c046b2a50b8c3c54cc0380de8'] = "The frontend or interface that Jinzora will use";
         $words['0258169bd1452969a752108f4bb3b48b'] = "What users should be able to see the help system.  Valid choices are:<br><br><li>all - all users can see the help system<li>admin - only Jinzora admins can see the help system";
         $words['2bee232b10ca53ae80e6bfa96d0034d5'] = "Should we show users how long it takes to load each page";
         $words['e346c6679d0a3bd4078dd8d28d44d511'] = "Should we display the chart system";

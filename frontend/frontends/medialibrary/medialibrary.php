@@ -1,6 +1,6 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 function drawPage(&$node) {
-  global $this_page, $jzUSER;	
+  global $this_page, $jzUSER;
 
 	$parent = $node->getNaturalParent();
 	doNaturalDepth($parent);
@@ -8,7 +8,7 @@ function drawPage(&$node) {
 	doNaturalDepth($grandparent);
 	$greatgrandparent = $grandparent->getNaturalParent();
 	doNaturalDepth($greatgrandparent);
-	
+
 	$display = &new jzDisplay();
 	$blocks = new jzBlocks();
 	$root = &new jzMediaNode();
@@ -19,32 +19,32 @@ function drawPage(&$node) {
 	if ($news <> ""){
 		echo "<br><center>". $news. "<center><br>";
 	}
-	
+
 	$MAX_TRACKS = 100;
 	// if we have POST variable songs[], we need to perform some action on the songs.
 	// probably handle this in the header.php file (or even index.php?)
-	
+
 	// TODO:
 	// 1) if no art found, display some stats or something.
 	// 2) add counts in parenethesis next to nodes.
 	// 3) lock page width
-	
+
 	if (isset($_POST['clear'])) {
 		unset($_POST['query']);
 	}
-	
+
 	if ($node->getLevel() == 0) {
 		$left = $node->getSubNodes();
 		$right = array();
 		$backstring = false;
 	}
 	else if ($node->getSubNodes() == array()) {
-	
+
 		// weird but possible case: $node == $parent. Happens in a 2-tier layout.
 		if ($parent->getLevel() == $grandparent->getLevel()) {
 			$leftpath = $node->getPath();
 			$rightpath = array();
-			
+
 			$left = $parent->getSubNodes();
 			$right = array();
 			$backstring = false;
@@ -58,21 +58,21 @@ function drawPage(&$node) {
 			else {
 				$backstring = $grandparent->getPath("String");
 			}
-			
+
 			$left = $grandparent->getSubNodes();
 			$right = $parent->getSubNodes();
 		}
 	} else {
 		$leftpath = $node->getPath(); // preselect me on the left
 		$rightpath = array(); // don't select on the right
-		
+
 		if ($grandparent->getLevel() == $parent->getLevel()) {
 			$backstring = false;
-		} 
+		}
 		else {
 			$backstring = $parent->getPath("String");
 		}
-		
+
 		if (isset($_POST['doquery']) && $_POST['query'] != "") {
 			$right = $node->search($_POST['query'],"nodes",false,$MAX_TRACKS);
 		} else {
@@ -80,9 +80,9 @@ function drawPage(&$node) {
 		}
 		$left = $parent->getSubNodes();
 	}
-	
-	
-	if (isset($_POST['doquery']) && $_POST['query'] != "") {		
+
+
+	if (isset($_POST['doquery']) && $_POST['query'] != "") {
 		if ($_POST['how'] == "filter") {
 			$songs = $node->search($_POST['query'],"tracks",-1,$MAX_TRACKS);
 		} else {
@@ -133,7 +133,7 @@ function drawPage(&$node) {
 </form>
 </td><td width="32%">
 <form method="GET" action="<?php echo $this_page ?>">
-<?php 
+<?php
     keepVars($_POST);
     $display->hiddenPageVars();
     if (!defined('NO_AJAX_LINKS')) {
@@ -187,7 +187,7 @@ if (($art = $node->getMainArt("200x200")) !== false) {
 ?>
 >Search: </option>
 </select>
-<input name="query" style="width:65%" class="jz_input" 
+<input name="query" style="width:65%" class="jz_input"
 <?php
 	if (isset($_POST['query']))
 		echo "value=\"".htmlentities($_POST['query'])."\"";
@@ -266,7 +266,7 @@ echo $pl->getName() . ":";
 </select>
 <input type="hidden" name="playlistname" value="">
     <?php $display->hiddenVariableField("action","playlistAction");
-	$display->hiddenVariableField("noaction","true"); 
+	$display->hiddenVariableField("noaction","true");
 	keepVars($_POST);
 	$display->hiddenVariableField("jz_path",$_POST['jz_path']);
 	  ?>

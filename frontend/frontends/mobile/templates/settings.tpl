@@ -11,7 +11,7 @@
 #bodyDiv div a {
   height:100%;
   display:block;
-  padding: 8px 8px 8px 8px;  
+  padding: 8px 8px 8px 8px;
 }
 
 {/literal}
@@ -38,7 +38,7 @@
   </div>
 
   {/section}
-  
+
   <h2>{$AddToPlaylist}</h2>
   {section name=playlist loop=$playlists}
   {if $smarty.section.playlist.index is even}

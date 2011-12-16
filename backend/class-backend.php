@@ -1,81 +1,81 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-	* 
+	*
 	* - Code Purpose -
 	* These are the classes extended by the backend adaptors.
 	*
 	* @since 05.10.04
 	* @author Ben Dodson <bdodson@seas.upenn.edu>
 	*/
-	
+
 	class jzBackendClass {
-		
+
 		var $name;
 		var $details;
 		var $version;
 		var $data_dir;
-		
+
 		/**
 		* Constructor wrapper for a jzBackend
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/06/04
 		* @since 9/04/04
 		*/
-		
+
 		function jzBackendClass() {
 			return $this->_constructor();
 		}
-	
+
 		/**
 		* Constructor code for a jzBackend
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/06/04
 		* @since 9/04/04
-		*/	
+		*/
 		function _constructor() {
 			global $backend, $version, $include_path;
-			
+
 			$this->name = $backend;
 			$this->details = "This is a cache-based backend that uses your filesystem hierarchy to determine the music layout.";
 			$this->version = $version;
 			$this->data_dir = $include_path. "data/backend";
 			return true;
 		}
-		
+
 		/**
 		* Gets a storage directory for the backend's data.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/12/04
 		* @since 11/12/04
 		*/
-		
+
 		function getDataDir() {
 			return $this->data_dir;
 		}
-		
+
 		/**
 		 * Checks if the backend has a certain feature.
-		 * 
+		 *
 		 * @author Ben Dodson
 		 * @version 8/17/05
 		 * @since 8/17/05
@@ -98,9 +98,9 @@
 		* Returns 1 when complete
 		* Returns 0 when still in progress (requires info from the web)
 		* Returns -1 if failed.
-		* 
+		*
 		* Example call to install():
-		* 
+		*
 		* $back = &new jzBackend();
 		* if (($val = $back->install()) == 0)
 		* 	exit();
@@ -114,35 +114,35 @@
 		* @version 11/13/04
 		* @since 9/04/04
 		*/
-		
+
 		function install() {
 			global $backend;
 			// the default adaptor does not need a web-based install.
 			// just store a few variables and return 1, since we are complete.
 			$this->install_be();
 			$this->install_users();
-			
-			
-			
+
+
+
 			echo "The backend has been installed.";
 			// now populate it.
 			// done.
 			return 1;
 		}
-		
+
 		/**
 		* Stores backend information, used by most backends
 		* (not in a database)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/13/04
 		* @since 11/13/04
 		*/
 		function install_be() {
-			
+
 			$datapath = $this->data_dir;
-			$filename = $datapath . "/backend";		
-		
+			$filename = $datapath . "/backend";
+
 			if (file_exists($filename)) {
 				$config = unserialize(file_get_contents($filename));
 			}
@@ -153,7 +153,7 @@
 			$config['name'] = $this->name;
 			$config['details'] = $this->details;
 			$config['version'] = $this->version;
-			
+
 			if (!$handle = @fopen($filename,"w")) {
 				touch($filename);
 				if (!$handle = @fopen($filename,"w")) {
@@ -164,19 +164,19 @@
 			fwrite($handle,serialize($config));
 			fclose($handle);
 		}
-		
+
 		/**
 		* Sets up user backend.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/20/04
 		* @since 11/20/04
 		*/
 		function install_users() {
 			global $backend;
-			
+
 			$datapath = $this->data_dir;
-			
+
 			// USERS:
 			$filename = $datapath . "/users";
 			if (!isset($password)){$password="";}
@@ -184,7 +184,7 @@
 				$users = array();
 				$users['NOBODY']['password'] = jz_password($password);
 				$users['NOBODY']['id'] = uniqid("USR");
-				
+
 				if (!$handle = @fopen($filename,"w")) {
 					touch($filename);
 					if (!$handle = @fopen($filename,"w")) {
@@ -193,7 +193,7 @@
 					}
 				}
 				fwrite($handle,serialize($users));
-				fclose($handle);	
+				fclose($handle);
 			}
 			// USER SETTINGS:
 			$filename = $datapath . "/user_settings";
@@ -207,7 +207,7 @@
 					}
 				}
 				fwrite($handle,serialize($usersettings));
-				fclose($handle);	
+				fclose($handle);
 			}
 			// GROUPS:
 			$filename = $datapath . "/groups";
@@ -222,115 +222,115 @@
 					}
 				}
 				fwrite($handle,serialize($groups));
-				fclose($handle);	
+				fclose($handle);
 			}
 		}
-		
-		
+
+
 		/**
 		* Gets the backend name.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/04/04
 		* @since 9/04/04
 		*/
-		
+
 		function getName() {
 			global $backend;
-			
+
 			$datapath = $this->data_dir;
 			$filename = $datapath . "/backend";
 			$config = unserialize(file_get_contents($filename));
-			
+
 			return $config['name'];
 		}
-		
+
 		/**
 		* Gets the backend details.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/04/04
 		* @since 9/04/04
 		*/
-		
+
 		function getDetails() {
 			global $backend;
-			
+
 			$datapath = $this->data_dir;
 			$filename = $datapath . "/backend";
 			$config = unserialize(file_get_contents($filename));
-			
+
 			return $config['details'];
 		}
-		
+
 		/**
 		* Gets the backend version.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 9/04/04
 		* @since 9/04/04
 		*/
-		
+
 		function getVersion() {
 			global $backend;
-			
+
 			$datapath = $this->data_dir;
 			$filename = $datapath . "/backend";
 			$config = unserialize(file_get_contents($filename));
-			
+
 			return $config['version'];
 		}
-		
+
 		/**
 		* Gets the time the database was last updated.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 10/15/04
 		* @since 10/15/04
 		*/
-		
+
 		function getUpdated($dir = false) {
 			global $backend;
-			
+
 			if ($dir === false)
 				$dir = 'root';
-			
+
 			$datapath = $this->data_dir;
 			$filename = $datapath . "/backend";
 			$config = unserialize(file_get_contents($filename));
-			
+
 			return isset($config['updated'][$dir]) ? $config['updated'][$dir] : 0;
 		}
-		
+
 		/**
 		* Sets the last updated of the $dir to $when (or now)
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/13/04
 		* @since 10/15/04
 		*/
-		
+
 		function setUpdated($dir = false, $when = false) {
 			global $backend;
 			if ($dir === false)
 				$dir = 'root';
-			
+
 			if ($when === false)
 				$when = date("U");
-			
+
 			$datapath = $this->data_dir;
 			$filename = $datapath . "/backend";
 			$config = unserialize(file_get_contents($filename));
-			
+
 			$config['updated'][$dir] = $when;
 			$handle = fopen($filename,"w");
 			fwrite($handle,serialize($config));
 			fclose($handle);
 		}
-		
+
 		/**
 		* Clears our updated times.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 11/13/04
 		* @since 11/13/04
@@ -341,13 +341,13 @@
 			$datapath = $this->data_dir;
 			$filename = $datapath . "/backend";
 			$config = unserialize(file_get_contents($filename));
-			
+
 			$config['updated'] = array();
 			$handle = fopen($filename,"w");
 			fwrite($handle,serialize($config));
 			fclose($handle);
 		}
-		
+
 
 		/**
 		 * Sets the 'currently playing' info for the user.
@@ -358,20 +358,20 @@
 		 **/
 		function setPlaying($user, $track, $sid) {
 			global $jzUSER;
-			
+
 			// Let's set the file that will store this data
 			$filename = $this->getDataDir() . "/now-playing.dat";
-			
+
 			// Let's see if it exists and if it does lets load it
 			if (file_exists($filename)) {
 				$array = unserialize(file_get_contents($filename));
 			} else {
 				$array = array();
 			}
-			
+
 			// Let's pull all the meta data from the current playing track
 			$meta = $track->getMeta();
-			
+
 			// Let's create the array to store
 			$path = $track->getDataPath("String");
 			$array[$user][$sid]['track'] = $track->getName();
@@ -387,7 +387,7 @@
 			$handle = fopen($filename,"w");
 			fwrite($handle,serialize($array));
 			fclose($handle);
-			
+
 			// Now let's track this so we'll know what each user has played
 			$this->storeData("playhistory-". $user, $this->loadData("playhistory-". $user). "\n". $track->getPath("String"));
 		}
@@ -412,7 +412,7 @@
 
 			// First let's make sure we didn't do this too fast
 			// If we're using some players they just buffer too fast
-			// And we think the file is done when it's not			
+			// And we think the file is done when it's not
 			if (isset($array[$user][$sid]['path'])){
 				$track = new jzMediaTrack($array[$user][$sid]['path']);
 				$meta = $track->getMeta();
@@ -420,7 +420,7 @@
 				$meta = array();
 				$meta['length'] = 60;
 			}
-			
+
 			if ($user === false) {
 			  $array = array();
 			} else if ($sid === false) {
@@ -428,7 +428,7 @@
 			} else if (((time() + $meta['length']) -30) < time()) {
 			  unset($array[$user][$sid]);
 			}
-			
+
 			$handle = fopen($filename,"w");
 			fwrite($handle,serialize($array));
 			fclose($handle);
@@ -466,17 +466,17 @@
 		 **/
 		function getPlaying() {
 		  	$filename = $this->getDataDir() . "/now-playing.dat";
-		  
+
 			if (file_exists($filename)) {
 				$array = unserialize(file_get_contents($filename));
 			} else {
 				$array = array();
 			}
-			
+
 			if (sizeof($array) == 0) {
 				return $array;
 			}
-			
+
 			// Ok, now let's clean up tracks to make sure that nothing stuck around too long...
 			$modify = false;
 			$net_modify = false;
@@ -501,15 +501,15 @@
 			  fwrite($handle,serialize($array));
 			  fclose($handle);
 			}
-			
+
 			// Now return them some data.
 			$retArray = array();
-			
+
 			// Now let's find what this user is streaming
 			foreach($array as $user) {
 			  $retArray = array_merge($retArray,$user);
 			}
-			
+
 			return $retArray;
 		}
 
@@ -523,16 +523,16 @@
 		function allowPlaycountIncrease($user, $el, $sid) {
 		  $arr = $this->getPlaying();
 		  $tpath = $el->getPath("String");
-		  
+
 		  if (isset($arr) && isset($arr[$user]) && isset($arr[$user][$sid])) {
 		  	if ($arr[$user][$sid]['path'] == $tpath) {
 		  		return false;
 		  	}
 		  }
-		  
+
 		  return true;
 		}
-		
+
 		/*
 		 * Stores arbitrary data.
 		 *
@@ -576,7 +576,7 @@
 		  if (!file_exists($dp)) {
 		    return false;
 		  }
-		  
+
 		  if ($timeout) {
 		    $cache = $this->loadData('cache_timeouts');
 		    if (is_array($cache) && isset($cache[$data_id])) {
@@ -601,7 +601,7 @@
 		 **/
 		function removeData($data_id) {
 		  $dp = $this->data_dir . "/backend-" . $data_id;
-			
+
 		  @unlink($dp);
 		}
 
@@ -621,26 +621,26 @@
 				$index = $filename;
 				$type = "track";
 			}
-			
+
 			if (file_exists($path)) {
 				$arr = unserialize(file_get_contents($path));
 			} else {
 				$arr = array();
 			}
-			
+
 			$arr[$index]['path'] = $pathArray;
 			$arr[$index]['added'] = time();
 			$arr[$index]['fs_sync'] = $fs_sync;
-			
+
 			if (!$handle = @fopen($path,"w")) {
 		   		die("registerFile: Could not open file " . $path . " for writing.");
 		  	}
 		  	fwrite($handle,serialize($arr));
 		  	fclose($handle);
 		}
-		
-		
-		
+
+
+
 		function unregisterFile($filename) {
 			if (file_exists($filename)) {
 				$fs_sync = 'true';
@@ -651,10 +651,10 @@
 				$path = "/REG";
 				$index = $filename;
 			}
-			
+
 			$arr = unserialize(file_get_contents($path));
 			unset($arr[$filename]);
-			
+
 			if (sizeof($arr) == 0) {
 				unlink($path);
 			} else {
@@ -665,7 +665,7 @@
 			  	fclose($handle);
 			}
 		}
-		
+
 		function lookupFile($filename) {
 			if (file_exists($filename)) {
 				$path = $this->data_dir . "/REG-" . pathize(dirname($filename));
@@ -674,20 +674,20 @@
 				$path = "/REG";
 				$index = $filename;
 			}
-			
+
 			if (file_exists($path)) {
 				$arr = unserialize(file_get_contents($path));
 				if (isset($arr[$index])) {
 					return $arr[$index];
 				}
 			}
-			
+
 			return false;
 		}
-		
+
 		function removeDeadFiles($folder = false, $recursive = true) {
 			$root = new jzMediaNode();
-			
+
 			$recursive_repeat = false;
 			if ($folder !== false) {
 				$fbase = "REG-" . pathize($folder);
@@ -715,7 +715,7 @@
 						}
 						if ($modified) {
 							if (sizeof($arr) == 0) {
-								unlink($fullpath);	
+								unlink($fullpath);
 							} else {
 								$handle2 = fopen($fullpath,"w");
 		  						fwrite($handle2,serialize($arr));
@@ -730,6 +730,6 @@
 			}
 		}
 
-}		
+}
 
 ?>

@@ -19,12 +19,12 @@
 <div id="slickMainBlockBody">
 	{php}
 		global $jzSERVICES, $jzUSER, $album_name_truncate, $img_tiny_play;
-		
+
 		$node = new jzMediaNode($_GET['jz_path']);
 		$display = new jzDisplay();
 		$simArray = $jzSERVICES->getSimilar($node);
 		$simArray = seperateSimilar($simArray);
-		
+
 		if (!$onlyMatches && sizeof($simArray['matches']) > 0){
 			echo "<strong>". word("Available"). "</strong><br>";
 		}

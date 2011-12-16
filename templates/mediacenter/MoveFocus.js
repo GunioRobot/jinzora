@@ -156,7 +156,7 @@ function checkForOppositeArrow(direction)
     direction from the last arrow button pressed (e.g. up, then down, or left, then right) */
     // make sure that oPrevFocus and sPrevArrowDirection are not null
     if (oPrevFocus == null || sPrevArrowDirection == null) return false
-    
+
     switch(direction)
     {
         case "up":
@@ -204,29 +204,29 @@ function changeFocus(direction)
     if (checkForOppositeArrow(direction) == true)
     {
         // remember oCurFocus value before changing it
-        var oTemp = oCurFocus       
+        var oTemp = oCurFocus
         // set focus back to previous focus button
         oCurFocus = oPrevFocus
-        oCurFocus.focus()       
+        oCurFocus.focus()
         // update oPrevFocus
         oPrevFocus = oTemp
         // update variable to track which direction arrow was pressed
         sPrevArrowDirection = direction
         // end function
-        return      
+        return
     }
-    
 
-    
+
+
     // update variable to track where the focus was previous to current focus.
     oPrevFocus = oCurFocus
     // update variable to track which direction arrow was used to get between previous focus and current focus
     sPrevArrowDirection = direction
-    
-    
+
+
     // call function (below) to find nearest object to the one that has focus, in the direction of whatever arrow is pressed
     var nearestObj = findClosestItem(direction)
-    
+
     // if nearestObj is null, then make sPrevArrowDirectio null
     if (nearestObj == null) sPrevArrowDirection = null
 

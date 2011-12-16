@@ -3,7 +3,7 @@
 // This function will display the complete list of artists
 global $row_colors, $web_root, $root_dir, $this_page;
 
-// Let's display the top of our page	
+// Let's display the top of our page
 $this->displayPageTop("", word("All Artists"));
 $this->openBlock();
 

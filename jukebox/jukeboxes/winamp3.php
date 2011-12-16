@@ -1,42 +1,42 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Contains the Winamp httpQ plugin functions
 	*
 	* @since 2/9/05
 	* @author Ross Carlson <ross@jinzora.org>
 	*/
-	
+
 	/*
-	
+
 	NOTES FOR THIS JUKEBOX
-	
+
 	This Jukebox requires the following settings:
-	
+
 	server
 	port
 	password
 	description
 	type
-	
+
 	An example would be:
 	$jbArr[0]['server'] = "localhost";
 	$jbArr[0]['port'] = "4800";
@@ -44,13 +44,13 @@
 	$jbArr[0]['description'] = "Living Room";
 	$jbArr[0]['type'] = "winamp3"; // VERY IMPORTANT
      // $jbArr[0]['prefix'] = "http"; // use weblinks instead of paths
-	
-	*/	
-	
-	
+
+	*/
+
+
 	/**
 	* The installer function for this jukebox
-	* 
+	*
 	* @author Ross Carlson
 	* @version 11/20/05
 	* @since 11/20/05
@@ -60,7 +60,7 @@
 		global $jbArr, $root_dir;
 
 		echo "<strong>Winamp Jukebox Installer</strong><br><br>";
-		
+
 		// Now which step are we on?
 		switch($step){
 			case "2":
@@ -112,7 +112,7 @@
 						</tr>
 					</table>
 					<input type="hidden" name="edit_step" value="3">
-					<input type="hidden" name="edit_jukebox_type" value="winamp3">					
+					<input type="hidden" name="edit_jukebox_type" value="winamp3">
 				</form>
 				<?php
 				exit();
@@ -126,7 +126,7 @@
 				$jbArr[0]['password'] = $_POST['edit_password'];
 				$jbArr[0]['type'] = "winamp3";
 				$_SESSION['jb_id'] = 0;
-				
+
 				echo "Testing connection to Winamp...<br>";
 				if (playerConnect()){
 					echo "Success! Plesae wait while we write the settings...<br><br>";
@@ -136,7 +136,7 @@
 					echo "Failed!  Jinzora had an issue communicating with Winamp, ensure that it's running and that you've specified the proper settings";
 					exit();
 				}
-				
+
 				// Ok, let's create the settings file
 				$content  = "<?". "php\n";
 				$content .= "    $". "jbArr[0]['server'] = '". $_POST['edit_server']. "';\n";
@@ -145,7 +145,7 @@
 				$content .= "    $". "jbArr[0]['password'] = '". $_POST['edit_password']. "';\n";
 				$content .= "    $". "jbArr[0]['type'] = 'winamp3';\n";
 				$content .= "?>";
-				
+
 				// Now let's write it out IF we can
 				$filename = getcwd(). "/jukebox/settings.php";
 				if (is_writable($filename)){
@@ -165,15 +165,15 @@
 					echo str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",nl2br(str_replace("<?php", "&lt;php",$content)));
 					echo "<br><br>";
 					exit();
-				}				
+				}
 			break;
 		}
 	}
-	
-	
+
+
 	/**
 	* Returns the stats of the jukebox
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -181,20 +181,20 @@
 	*/
 	function retJBStats(){
 		global $jbArr;
-		
+
 		return;
-	}	
-	
+	}
+
 	/**
 	* Returns a keyed array showing all the functions that this jukebox supports
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
 	* @param return Returns a keyed array of the jukeboxe's abilities
 	*/
 	function returnJBAbilities(){
-		
+
 		$retArray['playbutton'] = true;
 		$retArray['pausebutton'] = true;
 		$retArray['stopbutton'] = true;
@@ -214,13 +214,13 @@
 		$retArray['refreshtime'] = true;
 		$retArray['jump'] = true;
 		$retArray['stats'] = false;
-		
+
 		return $retArray;
 	}
-	
+
 	/**
 	* Returns the connection status of the player true or false
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -228,10 +228,10 @@
 	*/
 	function playerConnect(){
 		global $jbArr;
-		
+
 		writeLogData("messages","Winamp3: Testing connection to the player");
-		
-		$status = @@file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/isplaying?p=". $jbArr[$_SESSION['jb_id']]['password']);		
+
+		$status = @@file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/isplaying?p=". $jbArr[$_SESSION['jb_id']]['password']);
 
 		if ($status == ""){
 			return false;
@@ -239,10 +239,10 @@
 			return true;
 		}
 	}
-	
+
 	/**
 	* Returns Addon tools for MPD - namely refresh jukebox database
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -251,10 +251,10 @@
 	function getAllAddOnTools(){
 		return;
 	}
-	
+
 	/**
 	* Returns the currently playing tracks path so we can get the node
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -262,17 +262,17 @@
 	*/
 	function getCurTrackPath(){
 		global $jbArr;
-		
+
 		$val = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/getplaylistfile?p=". $jbArr[$_SESSION['jb_id']]['password']. "&index=". getCurPlayingTrack());
 
 		writeLogData("messages","Winamp3: Returning the current playing track path: ". $val);
-		
+
 		return $val;
 	}
-	
+
 	/**
 	* Returns the currently playing track number
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -280,17 +280,17 @@
 	*/
 	function getCurPlayingTrack(){
 		global $jbArr;
-		
+
 		$val = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/getlistpos?p=". $jbArr[$_SESSION['jb_id']]['password']);
-		
+
 		writeLogData("messages","Winamp3: Returning the current playing track number: ". $val);
-		
+
 		return $val;
 	}
-	
+
 	/**
 	* Returns the currently playing playlist
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -298,7 +298,7 @@
 	*/
 	function getCurPlaylist(){
 		global $jbArr;
-		
+
 		$val = array();
 		if (isset($jbArr[$_SESSION['jb_id']]['prefix']) && $jbArr[$_SESSION['jb_id']]['prefix'] == "http") {
 			$arr = httpqRequest('getplaylistfile',array('delim' => ';;;'));
@@ -330,13 +330,13 @@
 			$val = explode(";;;",@file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/getplaylisttitle?p=". $jbArr[$_SESSION['jb_id']]['password']. "&delim=;;;"));
 		}
 		writeLogData("messages","Winamp3: Returning the current playlist");
-		
+
 		return $val;
 	}
 
 	/**
 	* Passes a playlist to the jukebox player
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -344,7 +344,7 @@
 	*/
 	function playlist($playlist){
 		global $include_path, $jbArr,$jzSERVICES;
-		
+
 		if (isset($jbArr[$_SESSION['jb_id']]['prefix']) && $jbArr[$_SESSION['jb_id']]['prefix'] == "http") {
 		  $content = "";
 		  foreach ($playlist->getList() as $track) {
@@ -373,7 +373,7 @@
 				$curList[] = $item;
 			}
 		}
-		
+
 		// Let's get where we are in the current list
 		writeLogData("messages","Winamp3: Getting the current playing track number");
 		$curTrack = getCurPlayingTrack();
@@ -408,8 +408,8 @@
 		  $begArr = array();
 		  $endArr = array();
 		}
-		
-		
+
+
 		if ($restart_playback === true){
 		  writeLogData("messages","Winamp3: Clearing the current playlist");
 		  control("clear",false);
@@ -421,7 +421,7 @@
 		    httpqRequest("deletepos",$arr);
 		  }
 		}
-		
+
 		writeLogData("messages","Winamp3: Sending the new playlist to the player");
 
 
@@ -436,7 +436,7 @@
 			  $arr['file'] = $begArr[$i];
 			  httpqRequest("playfile", $arr);
 			}
-		}		
+		}
 		// Ok, Now let's add the new stuff
 		$pArray = explode("\n",$playlist);
 		for ($i=0; $i < count($pArray); $i++){
@@ -480,14 +480,14 @@
 		<script>
 			history.back();
 		</script>
-		<?php 
+		<?php
 		    }
 		exit();
 	}
-		
+
 	/**
 	* Passes a command to the jukebox player
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -518,7 +518,7 @@
 			case "volume":
 				// Now we have to set the value based on 0-255
 				$vol = 255 * ($_POST['jbvol'] / 100);
-				$handle = fopen("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/setvolume?p=". $jbArr[$_SESSION['jb_id']]['password']. "&level=". $vol, "r");			
+				$handle = fopen("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/setvolume?p=". $jbArr[$_SESSION['jb_id']]['password']. "&level=". $vol, "r");
 				$_SESSION['jz_jbvol-'. $_SESSION['jb_id']] = $_POST['jbvol'];
 			break;
 			case "playwhere":
@@ -576,21 +576,21 @@
 			break;
 		}
 	}
-	
+
 	/**
 	* Returns the players current status
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
 	*/
 	function getStatus(){
 		global $jbArr;
-		
+
 		$status = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/isplaying?p=". $jbArr[$_SESSION['jb_id']]['password']);
-		
+
 		writeLogData("messages","Winamp3: Returning player status: ". $status);
-		
+
 		switch ($status){
 			case "1":
 				return "playing";
@@ -603,10 +603,10 @@
 			break;
 		}
 	}
-	
+
 	/**
 	* Returns the current playing track
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -614,18 +614,18 @@
 	*/
 	function getCurTrackName(){
 		global $jbArr;
-		
+
 		$track = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/getcurrenttitle?p=". $jbArr[$_SESSION['jb_id']]['password']);
 		$val = substr($track,strpos($track,". ")+2);
-		
+
 		writeLogData("messages","Winamp3: Returning current track name: ". $val);
 
 		return  $val;
 	}
-	
+
 	/**
 	* Returns how long is left in the current track (in seconds)
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -633,19 +633,19 @@
 	*/
 	function getCurTrackRemaining(){
 		global $jbArr;
-		
+
 		$length = getCurTrackLength();
 		$cur = getCurTrackLocation();
 		$val = (($length - $cur) + 2);
-		
+
 		writeLogData("messages","Winamp3: Returning time remaining: ". $val);
-		
+
 		return $val;
 	}
-	
+
 	/**
 	* Gets the length of the current track
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -655,15 +655,15 @@
 		global $jbArr;
 
 		$val = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/getoutputtime?p=". $jbArr[$_SESSION['jb_id']]['password']. "&frmt=1");;
-		
+
 		writeLogData("messages","Winamp3: Returning current track length: ". $val);
-		
+
 		return $val;
 	}
-	
+
 	/**
 	* Returns how long is left in the current track (in seconds)
-	* 
+	*
 	* @author Ross Carlson
 	* @version 2/9/05
 	* @since 2/9/05
@@ -671,12 +671,12 @@
 	*/
 	function getCurTrackLocation(){
 		global $jbArr;
-		
+
 		$val = @file_get_contents("http://". $jbArr[$_SESSION['jb_id']]['server']. ":". $jbArr[$_SESSION['jb_id']]['port']. "/getoutputtime?p=". $jbArr[$_SESSION['jb_id']]['password']. "&frmt=0");
 		$val = round(($val / 1000),0);
-		
+
 		writeLogData("messages","Winamp3: Returning current track location: ". $val);
-		
+
 		return $val;
 	}
 

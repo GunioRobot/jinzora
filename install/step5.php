@@ -1,6 +1,6 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	echo '<body onLoad="setup7.admin_user.focus();"></body>';
-	
+
 	// Let's figure out the path stuff so we'll know how/where to include from$form_action = "index.php?install=step6";
 	$form_action = setThisPage() . "install=step6";
 
@@ -30,12 +30,12 @@ function verifyPass(){
 		alert("<?php echo $word_frontend_select; ?>");
 		proceed = false;
 	}
-	
+
 	if (proceed){
 		document.setup7.submit();
 	}
 }
-	
+
 function checkaccess(){
 	if (document.setup7.default_access.value == "admin"){
 		alert('<?php echo $word_admin_alert; ?>');
@@ -90,7 +90,7 @@ function enableStandard(){
 
 
 // -->
-</script>     
+</script>
 <div id="main">
 	<a href="http://www.jinzora.com" target="_blank"><img src="<?php echo $include_path; ?>install/logo.gif" border="0" align="right" vspace="5" hspace="0"></a>
 	<h1><?php echo $word_main_settings; ?></h1>
@@ -109,7 +109,7 @@ function enableStandard(){
 			  	echo '<input type="hidden" name="' . htmlentities($key) . '" value="' . htmlentities($val) .'">'. "\n";
 			  }
 		   }
-		?>	
+		?>
 		<table width="100%" cellspacing="0" cellpadding="3" border="0">
 			<tr>
 				<td class="td" width="40%" align="left">
@@ -122,7 +122,7 @@ function enableStandard(){
 				</td>
 			</tr>
 			<?php
-				// If we are in CMS mode we don't need the password fields				
+				// If we are in CMS mode we don't need the password fields
 				if ($cms_type == "standalone"){
 			?>
 			<tr>
@@ -159,7 +159,7 @@ function enableStandard(){
 					<select name="default_access" onChange="checkaccess();" style="width:125px;" onmouseover="return overlib('<?php echo $word_access_level_help; ?>', FGCOLOR, '#eeeeeee');" onmouseout="return nd();">
 						<option value="noaccess"><?php echo $word_no_access; ?></option>
 						<option value="viewonly"><?php echo $word_viewonly; ?></option>
-						<option value="lofi"><?php echo $word_lofi; ?></option>					
+						<option value="lofi"><?php echo $word_lofi; ?></option>
 						<option value="user"><?php echo $word_user; ?></option>
 						<option value="admin"><?php echo $word_admin; ?></option>
 					</select>
@@ -178,7 +178,7 @@ function enableStandard(){
 						<td class="td" width="60%" align="left">
 							<select name="default_cms_access" onChange="checkcmsaccess();" style="width:125px;" onmouseover="return overlib('<?php echo $word_access_level_help; ?>', FGCOLOR, '#eeeeeee');" onmouseout="return nd();">
 								<option value="noaccess"><?php echo $word_no_access; ?></option>
-								<option value="lofi"><?php echo $word_lofi; ?></option>					
+								<option value="lofi"><?php echo $word_lofi; ?></option>
 								<option value="user"><?php echo $word_user; ?></option>
 								<option value="admin"><?php echo $word_admin; ?></option>
 							</select>
@@ -252,7 +252,7 @@ function enableStandard(){
 										}
 								?>
 							<select name="style" id="style" style="width:125;" onchange="javascript:change_image();">
-								<option value=""> - </option>						
+								<option value=""> - </option>
 								<option value="all-american">all-american</option>
 								<option value="bluegray">bluegray</option>
 								<option value="darklights">darklights</option>
@@ -276,7 +276,7 @@ function enableStandard(){
 									if (s.value !== ""){
 										if (f.value !== ""){
 											i = document.getElementById("imageName");
-											i.innerHTML = '<img width="120" src="<?php echo $include_path; ?>install/thumbs/' + f.value + '/' + s.value + '.gif" border="0" />';									
+											i.innerHTML = '<img width="120" src="<?php echo $include_path; ?>install/thumbs/' + f.value + '/' + s.value + '.gif" border="0" />';
 										}
 									}
 								}
@@ -312,7 +312,7 @@ function enableStandard(){
 					</select>
 					<!--&nbsp; <a class="helpbox2" href="javascript:void(0);" onmouseover="return overlib('<?php echo $word_backend2_note; ?>', FGCOLOR, '#eeeeeee');" onmouseout="return nd();">?</a>-->
 				</td>
-			</tr>		
+			</tr>
 			<tr>
 				<td class="td" width="40%" align="left" valign="top">
 					<?php echo $word_read_tag_data; ?>
@@ -357,13 +357,13 @@ function enableStandard(){
 					</table>
 				</td></tr>
 				<tr><td class ="td" width="60%" align="left">
-					
+
 				</td>
 			</tr>
 		</table>
 		<br>
-		
-		
+
+
 		<div class="go">
 			<span class="goToNext">
 				&nbsp; <input name="nextbutton" disabled onClick="javascript:verifyPass();" type="button" class="submit" value="<?php echo $word_proceed_to_backend; ?>">

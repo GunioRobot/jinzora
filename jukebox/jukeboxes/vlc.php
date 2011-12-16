@@ -2,24 +2,24 @@
 if (!defined(JZ_SECURE_ACCESS))
 	die('Security breach detected.');
 /**
-* - JINZORA | Web-based Media Streamer -  
-* 
-* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-* (but can be used for any media file that can stream from HTTP). 
-* Jinzora can be integrated into a CMS site, run as a standalone application, 
+* - JINZORA | Web-based Media Streamer -
+*
+* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+* (but can be used for any media file that can stream from HTTP).
+* Jinzora can be integrated into a CMS site, run as a standalone application,
 * or integrated into any PHP website.  It is released under the GNU GPL.
-* 
+*
 * - Resources -
 * - Jinzora Author: Ross Carlson <ross@jasbone.com>
 * - Web: http://www.jinzora.org
-* - Documentation: http://www.jinzora.org/docs	
+* - Documentation: http://www.jinzora.org/docs
 * - Support: http://www.jinzora.org/forum
 * - Downloads: http://www.jinzora.org/downloads
 * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-* 
+*
 * - Contributors -
 * Please see http://www.jinzora.org/team.html
-* 
+*
 * - Code Purpose -
 * Binds with the VLC HTTP interface.
 *
@@ -51,7 +51,7 @@ $jbArr[0]['type'] = "vlc"; // VERY IMPORTANT
 
 /**
 * The installer function for this jukebox
-* 
+*
 * @author Ross Carlson
 * @version 11/20/05
 * @since 11/20/05
@@ -113,7 +113,7 @@ function jbInstall($step) {
 						</tr>
 					</table>
 					<input type="hidden" name="edit_step" value="3">
-					<input type="hidden" name="edit_jukebox_type" value="vlc">					
+					<input type="hidden" name="edit_jukebox_type" value="vlc">
 				</form>
 				<?php
 
@@ -175,7 +175,7 @@ function jbInstall($step) {
 
 /**
 * Returns the stats of the jukebox
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -189,7 +189,7 @@ function retJBStats() {
 
 /**
 * Returns a keyed array showing all the functions that this jukebox supports
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -223,7 +223,7 @@ function returnJBAbilities() {
 
 /**
 * Returns the connection status of the player true or false
-* 
+*
 * @author Ben Dodson
 * @version 9/15/07
 * @since 9/15/07
@@ -245,7 +245,7 @@ function playerConnect() {
 
 /**
 * Returns Addon tools for the jukebox.
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -256,7 +256,7 @@ function getAllAddOnTools() {
 
 /**
 * Returns the currently playing tracks path so we can get the node
-* 
+*
 * @author Ben Dodson
 * @version 9/15/07
 * @since 9/15/07
@@ -278,7 +278,7 @@ function getCurTrackPath() {
 
 /**
 * Returns the currently playing track number
-* 
+*
 * @author Ben Dodson
 * @version 9/15/07
 * @since 9/15/07
@@ -289,9 +289,9 @@ function getCurPlayingTrack() {
 	$val = -1;
 
 	$xml = getPlaylistXML();
-	
+
 	$res = $xml->xpath('//leaf');
-		
+
 	while (list($i, $node) = each($res)) {
 	  if (isset($node['current']) && $node['current'] == 'current') {
 	    $val = $i;
@@ -305,7 +305,7 @@ function getCurPlayingTrack() {
 
 /**
 * Returns the currently playing playlist
-* 
+*
 *
 * @author Ben Dodson
 * @version 9/15/07
@@ -314,13 +314,13 @@ function getCurPlayingTrack() {
 */
 function getCurPlaylist() {
 	global $jbArr;
-	
+
 	$val = array ();
 	/* alternate method for getting entry names if using Jinzora's weblinks. */
 	if (isset ($jbArr[$_SESSION['jb_id']]['prefix']) && $jbArr[$_SESSION['jb_id']]['prefix'] == "http") {
 	  $xml = getPlaylistXML();
 	  $res = $xml->xpath('//leaf');
-		
+
 		while (list(, $node) = each($res)) {
 		  $url = $node['name'];
 		  if (false != ($id = getTrackIdFromURL($url))) {
@@ -333,20 +333,20 @@ function getCurPlaylist() {
 	} else {
 	  $xml = getPlaylistXML();
 	  $res = $xml->xpath('//leaf');
-	  
+
 	  while (list(, $node) = each($res)) {
 	    $attr = $node->attributes();
 	    $val[] = $attr['name'];
 	  }
 	}
 	writeLogData("messages", "VLC: Returning the current playlist");
-	
+
 	return $val;
 }
 
 /**
 * Passes a playlist to the jukebox player
-* 
+*
 * @author Ben Dodson
 * @version 9/15/07
 * @since 9/15/07
@@ -379,7 +379,7 @@ function playlist($playlist) {
 	// First we need to get the current playlist so we can figure out where to add
 	$xml = getPlaylistXML();
 	$res = $xml->xpath('//leaf');
-		
+
 	$curList = array();
 	$curIDList = array();
 	while (list(, $node) = each($res)) {
@@ -513,7 +513,7 @@ function playlist($playlist) {
 
 /**
 * Passes a command to the jukebox player
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -579,7 +579,7 @@ function control($command, $goBack = true) {
 			$tmp = VLCRequest(array (), "playlist");
 			$xml = new SimpleXMLElement($tmp);
 			$res = $xml->xpath('//leaf[@id]');
-			
+
 			VLCRequest(array (
 				"command" => "pl_play",
 				"id" => $res[$pos]['id']
@@ -611,10 +611,10 @@ function control($command, $goBack = true) {
 			$arr = array (
 				"command" => "pl_delete"
 			);
-			
+
 			$xml = getPlaylistXML();
 			$res = $xml->xpath('//leaf[@id]');
-			
+
 			for ($i = sizeof($_POST['jbSelectedItems']) - 1; $i >= 0; $i--) {
 				$arr['id'] = $res[$_POST['jbSelectedItems'][$i]]['id'];
 				VLCRequest($arr);
@@ -634,7 +634,7 @@ function control($command, $goBack = true) {
 
 /**
 * Returns the players current status
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -643,7 +643,7 @@ function getStatus() {
 	global $jbArr;
 
 	$xml = getStatusXML();
-	
+
 	writeLogData("messages", "VLC: Returning player status: " . $status);
 	$status = $xml->state;
 	switch ($status) {
@@ -656,7 +656,7 @@ function getStatus() {
 
 /**
 * Returns the current playing track
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -664,7 +664,7 @@ function getStatus() {
 */
 function getCurTrackName() {
 	global $jbArr;
-	
+
 	$xml = getPlaylistXML();
 	$res = $xml->xpath("//leaf[@current='current']");
 	writeLogData("messages", "VLC: Returning current track name: " . $val);
@@ -679,7 +679,7 @@ function getCurTrackName() {
 
 /**
 * Returns how long is left in the current track (in seconds)
-* 
+*
 * @author Ross Carlson
 * @version 2/9/05
 * @since 2/9/05
@@ -697,7 +697,7 @@ function getCurTrackRemaining() {
 
 /**
 * Gets the length of the current track
-* 
+*
 * @author Ben Dodson
 * @version 9/15/07
 * @since 9/15/07
@@ -706,14 +706,14 @@ function getCurTrackRemaining() {
 function getCurTrackLength() {
 	global $jbArr;
 	$xml = getStatusXML();
-	
-	
+
+
 	return $xml->length;
 }
 
 /**
 * Returns how long is left in the current track (in seconds)
-* 
+*
  * @author Ben Dodson
 * @version 9/15/07
 * @since 9/15/07
@@ -722,7 +722,7 @@ function getCurTrackLength() {
 function getCurTrackLocation() {
 	global $jbArr;
 	$xml = getStatusXML();
-	
+
 	writeLogData("messages", "VLC: Returning current track location: " . $val);
 
 	return $xml->time;
@@ -764,7 +764,7 @@ function getStatusXML() {
 
   $tmp = VLCRequest(array (), "status");
   $xml = new SimpleXMLElement($tmp);
-  
+
   return $xml;
 }
 
@@ -779,7 +779,7 @@ function getPlaylistXML() {
 
   $tmp = VLCRequest(array (), "playlist");
   $xml = new SimpleXMLElement($tmp);
-  
+
   return $xml;
 }
 

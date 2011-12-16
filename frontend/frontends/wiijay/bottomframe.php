@@ -40,7 +40,7 @@ if (checkPermission($jzUSER,'jukebox_queue')) {
 
 	 parent.frames['embeddedPlayer'].location = '<?php echo urlize(array("frame" => "top")); ?>';
        }
-    </script> 
+    </script>
     <table width="80%" align="center"><tr>
     <td align="center"><a href="javascript:;" onclick="myPlayback('stream')" id="stream" <?php if (checkPlayback() != "jukebox") echo 'style="text-decoration:underline;"'; ?>>Stream</a></td>
     <td align="center"><a href="javascript:;" onclick="myPlayback('jukebox')" id="jukebox" <?php if (checkPlayback() == "jukebox") echo 'style="text-decoration:underline;"'; ?>>Jukebox</a></td>
@@ -56,7 +56,7 @@ if (checkPermission($jzUSER,'jukebox_queue')) {
     <td align="left">
       <a href="jb" target="embeddedPlayer">Player</a>
     </td>
-<?php 
+<?php
 global $jzUSER;
 if (checkPermission($jzUSER,'jukebox_queue')) {
     echo '<td align="center">';
@@ -84,7 +84,7 @@ if (checkPermission($jzUSER,'jukebox_queue')) {
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
   <tr>
     <td class="jz_block_body" align="center">
-      
+
        <a target="main" href="<?php echo mklink('#');?>">#</a>
        <a target="main" href="<?php echo mklink('A');?>">A</a>
        <a target="main" href="<?php echo mklink('B');?>">B</a>

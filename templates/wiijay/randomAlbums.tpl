@@ -1,5 +1,5 @@
 <table width="100%" cellspacing="3" align="center">
-  <tr> 
+  <tr>
   {foreach from=$albums item=album}
     <td class="jz_block_td" align="center">
       <!--{$album.name}-->

@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 
 // Are they upgrading or not?
@@ -37,14 +37,14 @@ $content .= '     $enable_podcast = "'. $enable_podcast. '";' . "\n";
 $content .= '     $enable_podcast_subscribe = "'. $enable_podcast_subscribe. '";' . "\n";
 $content .= '     $podcast_folder = "'. $podcast_folder. '";' . "\n";
 $content .= '     $enable_logging = "'. $enable_logging. '";' . "\n";
-$content .= '     $enable_shopping = "'. $enable_shopping. '";' . "\n";		
+$content .= '     $enable_shopping = "'. $enable_shopping. '";' . "\n";
 $content .= '     $secure_urls = "'. $secure_urls. '";' . "\n";
 $content .= '     $enable_favorites = "'. $enable_favorites. '";' . "\n";
-$content .= '     $enable_page_caching = "'. $enable_page_caching. '";' . "\n";		
-$content .= '     $cache_age_days = "'. $cache_age_days. '";' . "\n";		
-$content .= '     $gzip_page_cache = "'. $gzip_page_cache. '";' . "\n";				
+$content .= '     $enable_page_caching = "'. $enable_page_caching. '";' . "\n";
+$content .= '     $cache_age_days = "'. $cache_age_days. '";' . "\n";
+$content .= '     $gzip_page_cache = "'. $gzip_page_cache. '";' . "\n";
 $content .= '     $security_key = "'. $security_key. '";' . "\n";
-$content .= '     $enable_query_cache = "'. $enable_query_cache. '";' . "\n";		
+$content .= '     $enable_query_cache = "'. $enable_query_cache. '";' . "\n";
 $content .= "\n";
 
 $content .= '     // Playlist Settings' . "\n";

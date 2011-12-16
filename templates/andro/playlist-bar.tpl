@@ -3,7 +3,7 @@
 		<tr class="and_head1">
 			<td width="100%">
 				<form action="{$playlist_form_link}" method="POST" name="playlistForm">
-				<a style="cursor:hand" onClick="CheckBoxes('albumForm',true); return false;" href="javascript:;">{$img_check}</a><a style="cursor:hand" onClick="CheckBoxes('albumForm',false); return false;" href="javascript:;">{$img_uncheck}</a>	
+				<a style="cursor:hand" onClick="CheckBoxes('albumForm',true); return false;" href="javascript:;">{$img_check}</a><a style="cursor:hand" onClick="CheckBoxes('albumForm',false); return false;" href="javascript:;">{$img_uncheck}</a>
 				{$addListButton}
 				{$hidden_1}
 				{$hidden_2}

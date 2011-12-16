@@ -1,23 +1,23 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 /**
- * - JINZORA | Web-based Media Streamer -  
- * 
- * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
- * (but can be used for any media file that can stream from HTTP). 
- * Jinzora can be integrated into a CMS site, run as a standalone application, 
+ * - JINZORA | Web-based Media Streamer -
+ *
+ * Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+ * (but can be used for any media file that can stream from HTTP).
+ * Jinzora can be integrated into a CMS site, run as a standalone application,
  * or integrated into any PHP website.  It is released under the GNU GPL.
- * 
+ *
  * - Resources -
  * - Jinzora Author: Ross Carlson <ross@jasbone.com>
  * - Web: http://www.jinzora.org
- * - Documentation: http://www.jinzora.org/docs	
+ * - Documentation: http://www.jinzora.org/docs
  * - Support: http://www.jinzora.org/forum
  * - Downloads: http://www.jinzora.org/downloads
  * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
- * 
+ *
  * - Contributors -
  * Please see http://www.jinzora.org/team.html
- * 
+ *
  * - Code Purpose -
  * - These are auxilary functions for the services.
  *
@@ -30,13 +30,13 @@
  * Gets all available CMS's as an array of:
  * cms_type => CMS Display Name.
  * The order should be sensible- please leave Standalone at the top.
- * 
+ *
  * @author Ben Dodson
  * @since 6/26/06
  */
  function getAllCMS() {
  	$cms = array();
- 	
+
  	$cms['standalone'] = 'Standalone';
  	$cms['cpgnuke']    = 'CPGNuke';
  	$cms['e107']      = 'e107';
@@ -93,7 +93,7 @@ function seperateSimilar($array) {
       }
     }
     if (!$foundit) {
-      $nonmatches[] = $entry;  
+      $nonmatches[] = $entry;
     }
   }
   $ret['nonmatches'] = $nonmatches;
@@ -103,7 +103,7 @@ function seperateSimilar($array) {
 
 /**
 	* Writes out the meta data of an album
-	* 
+	*
 	* @author Ross Carlson
 	* @version 08/10/04
 	* @param $node The node we are looking at
@@ -118,14 +118,14 @@ function seperateSimilar($array) {
 	*/
 	function writeAlbumMetaData($node, $year=false, $image=false, $tracks=false, $review=false, $rating=false, $price=false, $genre=false, $displayOutput=false, $write_now = false){
 		global $web_root, $root_dir, $media_dir, $audio_types, $allow_id3_modify, $allow_filesystem_modify, $include_path, $backend;
-		
+
 
 		// Ok, now let's write out the description
 		if ($review){
-			if ($displayOutput){ 
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Writing Review';					
+					ars.innerHTML = 'Status: Writing Review';
 					-->
 				</SCRIPT>
 				<?php
@@ -137,11 +137,11 @@ function seperateSimilar($array) {
 			if ($allow_filesystem_modify == "true" and !stristr($backend,"id3")){
 				$bioFile = $node->getFilePath(). "/album-desc.txt";
 				$handle = @fopen($bioFile, "w");
-				@fwrite($handle,$review);				
-				@fclose($handle);			
+				@fwrite($handle,$review);
+				@fclose($handle);
 			}
-		} 
-		
+		}
+
 		// Now let's write out the image
 		if (stristr($image,".jpg")){
 			include_once($include_path. "lib/snoopy.class.php");
@@ -149,27 +149,27 @@ function seperateSimilar($array) {
 			$snoopy->fetch($image);
 			$imageData = $snoopy->results;
 			unset($snoopy);
-			
+
 			// Now let's make sure that was valid
 			if (strlen($imageData) < 1000){
-				$imageData = ""; 
+				$imageData = "";
 			}
 		} else {
 			$imageData = "";
 		}
-		
+
 		// Now let's write it out
 		if ($imageData <> ""){
-			if ($displayOutput){ 
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Writing Album Image';					
+					ars.innerHTML = 'Status: Writing Album Image';
 					-->
 				</SCRIPT>
 				<?php
 				flushdisplay();
 			}
-			
+
 			// Ok, now can we write to the filesystem?
 			if ($allow_filesystem_modify == "false" or stristr($backend,"id3")){
 				$imgFile = $include_path. "data/images/". pathize(str_replace("/","--",$node->getPath("String")),''). "--". pathize($node->getName(),''). ".jpg";
@@ -181,11 +181,11 @@ function seperateSimilar($array) {
 			if (writeImage($imgFile, $imageData)){
 				$node->addMainArt($imgFile);
 			}
-			
-			if ($displayOutput){ 
+
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Writing Album Image - Success';					
+					ars.innerHTML = 'Status: Writing Album Image - Success';
 					-->
 				</SCRIPT>
 				<?php
@@ -193,31 +193,31 @@ function seperateSimilar($array) {
 			}
 			$retVal=1;
 		}
-		
+
 		// Now let's write the rating
 		if ($rating <> "" and is_numeric($rating)){
 			$node->addRating($rating);
-			if ($displayOutput){ 
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Rating Album';					
+					ars.innerHTML = 'Status: Rating Album';
 					-->
 				</SCRIPT>
 				<?php
 				flushdisplay();
 			}
 		}
-		
-		if ($displayOutput){ 
+
+		if ($displayOutput){
 			?>
 			<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-				ars.innerHTML = 'Status: Writing data to files...';					
+				ars.innerHTML = 'Status: Writing data to files...';
 				-->
 			</SCRIPT>
 			<?php
 			flushdisplay();
-		}		
-		
+		}
+
 		// Did they want to write this to the id3 tags?
 		if ($allow_id3_modify == "true" and $write_now == true){
 			// Now let's set the meta fields so they get updated for all the tracks
@@ -227,11 +227,11 @@ function seperateSimilar($array) {
 			$meta['image-ext'] = ".jpg";
 			$meta['image-name'] = $imgShortName;
 			$node->bulkMetaUpdate($meta,false,$displayOutput);
-			
-			if ($displayOutput){ 
+
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Complete!';					
+					ars.innerHTML = 'Status: Complete!';
 					-->
 				</SCRIPT>
 				<?php
@@ -239,10 +239,10 @@ function seperateSimilar($array) {
 			}
 		}
 	}
-	
+
 	/**
 	* Writes out the meta data of an artist
-	* 
+	*
 	* @author Ross Carlson
 	* @version 08/10/04
 	* @param string $link the link of where the data is
@@ -252,10 +252,10 @@ function seperateSimilar($array) {
 
 		// Let's write the bio
 		if ($bio){
-			if ($displayOutput){ 
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Writing Description';					
+					ars.innerHTML = 'Status: Writing Description';
 					-->
 				</SCRIPT>
 				<?php
@@ -268,8 +268,8 @@ function seperateSimilar($array) {
 			if ($allow_filesystem_modify == "true" and !stristr($backend,"id3")){
 				$bioFile = $node->getFilePath(). "/". $node->getName(). ".txt";
 				$handle = @fopen($bioFile, "w");
-				@fwrite($handle,$bio);				
-				@fclose($handle);			
+				@fwrite($handle,$bio);
+				@fclose($handle);
 			}
 		}
 		// Now let's write out the image
@@ -283,7 +283,7 @@ function seperateSimilar($array) {
 
 			// Now let's make sure that was valid
 			if (strlen($imageData) < 2000){
-				//$imageData = ""; 
+				//$imageData = "";
 			}
 		} else {
 			$imageData = "";
@@ -292,17 +292,17 @@ function seperateSimilar($array) {
 
 		// Now let's write it out
 		if ($imageData <> ""){
-			if ($displayOutput){ 
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Writing Image';					
+					ars.innerHTML = 'Status: Writing Image';
 					-->
 				</SCRIPT>
 				<?php
 				flushdisplay();
 				usleep(250000);
 			}
-			
+
 			// Ok, now can we write to the filesystem?
 			if ($allow_filesystem_modify == "false" or stristr($backend,"id3")){
 				$imgFile = $include_path. "data/images/". str_replace("/","--",$node->getPath("String")). "--". $node->getName(). ".jpg";
@@ -312,14 +312,14 @@ function seperateSimilar($array) {
 
 			// Now let's write it out
 			if (writeImage($imgFile, $imageData)){
-				
+
 				$node->addMainArt($imgFile);
 			}
 
-			if ($displayOutput){ 
+			if ($displayOutput){
 				?>
 				<SCRIPT LANGUAGE=JAVASCRIPT><!--\
-					ars.innerHTML = 'Status: Writing Image - Success';					
+					ars.innerHTML = 'Status: Writing Image - Success';
 					-->
 				</SCRIPT>
 				<?php
@@ -327,7 +327,7 @@ function seperateSimilar($array) {
 				usleep(250000);
 			}
 			$retVal=1;
-		} 
+		}
 		return true;
 	}
 

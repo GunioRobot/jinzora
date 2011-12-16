@@ -62,7 +62,7 @@ function updateJukebox_cb(a) {
 }
 
 function updateSmallJukebox() {
-  obj = document.getElementById("smallJukeboxSelect");  
+  obj = document.getElementById("smallJukeboxSelect");
   if (obj != null && obj != false) {
     setPlayback(obj);
     x_ajaxSmallJukebox(obj.options[obj.selectedIndex].value, sm_text, sm_buttons, sm_linebreaks, updateSmallJukebox_cb);
@@ -118,7 +118,7 @@ function sendJukeboxForm() {
     }
 
     x_ajaxJukeboxRequest(cmd, selectedItems,cb_func);
-    
+
     // same logic as in the server-side jukebox code.
     // the sync is a little funny.
     scrollTop = obj.scrollTop;
@@ -127,7 +127,7 @@ function sendJukeboxForm() {
       while (i < total && selectedItems[i] == i) {
         i++;
       }
-      
+
       while (i < total) {
         swap = obj.options[selectedItems[i]-1].text;
         swapFontWeight = obj.options[selectedItems[i]-1].style.fontWeight;
@@ -169,7 +169,7 @@ function sendJukeboxForm() {
           selectedItems.pop();
           obj.remove(i);
         }
-      } 
+      }
     }
     obj.scrollTop = scrollTop;
   }
@@ -258,7 +258,7 @@ function junction_jukebox_init() {
 function junction_jukebox(url) {
   var msg = {action:"org.jinzora.jukebox.PLAYLIST"};
   msg.extras = {playlist: url};
-  
+
   var where = $("#jukeboxAddTypeSelect").val();
   if (where == 'replace') {
     where = 0;

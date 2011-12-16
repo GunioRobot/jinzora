@@ -1,56 +1,56 @@
 <?php if (!defined(JZ_SECURE_ACCESS)) die ('Security breach detected.');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* Creates many of the different blocks that are used by the Slick interface
 	*
 	* @since 01.11.05
 	* @author Ross Carlson <ross@jinzora.org>
 	*/
-	
+
 	class jzBlocks extends jzBlockClass {
-	  
+
 		/**
 		* Constructor for the class.
-		* 
+		*
 		* @author Ben Dodson
 		* @version 12/22/04
 		* @since 12/22/04
 		*/
 		function jzBlocks() {
-		
+
 		}
-		
+
 		/**
 		* Draws the play controller for the Jukezora interface
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01/21/05
 		* @since 01/21/05
 		*/
 		function jukeboxBlock(){
 			global $this_page, $media_dirs, $jbArr, $root_dir,$include_path;
-		
+
 			$display = new jzDisplay();
 			include_once($include_path. "jukebox/class.php");
-			
+
 			if (!isset($_SESSION['jb_playwhere'])){$_SESSION['jb_playwhere'] = "stream";}
 			$jb_playwhere = $_SESSION['jb_playwhere'];
 			?>
@@ -97,25 +97,25 @@
 								<?php
 								return;
 							}
-							
+
 							// Let's figure out where they are playing
 							if (isset($_SESSION['jb_playwhere'])){
 								$jb_playwhere = $_SESSION['jb_playwhere'];
 							} else {
 								$jb_playwhere = "";
 							}
-						
+
 							$remain = $jb->getCurrentTrackRemaining() + 1;
 							$jz_jbstatus = $jb->getPlayerStatus();
 							if ($jz_jbstatus <> "playing"){
 								$remain = 0;
 							}
 							if ($remain == 1){$remain = 0; }
-							
+
 							if ($jb_playwhere <> "stream"){
 								// Ok, now we need to make sure we can do things
 								$func = $jb->jbAbilities();
-								
+
 								if ($func['playbutton']){
 									$display->displayJukeboxButton("play");
 								}
@@ -143,7 +143,7 @@
 							<?php
 								if ($func['status']){
 							?>
-								Status: 
+								Status:
 								<?php
 									echo ucwords($jz_jbstatus);
 								?>
@@ -156,32 +156,32 @@
 									$jb->returnJBStats();
 									echo '<br>';
 								}
-							?>						
-							
+							?>
+
 							<?php
 								if ($func['progress']){
 							?>
 								Progress:
 								<span id="timer"></span>
-								<script> 
-								<!--// 
+								<script>
+								<!--//
 								var loadedcolor='green' ;            // PROGRESS BAR COLOR
 								var unloadedcolor='lightgrey';      // BGCOLOR OF UNLOADED AREA
 								var barheight=10;                   // HEIGHT OF PROGRESS BAR IN PIXELS
 								var barwidth=120;                   // WIDTH OF THE BAR IN PIXELS
 								var bordercolor='black';            // COLOR OF THE BORDER
 								var waitTime=<?php echo $remain; ?>;                   // NUMBER OF SECONDS FOR PROGRESSBAR
-								--> 
+								-->
 								</script>
 								<script language="javascript" src="<?php echo $root_dir; ?>/jukebox/pbar.js"></script>
 								<?php
 								if ($jz_jbstatus == 'playing'){
 								?>
-								<script> 
-								<!--// 
+								<script>
+								<!--//
 								var seconds = <?php echo $jb->getCurrentTrackLocation(); ?>;
 								var time = '';
-								t = document.getElementById("timer");					
+								t = document.getElementById("timer");
 								function converTime(sec){
 									ctr=0;
 									while (sec >= 60){
@@ -193,20 +193,20 @@
 									if (sec < 10){
 										sec = "0" + sec;
 									}
-								
+
 									return ctr + ":" + sec;
 								}
-								
-								function display(){ 
+
+								function display(){
 									seconds++
-									
+
 									t.innerHTML = converTime(seconds) + "/" + "<?php echo convertSecMins($jb->getCurrentTrackLength()); ?>";
 									ctr=0;
-									setTimeout("display()",1000) 
-								} 
-								display() 
-								--> 
-								</script> 
+									setTimeout("display()",1000)
+								}
+								display()
+								-->
+								</script>
 								<?php
 								}
 								?>
@@ -234,7 +234,7 @@
 											if (isset($_SESSION['jz_jbvol-'. $_SESSION['jb_id']])){
 												$vol = $_SESSION['jz_jbvol-'. $_SESSION['jb_id']];
 											}
-											
+
 											$c=100;
 											while($c > 0){
 												echo '<option ';
@@ -321,7 +321,7 @@
 						<?php
 							if ($func['nowplaying']){
 						?>
-							<nobr><?php echo word("Now Playing:"); ?><br> 
+							<nobr><?php echo word("Now Playing:"); ?><br>
 							<?php
 								$curTrack = $jb->getCurrentTrackName();
 								if (strlen($curTrack)>20){
@@ -352,14 +352,14 @@
 								$nextTrack = str_replace(".mp3","",$nextTrack);
 								if (strlen($nextTrack)>20){
 									$nextTrack = substr($nextTrack,0,20). "...";
-								}					
+								}
 								echo '&nbsp;' . $nextTrack. "</nobr>";
 							?>
 							<br><br>
 						<?php
 							}
 						?>
-						
+
 						<?php
 							if ($func['fullplaylist']){
 						?>
@@ -398,21 +398,21 @@
 			</table>
 			<?php
 		}
-		
+
 		/**
 		* Draws the block that displays all tracks from an artist on the artist page
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01/13/05
 		* @since 01/13/05
 		* @param $node The node of the item we are viewing
 		*/
-		function displayAllTracks($node){		
+		function displayAllTracks($node){
 			$arr = array();
 			$arr['jz_path'] = $node->getPath("String");
 			$viewAll = '<a href="'. urlize($arr). '">View Sampler</a>';
-			
-			$blocks = new jzBlocks();	
+
+			$blocks = new jzBlocks();
 			$blocks->blockHeader($node->getName(). " Sampler", $viewAll);
 			$blocks->blockBodyOpen();
 			?>
@@ -429,10 +429,10 @@
 			<?php
 			$blocks->blockBodyClose();
 		}
-		  
+
 	  /**
 		* Draws the header for the blocks
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01/11/05
 		* @since 01/11/05
@@ -460,10 +460,10 @@
 			</table>
 			<?php
 		}
-		
+
 		/**
 		* Draws the opening of the table in a block, comes right after the header
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01/11/05
 		* @since 01/11/05
@@ -474,10 +474,10 @@
 			<table width="100%" cellpadding="2" cellspacing="0" border="0"><tr><td width="100%">
 			<?php
 		}
-		
+
 		/**
 		* Draws the close of the table for a block
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01/11/05
 		* @since 01/11/05
@@ -488,10 +488,10 @@
 			</td></tr></table>
 			<?php
 		}
-		
+
 		/**
 		* Draws a small spacer row between blocks
-		* 
+		*
 		* @author Ross Carlson
 		* @version 01/11/05
 		* @since 01/11/05
@@ -499,7 +499,7 @@
 		function blockSpacer(){
 			?><table width="100%" cellpadding="2" cellspacing="0" border="0"><tr><td width="100%" height="10"></td></tr></table><?php
 		}
-		
+
 	/**
 	 * Displays a table of the given tracks.
 	 *
@@ -511,13 +511,13 @@
 	 * generic|album|search|sample|sample-all
 	 */
 	  function trackTable($tracks, $purpose = false){
-		global $media_dir, $jinzora_skin, $hierarchy, $album_name_truncate, $row_colors, 
-		  $img_more, $img_email, $img_rate, $img_discuss, $num_other_albums, $enable_ratings, $this_site, $root_dir;					
-	
+		global $media_dir, $jinzora_skin, $hierarchy, $album_name_truncate, $row_colors,
+		  $img_more, $img_email, $img_rate, $img_discuss, $num_other_albums, $enable_ratings, $this_site, $root_dir;
+
 		if (sizeof($tracks) == 0) return;
 		// Let's setup the new display object
 		$display = &new jzDisplay();
-		
+
 		// Let's figure out our settings:
 		// First, set the defaults.
 		$showNumbers = true;
@@ -532,7 +532,7 @@
 		$showAlbumNames = false;
 		$trackTruncate = false;
 		$showPlayCount = false;
-		
+
 		// Now adjust as needed:
 		switch ($purpose) {
 		case "generic":
@@ -550,7 +550,7 @@
 		  break;
 		case "sample":
 			// We only want to show album thumbs IF this artist has more than 1 album
-			$parent = $tracks[0]->getParent(); 
+			$parent = $tracks[0]->getParent();
 			$gParent = $parent->getParent();
 			$nodes = $gParent->getSubNodes("nodes");
 			if (count($nodes) > 1){
@@ -579,7 +579,7 @@
 			<input type="hidden" name="<?php echo jz_encode("jz_list_type"); ?>" value="<?php echo jz_encode("tracks"); ?>">
 			<?php
 		}
-		
+
 		// Now let's setup the big table to display everything
 		$i=0;
 		  ?>
@@ -602,16 +602,16 @@
 		   <td width="1%" valign="top" class="jz_track_table_songs_td">
 		   <input type="checkbox" name="jz_list[]" value="<?php echo jz_encode($child->getPath("String")); ?>">
 		   </td>
-		   
-		   
+
+
 		   <td width="1%" valign="top" class="jz_track_table_songs_td">
 		   <?php echo $display->playButton($child); ?>
 		   </td>
 		   <td width="1%" valign="top" class="jz_track_table_songs_td">
 		   <?php echo $display->downloadButton($child); ?>
 		   </td>
-		   
-		   
+
+
 		   <?php
 		   }
 		   // Do they want ratings?
@@ -621,7 +621,7 @@
 				echo '</td>';
 		   }
 		   ?>
-		  
+
 		   <?php
 			if ($showInfo){
 				$arr = array();
@@ -647,7 +647,7 @@
 			$arr['type'] = "track";
 			$link = $this_site. $root_dir. "/". str_replace("&","%26",urlize($arr));
 
-		   	$mailLink = "mailto:?subject=". $artist. " - ". $album->getName(). "&body=Click to play ". 
+		   	$mailLink = "mailto:?subject=". $artist. " - ". $album->getName(). "&body=Click to play ".
 						$artist. " - ". $album->getName(). ":%0D%0A%0D%0A".
 						$link. "%0D%0A%0D%0APowered%20by%20Jinzora%20%0D%0AJinzora%20::%20Free%20Your%20Media%0D%0Ahttp://www.jinzora.org";
 		   ?>
@@ -666,10 +666,10 @@
 		   }
 		   ?>
 		   <td nowrap width="100%" valign="top" class="jz_track_table_songs_td">
-		   <?php 
+		   <?php
 		   // Do they want tiny thumbnails?
 		   if ($albumArtThumbs){
-			if (($art = $album->getMainArt()) !== false) {		
+			if (($art = $album->getMainArt()) !== false) {
 				$display->link($album,$display->returnImage($art,$album->getName(),25,25,"limit",false,false,"left","2","2"),$album->getName(),"jz_track_table_songs_href");
 			}
 		   }
@@ -692,10 +692,10 @@
 		   } else {
 			$tName = returnItemShortName($child->getName(), $trackTruncate);
 		   }
-		   $display->link($child, $tName, $child->getName(), "jz_track_table_songs_href"); 
+		   $display->link($child, $tName, $child->getName(), "jz_track_table_songs_href");
 		   if ($showAlbum){
 			   echo "<br>From: ";
-			   $display->link($album, returnItemShortName($album->getName(),20),$album->getName(),"jz_track_table_songs_href"); 
+			   $display->link($album, returnItemShortName($album->getName(),20),$album->getName(),"jz_track_table_songs_href");
 		   }
 
 		   // Do they want ratings?
@@ -708,7 +708,7 @@
 		   }
 		   ?>
 		   </td>
-		   
+
 		   <?php
 		   $lyricsSearch = false;
 		   if (isset($_POST['search_type'])){
@@ -735,16 +735,16 @@
 				echo '</td>';
 			}
 		   ?>
-		   
-		   
-		   <?php   	
+
+
+		   <?php
 			if ($showAlbumNames){
 				echo '<td width="1%" align="center" valign="top" class="jz_track_table_songs_td"><nobr>';
 				$display->link($gParent, returnItemShortName($gParent->getName(),20),$gParent->getName(),"jz_track_table_songs_href");
 				echo '</nobr></td>';
 			}
 		   ?>
-		   
+
 			<?php
 				if ($showPlayCount){
 					echo '<td width="1%" align="center" valign="top" class="jz_track_table_songs_td">';
@@ -752,20 +752,20 @@
 					echo '</td>';
 				}
 			?>
-		   
-		   
+
+
 		   <td width="6%" align="center" valign="top" class="jz_track_table_songs_td">
 		   <nobr> &nbsp; <?php echo convertSecMins($metaData['length']); ?> &nbsp; </nobr>
 		   </td>
 		   </tr>
-		   <?php		
+		   <?php
 		   $i = 1 - $i;
 		   unset($gParent);unset($album);
 		 }
-		
+
 		// Now let's set a field with the number of checkboxes that were here
 		echo "</table>";
-		
+
 		// Now let's show the playlist bar if we should
 		if ($showCheck){
 			$blocks = new jzBlocks();

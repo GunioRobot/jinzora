@@ -2,7 +2,7 @@
 	// There are a few PHP things we need to setup for this page
 	// They are all setup here
 	global $jzSERVICES, $jz_path;
-	
+
 	$blocks = new jzBlocks();
 	$node = new jzMediaNode($jz_path);
 	$fe = &new jzFrontend();
@@ -17,28 +17,28 @@
 				{if $show_album_block}
 					{php}
 						$blocks->artistAlbumsBlock($node);
-					{/php}				
+					{/php}
 				{/if}
 				{if $show_artist_profile}
 					{php}
 						$blocks->artistProfileBlock($node);
-					{/php}				
+					{/php}
 				{/if}
 				{php}
 					$blocks->slickFillerBlock();
 				{/php}
-			</td>			
+			</td>
 			<td valign="top" width="1" valign="top">&nbsp;</td>
 			<td width="80%" valign="top">
 		{else}
 			<td width="100%" valign="top">
 		{/if}
-		
+
 		{if $show_tracks}
 			{php}
 				$blocks->blockHeader($node->getName(). " Tracks",$playButtons);
-				$blocks->blockBodyOpen();		
-				
+				$blocks->blockBodyOpen();
+
 				$blocks->trackTable($tracks, "album");
 				$blocks->blockBodyClose();
 				$blocks->blockSpacer();
@@ -53,18 +53,18 @@
 					if ($_GET['action'] == "viewalltracks"){
 						$viewall = true;
 					}
-				}					
+				}
 				// Now let's display
 				if (!$viewall){
 					$blocks->displaySlickSampler($node);
 				} else {
 					$blocks->displaySlickAllTracks($node);
-				}										
+				}
 				// Now let's space
 				$blocks->blockSpacer();
 			{/php}
 		{/if}
-		
+
 		{php}
 			$blocks->artistAlbumArtBlock($node);
 			$blocks->blockSpacer();
@@ -74,7 +74,7 @@
 		{if $show_sim_col}
 			{php}
 				global $show_radio, $show_similar;
-				
+
 				// let's make sure there are similar ones to show
 				$simArray = $jzSERVICES->getSimilar($node);
 				$simArray = seperateSimilar($simArray);
@@ -83,13 +83,13 @@
 					if ($show_radio == "true"){
 						$blocks->slickRadioBlock($node);
 						$blocks->blockSpacer();
-					}							
+					}
 					if ($show_similar == "true"){
 						$blocks->slickSimilarArtistBlock($node,false,8);
-					}							
+					}
 					// Now let's show the filler block
 					$blocks->blockSpacer();
-					$blocks->slickFillerBlock();							
+					$blocks->slickFillerBlock();
 					echo '</td>';
 				}
 			{/php}
@@ -98,33 +98,33 @@
 </table>
 {php}
 	$blocks->blockSpacer();
-	
+
 	$fe->footer();
-{/php}		
-</td></tr></table>		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+{/php}
+</td></tr></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

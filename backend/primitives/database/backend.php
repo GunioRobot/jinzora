@@ -2,24 +2,24 @@
 if (!defined(JZ_SECURE_ACCESS))
 	die('Security breach detected.');
 /**
-* - JINZORA | Web-based Media Streamer -  
-* 
-* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-* (but can be used for any media file that can stream from HTTP). 
-* Jinzora can be integrated into a CMS site, run as a standalone application, 
+* - JINZORA | Web-based Media Streamer -
+*
+* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+* (but can be used for any media file that can stream from HTTP).
+* Jinzora can be integrated into a CMS site, run as a standalone application,
 * or integrated into any PHP website.  It is released under the GNU GPL.
-* 
+*
 * - Resources -
 * - Jinzora Author: Ross Carlson <ross@jasbone.com>
 * - Web: http://www.jinzora.org
-* - Documentation: http://www.jinzora.org/docs	
+* - Documentation: http://www.jinzora.org/docs
 * - Support: http://www.jinzora.org/forum
 * - Downloads: http://www.jinzora.org/downloads
 * - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-* 
+*
 * - Contributors -
 * Please see http://www.jinzora.org/modules.php?op=modload&name=jz_whois&file=index
-* 
+*
 * - Code Purpose -
 * This is the media backend for the default XML cache adaptor.
 *
@@ -31,7 +31,7 @@ class jzRawBackend extends jzBackendClass {
 
 	/**
 	* Constructor wrapper for a jzBackend
-	* 
+	*
 	* @author Ben Dodson
 	* @version 11/13/04
 	* @since 11/13/04
@@ -43,7 +43,7 @@ class jzRawBackend extends jzBackendClass {
 
 	/**
 	* Constructor code for a jzBackend
-	* 
+	*
 	* @author Ben Dodson
 	* @version 11/13/04
 	* @since 11/13/04
@@ -71,7 +71,7 @@ class jzRawBackend extends jzBackendClass {
 	  $q = "SELECT DISTINCT user FROM jz_playcounts group by user ORDER BY max(date) desc";
 	  $res = jz_db_query($link,$q);
 	  $ret = array();
-	  
+
 	  foreach ($res->data as $u) {
 	    $ret[] = $u['user'];
 	  }
@@ -99,7 +99,7 @@ class jzRawBackend extends jzBackendClass {
 
 	/**
 	 * Checks if the backend has a certain feature.
-	 * 
+	 *
 	 * @author Ben Dodson
 	 * @version 8/17/05
 	 * @since 8/17/05
@@ -117,7 +117,7 @@ class jzRawBackend extends jzBackendClass {
 	* Returns 1 when complete
 	* Returns 0 when still in progress (requires info from the web)
 	* Returns -1 if failed.
-	* 
+	*
 	* @author Ben Dodson
 	* @version 9/04/04
 	* @since 9/04/04
@@ -341,7 +341,7 @@ class jzRawBackend extends jzBackendClass {
 					}
 
 					/*
-					/* nodes is nodes AND tracks' shared functionality. 
+					/* nodes is nodes AND tracks' shared functionality.
 					$res = jz_db_query($link, "CREATE TABLE jz_nodes (
 							my_id varchar(20) NOT NULL UNIQUE,
 							name varchar(255) default NULL,
@@ -376,7 +376,7 @@ class jzRawBackend extends jzBackendClass {
 							echo '&nbsp;&nbsp;&nbsp; - jz_nodes - <font color="red">'. $word_failed. '</font><br>';
 						}
 					}
-					
+
 					$res = jz_db_query($link, "CREATE TABLE jz_tracks (
 							my_id varchar(20) NOT NULL UNIQUE,
 							path varchar(255) default '/' NOT NULL PRIMARY KEY,
@@ -407,7 +407,7 @@ class jzRawBackend extends jzBackendClass {
 							echo '&nbsp;&nbsp;&nbsp; - jz_tracks - <font color="red">'. $word_failed. '</font><br>';
 						}
 					}
-					  
+
 					$res = jz_db_query($link, "CREATE TABLE jz_links (
 						my_id INT NOT NULL PRIMARY KEY,
 						parent varchar(255) default '/' NOT NULL,
@@ -422,7 +422,7 @@ class jzRawBackend extends jzBackendClass {
 							echo '&nbsp;&nbsp;&nbsp; - jz_links - <font color="red">'. $word_failed. '</font><br>';
 						}
 					}
-					
+
 					$res = jz_db_query($link, "CREATE TABLE jz_discussions (
 						my_id INT NOT NULL PRIMARY KEY,
 						date_added INT default NULL,
@@ -438,7 +438,7 @@ class jzRawBackend extends jzBackendClass {
 							echo '&nbsp;&nbsp;&nbsp; - jz_discussions - <font color="red">'. $word_failed. '</font><br>';
 						}
 					}
-					
+
 					$res = jz_db_query($link, "CREATE TABLE jz_requests (
 							my_id INT NOT NULL PRIMARY KEY,
 							entry TEXT default NULL,

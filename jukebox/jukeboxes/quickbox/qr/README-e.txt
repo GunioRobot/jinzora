@@ -11,7 +11,7 @@ are NOT supported. (eg. mode change,KANJI mode etc.)
 
 
 
-2,directory & files 
+2,directory & files
 
   qr_img0.50-+-perl--+- qr_img.cgi
              |       +- qr_image.pl
@@ -23,7 +23,7 @@ are NOT supported. (eg. mode change,KANJI mode etc.)
              |
              +-image-+- qrvV.png
              |       +- b.png d.png
-             |       
+             |
              +-php  -- qr_img.php
 
 
@@ -143,7 +143,7 @@ example
 5,Notice
 
 This software is a free software.
-You can freely use,change or redistribute unless you change the 
+You can freely use,change or redistribute unless you change the
 copyright and disclaimer in this program and this document.
 
 
@@ -151,9 +151,9 @@ THIS SOFTWARE IS PROVIDED BY Y.Swetake ``AS IS'' AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
 IN NO EVENT SHALL Y.Swetake OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)  HOWEVER CAUSED 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)  HOWEVER CAUSED
 AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

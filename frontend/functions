@@ -1,8 +1,8 @@
 url.php:
 	urlize($arr1, $mode = "relative", $arr2 = array())
 	jz_encode($string)
-	jz_decode($string)	
-	
+	jz_decode($string)
+
 	class jzDisplay
                 function returnShortName($text, $length)
 		function link($node, $text = false, title = false, class = false, return = false, linkonly = false)
@@ -13,10 +13,10 @@ url.php:
 		function popupLink($type, $text = false)
 		function image($path, $alt = false, $width = false, $height = false, $method = "limit", $gd = false, $save = false)
 		function returnImage(same params as above)
-		function preheader($title, $width = false, $js = true,  $morejs = false) 
-		function trackTable($tracks, $showNumbers = true) 	 
+		function preheader($title, $width = false, $js = true,  $morejs = false)
+		function trackTable($tracks, $showNumbers = true)
                 function nodeTable($nodes)
-		
+
 	// check the file frontend/class.php for the actual paramaters,
 	// as this may be outdated.
 	class jzFrontend
@@ -24,6 +24,5 @@ url.php:
 		function loginPage($failed = false)
 		function pageTop()
 		function footer()
-		function searchResults($results) 	 
+		function searchResults($results)
                 function powerSearch()
-		

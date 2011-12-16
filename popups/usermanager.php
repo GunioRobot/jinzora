@@ -125,13 +125,13 @@ if ($_GET['subaction'] == "handleuser") {
 				if ($name == $_POST['username']) {
 					$myid = $id;
 				}
-			} 
+			}
 		}
 		if (!isset($myid)) {
         	// okay, yes,  this is the worst piece of code in Jinzora.
             $myid = $jzUSER->lookupUID(NOBODY);
         }
-		
+
 		if ($_POST['field1'] != "jznoupd") {
 			// update password
 			$jzUSER->changePassword($_POST['field1'], $jzUSER->lookupName($myid));
@@ -180,7 +180,7 @@ if ($_GET['subaction'] == "handleuser") {
 	}
 
 	$jzUSER->setSettings($settings, $myid, $wipe);
-	
+
 
 	echo word("User") . ": " . $un . " " . word("updated");
 	echo "<br><br><center>";
@@ -478,7 +478,7 @@ if (isset ($_POST['user_to_edit'])) {
 			<?php
 
 if ($_GET['subaction'] == "adduser") {
-	// Now let's return our tooltip													
+	// Now let's return our tooltip
 ?>
 				<input type="input" name="username" class="jz_input">
 				<?php
@@ -599,10 +599,10 @@ $this->closeBlock();
    **/
   function userPullSettings() {
     $settings = array();
-    
-    $settings['language'] = $_POST['usr_language'];		 
+
+    $settings['language'] = $_POST['usr_language'];
     $settings['theme'] = $_POST['usr_theme'];
-    $settings['frontend'] = $_POST['usr_interface'];      
+    $settings['frontend'] = $_POST['usr_interface'];
     $settings['home_dir'] = $_POST['home_dir'];
     if (isset($_POST['home_read'])) {
       $settings['home_read'] = "true";
@@ -619,15 +619,15 @@ $this->closeBlock();
     } else {
       $settings['home_upload'] = "false";
     }
-    
+
     $settings['cap_limit'] = $_POST['cap_limit'];
     $settings['cap_duration'] = $_POST['cap_duration'];
     $settings['cap_method'] = $_POST['cap_method'];
-    
+
     $settings['player'] = $_POST['player'];
-    
+
     $settings['resample_rate'] = $_POST['resample'];
-    
+
     if (isset($_POST['lockresample'])) {
       $settings['resample_lock'] = "true";
     } else {
@@ -639,32 +639,32 @@ $this->closeBlock();
     } else {
       $settings['view'] = "false";
     }
-    
+
     if (isset($_POST['stream'])) {
       $settings['stream'] = "true";
     } else {
       $settings['stream'] = "false";
     }
-    
+
     if (isset($_POST['download'])) {
       $settings['download'] = "true";
     } else {
       $settings['download'] = "false";
     }
-    
+
     if (isset($_POST['lofi'])) {
       $settings['lofi'] = "true";
     } else {
       $settings['lofi'] = "false";
     }
-    
+
     if (isset($_POST['jukebox_admin'])) {
       $settings['jukebox_admin'] = "true";
       $settings['jukebox'] = "true";
     } else {
       $settings['jukebox_admin'] = "false";
     }
-    
+
     if (isset($_POST['jukebox_queue'])) {
       $settings['jukebox_queue'] = "true";
       $settings['jukebox'] = "true";
@@ -677,20 +677,20 @@ $this->closeBlock();
     } else {
       $settings['force_clips'] = "false";
     }
-    
-    
+
+
     if (isset($_POST['powersearch'])) {
       $settings['powersearch'] = "true";
     } else {
       $settings['powersearch'] = "false";
     }
-    
+
     if (isset($_POST['admin'])) {
       $settings['admin'] = "true";
     } else {
       $settings['admin'] = "false";
     }
-    
+
     if (isset($_POST['edit_prefs'])) {
       $settings['edit_prefs'] = "true";
     } else {
@@ -701,7 +701,7 @@ $this->closeBlock();
 		if (isset($_POST['fullname'])) {
       $settings['fullname'] = $_POST['fullname'];
     }
-    
+
     if (isset($_POST['email'])) {
       $settings['email'] = $_POST['email'];
     }
@@ -745,7 +745,7 @@ $this->closeBlock();
       ?>
       <form method="POST" action="<?php echo urlize($url_array); ?>">
 	 <input type="hidden" name="update_settings" value="true">
-	 <?php 
+	 <?php
 	 if (is_array($post)) {
 	   foreach ($post as $p => $v) {
 	     echo '<input type="hidden" name="'.$p.'" value="'.$v.'">';
@@ -863,7 +863,7 @@ $this->closeBlock();
 							    <br><br>
 							    </td>
 							    </tr>
-							    
+
 							    <tr>
 							    <td width="30%" valign="middle" align="right">
 							    <?php echo word("User Rights"); ?>:
@@ -935,7 +935,7 @@ $this->closeBlock();
 									echo '>'. $reArr[$i]. '</option>'. "\n";
 								}
 							?>
-						</select> 
+						</select>
 						    <input <?php echo $overCode2; ?> type="checkbox" name="lockresample" class="jz_input" <?php if ($settings['resample_lock'] == true) { echo 'CHECKED'; } ?>> <?php echo word('Locked'); ?>
 					</td>
 				</tr>
@@ -972,9 +972,9 @@ $this->closeBlock();
 					</td>
 					<td width="70%"><td></tr><tr><td></td><td>
 					    <table><tr><td>
-					    
+
 						<?php
-					    echo word("Limit:"); 
+					    echo word("Limit:");
 								echo '</td><td>';
 					                        $overCode = $display->returnToolTip(word("Sets a streaming limit for users based on the size or number of songs played."), word("Playback Limit"));
 								$cap_limit = $settings['cap_limit'];
@@ -982,9 +982,9 @@ $this->closeBlock();
 						?>
 					        <input <?php echo $overCode; ?> name="cap_limit" class="jz_select" style="width:35px;" value="<?php echo $cap_limit; ?>">
 					</td></tr>
-                                        <tr><td>					    
+                                        <tr><td>
 						<?php
-					    echo word("Method:"); 
+					    echo word("Method:");
 								echo '</td><td>';
 					                        $overCode = $display->returnToolTip(word("Sets the method for limiting playback"), word("Limiting method"));
 								$cap_method = $settings['cap_method'];
@@ -994,9 +994,9 @@ $this->closeBlock();
 					       <option value="number"<?php if ($cap_method == "number") { echo ' selected'; } ?>><?php echo word('Number');?></option>
 					</td></tr>
                                         <tr><td>
-					    
+
 						<?php
-					    echo word("Duration:"); 
+					    echo word("Duration:");
 								echo '</td><td>';
 					                        $overCode = $display->returnToolTip(word("How long the limit lasts, in days."), word("Limit duration"));
 								$cap_duration = $settings['cap_duration'];
@@ -1006,8 +1006,8 @@ $this->closeBlock();
 					</td></tr>
 										  </table>
 				</tr>
-								
-				
+
+
 				<tr>
 					<td width="30%" valign="top">
 					</td>
@@ -1018,7 +1018,7 @@ $this->closeBlock();
 						    </table>
 <?php
   }
-	
+
 
 
 

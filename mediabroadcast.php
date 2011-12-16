@@ -1,23 +1,23 @@
 <?php define('JZ_SECURE_ACCESS','true');
 	/**
-	* - JINZORA | Web-based Media Streamer -  
-	* 
-	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s 
-	* (but can be used for any media file that can stream from HTTP). 
-	* Jinzora can be integrated into a CMS site, run as a standalone application, 
+	* - JINZORA | Web-based Media Streamer -
+	*
+	* Jinzora is a Web-based media streamer, primarily desgined to stream MP3s
+	* (but can be used for any media file that can stream from HTTP).
+	* Jinzora can be integrated into a CMS site, run as a standalone application,
 	* or integrated into any PHP website.  It is released under the GNU GPL.
-	* 
+	*
 	* - Resources -
 	* - Jinzora Author: Ross Carlson <ross@jasbone.com>
 	* - Web: http://www.jinzora.org
-	* - Documentation: http://www.jinzora.org/docs	
+	* - Documentation: http://www.jinzora.org/docs
 	* - Support: http://www.jinzora.org/forum
 	* - Downloads: http://www.jinzora.org/downloads
 	* - License: GNU GPL <http://www.gnu.org/copyleft/gpl.html>
-	* 
+	*
 	* - Contributors -
 	* Please see http://www.jinzora.org/team.html
-	* 
+	*
 	* - Code Purpose -
 	* - This page handles requests to stream all types of files (images,media,zip)
 	*
@@ -26,17 +26,17 @@
 	* @author Ben Dodson <ben@jinzora.org>
 	* @author Chris Hescott
 	*/
-	
+
 	$include_path = '';
-	/* Session name separate from one used in index.php 
+	/* Session name separate from one used in index.php
 	* This one is embedded in the URL sent in the playlist
-	*/	
+	*/
 	session_name('jza');
 	session_start();
-	
+
 	// Let's set the error reporting level
 	@error_reporting(E_ERROR);
-	
+
  	include_once('system.php');
 	@include_once('settings.php');
 	include_once('backend/backend.php');
@@ -44,14 +44,14 @@
 	include_once('lib/general.lib.php');
 	include_once('lib/jzcomp.lib.php');
 	include_once('services/class.php');
-	
+
 	$ssid = strip_tags(SID);
 	writeLogData("as_debug","mediabroadcast: SID = ". $ssid);
-	
+
 	// Let's setup the services
 	$jzSERVICES = new jzServices();
 	$jzSERVICES->loadStandardServices();
-	
+
 	// Now let's see if we need to split the URL apart
 	if (isset($_SERVER['PATH_INFO'])){
 		// Ok, now we need to get the variables
@@ -64,18 +64,18 @@
 			$_GET[$iArr[0]] = $iArr[1];
 		}
 	}
-	
+
 	// Let's clean up the get vars
 	$_GET = unurlize($_GET);
-	
+
 	// Let's get the user ID
 	$uid = (isset($_GET['jz_user'])) ? $_GET['jz_user'] : false;
 	if (false === $uid || $uid == ""){ exit(); }
-	
+
 	// Let's setup the new user
 	$jzUSER = new jzUser(false,$uid);
-	
-	// ACTIONS:				
+
+	// ACTIONS:
 	// play [for on-the-fly, basic playlist generation]
 	//    -path
 	//    -limit (default max_playlist_length)
@@ -95,18 +95,18 @@
 	//    -height (resize the height)
 	//    -constrain (constrained resize)
 	if (!isset($_GET['action'])) $_GET['action'] = "play";
-	
+
 	// Handle $resample
 	$resample = (isset($_GET['resample'])) ? $_GET['resample'] : false;
-	
+
 	if ($jzUSER->getSetting('resample_lock')){
 		$resample = $jzUSER->getSetting('resample_rate');
 	}
-	
+
 	if (isset($no_resample_subnets) && $no_resample_subnets <> "" && preg_match("/^${no_resample_subnets}$/", $_SERVER['REMOTE_ADDR'])) {
 		$resample = false;
 	}
-	
+
 	switch ($_GET['action']) {
 		// play a track:
 		case "play":
@@ -119,7 +119,7 @@
 				  sendMedia($_GET['file'],$_GET['fname'],$resample);
 				}
 				exit();
-			} else {	
+			} else {
 				$be = new jzBackend();
 				$el = &new jzMediaTrack($_GET['jz_path'],"id");
 
@@ -130,11 +130,11 @@
 				if (isset($_GET['cl'])) {
 				  // Send a clip
 				  $meta = $el->getMeta();
-				  $title = $meta['artist'] . " - " . $el->getName();			  
+				  $title = $meta['artist'] . " - " . $el->getName();
 				  sendClip($el);
 				  exit();
 				}
-				
+
 				// Is the track locked/do they have permission?
 				if (!canPlay($el,$jzUSER)) {
 				  sendMedia("playlists/messages/media-locked.mp3",word("Track Locked"));
@@ -145,17 +145,17 @@
 				  sendMedia("playlists/messages/streaming-limit-exceeded.mp3",word("Limit Reached"));
 				  exit();
 				}
-				
+
 				if (!isset($_GET['sid'])) {
 				  $_GET['sid'] = "none";
 				}
-				
+
 				if (!isset($_SERVER['HTTP_RANGE'])) {
 					// Now let's update the playcount
 					if ($be->allowPlaycountIncrease($_GET['jz_user'],$el,$_GET['sid']) !== false) {
 						$el->increasePlayCount();
-					}	
-					
+					}
+
 					// Now let's update audioscrobbler
 					$el->setStartTime(time());
 					if ($enable_audioscrobbler == "true"){
@@ -178,8 +178,8 @@
 			}
 			exit();
 		break;
-		
-		// download a collection of media:   
+
+		// download a collection of media:
 		case "image":
 			if (preg_match("/\.($ext_graphic)$/i", $_GET['jz_path'])) {
 				showImage($_GET['jz_path']);

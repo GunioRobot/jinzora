@@ -5,7 +5,7 @@
 	} else {
 		$step = 0;
 	}
-	
+
 	// Now let's include the language file
         include_once(dirname(__FILE__).'/../lib/languageDetect.php');
         include_once(dirname(__FILE__). '/lang/english/lang.php');
@@ -23,8 +23,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<?php 
-			$titleStep = $step; 
+		<?php
+			$titleStep = $step;
 			if ($titleStep == 0){
 				$titleStep = 1;
 			}
@@ -42,7 +42,7 @@
 						} else {
 							echo '<li class="navitem">';
 						}
-					?>					
+					?>
 						<?php
 							if ($step > 1){
 								$step_num = 1;
@@ -86,7 +86,7 @@
 							echo '<span class="success">&radic;</span> &nbsp;<span class="nav_text"><strong>';
 							echo '<a href="javascript:void(0);" onClick="setup'. $step_num. '.submit();"><nobr>'. $word_package_verify. "</nobr></a>";
 							echo '</strong></span>';
-							echo '</form>';							
+							echo '</form>';
 						} else {
 							if ($step == 2){
 								echo '<span class="nav_num">2</span> &nbsp;<span class="nav_text"><em><strong><nobr>- '. $word_package_verify. ' -</nobr></strong></em></span>';
